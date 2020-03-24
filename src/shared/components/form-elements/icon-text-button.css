@@ -1,0 +1,8 @@
+.icon-text-button {
+    display: flex;
+    align-items: center;
+}
+
+.icon-text-button__text {
+    margin-left: 1rem;
+}

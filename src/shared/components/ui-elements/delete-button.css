@@ -1,0 +1,9 @@
+.delete-button {
+    cursor: pointer;
+    transition: all .1s ease-in;
+    background: none;
+    color: currentColor;
+}
+.delete-button:hover {
+    color: var(--danger-color);
+}

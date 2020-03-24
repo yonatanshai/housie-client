@@ -1,0 +1,9 @@
+.icon {
+    width: 2rem;
+    height: 2rem;
+    fill:  currentColor;
+}
+
+.icon--inline {
+    margin-right: 1rem;
+}

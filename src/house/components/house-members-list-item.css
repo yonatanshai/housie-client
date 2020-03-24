@@ -1,0 +1,31 @@
+.house-members-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 1.2rem 1rem;
+    font-size: 1.2;
+    /* width: 100%; */
+    text-align: start;
+    /* cursor: pointer; */
+    transition: .2s ease-in-out;
+}
+
+.is-admin {
+    justify-self: left;
+}
+
+.house-members-list-item:hover {
+    background-color: var(--light-hover-color);
+}
+
+.member-actions {
+    margin-left: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.member-actions__action:not(:last-of-type) {
+    margin-right: 1rem;
+}

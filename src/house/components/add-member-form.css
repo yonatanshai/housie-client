@@ -1,0 +1,28 @@
+.add-member-form {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    /* padding: 2rem; */
+}
+
+.add-member-form__title {
+    font-size: 2.2rem;
+    color: var(--secondary-text-color);
+    font-weight: 700;
+    margin: 0;
+    padding: 1rem;
+    border-bottom: 1px solid var(--divider-color);
+    text-align: start;
+    /* width: 100%; */
+}
+
+.add-member-form__body {
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+}
+
+.add-member-form__body > :not(:last-child) {
+    margin-bottom: 1rem;
+}

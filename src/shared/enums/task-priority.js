@@ -1,0 +1,1 @@
+export const TaskPriority = ['low', 'normal', 'high'];

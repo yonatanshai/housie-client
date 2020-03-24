@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .App-logo {
@@ -35,4 +38,26 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+.expired-message {
+  display: flex;
+  flex-direction: column;
+  color: var(--secondary-text-color)
+}
+
+.expired-message__title {
+  font-size: 1.8rem;
+  padding: 1rem;
+}
+
+.expired-message__body {
+  display: flex;
+  flex-direction: column;
+  padding: 4rem;
+}
+
+.expired-message__text {
+  font-size: 1.6rem;
 }

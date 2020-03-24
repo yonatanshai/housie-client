@@ -1,0 +1,35 @@
+.house-members-list {
+    grid-row: 1 / -1;
+    grid-column: 1;
+}
+
+.house-members-list__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    font-weight: 700;
+    min-height: 60px;
+    /* min-width: 500px; */
+    border-bottom: 1px solid var(--divider-color-secondary);
+
+}
+
+.title__icon {
+    margin-right: 1rem;
+}
+
+.house-members-list__title__text {
+    line-height: 1;
+    margin: 0;
+}
+
+
+
+.house-members-list__title__actions {
+    display: flex;
+}
+
+.house-members-list__title__actions >:not(:last-child) {
+    margin-right: 1rem;
+}

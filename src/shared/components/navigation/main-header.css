@@ -1,0 +1,69 @@
+.main-header {
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 6rem;
+    padding: 0 3rem;
+    box-shadow: var(--box-shadow-secondary);
+    position: fixed;
+    z-index: 555;
+    background-color: #FFFFFF;
+    color: var(--secondary-text-color);
+}
+
+.logo-container {
+    color: var(--default-primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-container__icon {
+    margin-right: .6rem;
+}
+
+.main-header__app-name {
+    /* color: var(--secondary-text-color); */
+    /* background: linear-gradient(var(--danger-color), var(--success-color), var(--warning-color), var(--natural-color)); */
+    background: linear-gradient(var(--dark-primary-color), var(--default-primary-color), var(--light-primary-color));
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    text-transform: lowercase;
+}
+
+.main-header__navigation {
+    margin-left: auto;
+    height: 100%;
+}
+
+.main-header__link {
+    height: 100%;
+    color: var(--secondary-text-color);
+    text-decoration: none;
+
+    transition: all .05s ease-in-out;
+}
+
+.main-header__link:hover {
+    color: var(--default-primary-color);
+    text-decoration: underline;
+}
+
+.main-header__link:not(:last-of-type) {
+    margin-right: 1rem;
+}
+
+.main-header__logo {
+    /* width: 70px;
+    height: 40px; */
+    width: 100%;
+    height: auto;
+    fill: currentColor;
+    display: block;
+}

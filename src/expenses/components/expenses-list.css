@@ -1,0 +1,17 @@
+.expenses-list {
+    /* grid-row: 2; */
+}
+
+.expenses-list__title {
+    text-align: start;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    
+}
+
+.expenses-list__title > :not(:last-child) {
+    margin-right: 1rem;
+}

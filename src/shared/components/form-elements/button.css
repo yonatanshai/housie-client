@@ -1,0 +1,112 @@
+.button {
+    cursor: pointer;
+    font-size: 1.4rem;
+    outline: none;
+    border: none;
+    padding: 1rem 1.2rem;
+    text-transform: uppercase;
+    transition: all .1s ease-in;
+    text-decoration: none;
+    border-radius: 2px;
+}
+
+.button:focus {
+    transform: scale(1.1);
+}
+
+.button:active:focus {
+    transform: translateY(-1px);
+}
+
+.button:disabled {
+    color: currentColor;
+    cursor: not-allowed;
+    background-color: var(--light-hover-color);
+    border: 1px solid currentColor;
+}
+
+.button:disabled:hover {
+    /* background-color: var(--light-hover-color);
+    color: currentColor; */
+    background-color: inherit;
+    color: inherit;
+}
+
+.button--common {
+    
+    background-color: var(--default-primary-color);
+    color: var(--text-primary-color);
+    font-size: 1.6rem;
+}
+
+.button--common:hover {
+    background-color: var(--dark-primary-color);
+}
+
+.button--inverse {
+    background-color: inherit;
+    border: 1px solid var(--default-primary-color);
+    border-radius: 5px;
+    color: var(--default-primary-color);
+    letter-spacing: 2px;
+    font-weight: 300;
+}
+
+.button--inverse-success {
+    background-color: inherit;
+    color: var(--success-color);
+    border: 1px solid currentColor;
+}
+
+.button--inverse-success:hover {
+    background-color: var(--success-color) !important;
+    border-color: var(--success-color);
+    color: white;
+    
+}
+
+.button--inverse-danger {
+    background-color: inherit;
+    border: 1px solid var(--danger-color);
+    border-radius: 5px;
+    color: var(--danger-color);
+    letter-spacing: 2px;
+}
+
+.button--inverse-danger:hover {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.button--inverse-modify {
+    background-color: inherit;
+    border: 1px solid var(--natural-color);
+    border-radius: 5px;
+    color: var(--natural-color);
+    letter-spacing: 2px;
+}
+
+.button--inverse-modify:hover {
+    background-color: var(--natural-color);
+    color: white;
+}
+
+.button--inverse:hover {
+    background-color: var(--default-primary-color);
+    color: white;
+}
+
+.button--link {
+    padding: 1.2rem;
+    border: none;
+    outline: none;
+    background: none;
+    text-transform: capitalize;
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: .8rem 0;
+}

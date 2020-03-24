@@ -1,0 +1,28 @@
+.dropdown {
+    padding: 1rem .8rem;
+    font-size: 1.6rem;
+    outline: none;
+    border-radius: 3px;
+    color: var(--secondary-text-color);
+}
+
+.dropdown:focus {
+    
+    border: 1px solid var(--dark-primary-color);
+}
+
+.dropdown__label {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 3px;
+    color: var(--secondary-text-color);
+}
+
+.dropdown__option {
+    color: var(--secondary-text-color);
+}
+
+.dropdown__option:focus {
+    background-color: var(--default-primary-color);
+    color: white;
+}

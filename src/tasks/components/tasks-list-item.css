@@ -1,0 +1,86 @@
+.tasks-list-item {
+    padding: .5rem 1rem;
+    color: var(--secondary-text-color);
+    transition: all .2s ease-in;
+    border-bottom: 1px solid var(--divider-color);
+}
+
+
+.tasks-list-item__complete-task {
+    align-self: center;
+    justify-self: center;
+}
+
+.tasks-list-item__title {
+    text-transform: capitalize;
+}
+
+.tasks-list-item__create-date {
+    align-self: center;
+}
+
+.tasks-list-item__priority {
+    text-transform: capitalize;
+    /* justify-self: stretch; */
+    /* align-self: stretch; */
+    padding: 1rem;
+    color: white !important;
+    text-align-last: center;
+    border: none;
+    border-radius: 0 !important;
+}
+
+.tasks-list-item__priority--low {
+    background-color: var(--natural-color);
+}
+
+.tasks-list-item__priority--normal {
+    background-color: var(--other-color);
+}
+
+.tasks-list-item__priority--high {
+    background-color: var(--danger-color);
+}
+
+.tasks-list-item:not(:last-of-type) {
+    margin-bottom: 1rem;
+}
+
+.tasks-list-item__status {
+    text-transform: capitalize;
+    /* justify-self: stretch; */
+    padding: 1rem;
+    color: white;   
+    transition: all .2s ease-in;
+}
+
+.tasks-list-item__status--new {
+    background-color: var(--warning-color);
+}
+
+.tasks-list-item__status--assigned {
+    background-color: var(--natural-color);
+}
+
+.tasks-list-item__status--completed {
+    background-color: var(--success-color);
+}
+
+.tasks-list-item__user {
+    color: var(--secondary-text-color);
+    padding: 0;
+}
+
+.tasks-list-item__user:hover {
+    color: var(--dark-primary-color);
+    text-decoration: underline;
+}
+
+.tasks-list-item__delete-task {
+    background: none;
+    color: currentColor;
+}
+
+.tasks-list-item__delete-task:hover {
+    color: var(--danger-color);
+}

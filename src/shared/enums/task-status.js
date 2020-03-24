@@ -1,0 +1,1 @@
+export const TaskStatus = ['new', 'assigned', 'in progress', 'completed']

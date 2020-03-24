@@ -1,0 +1,43 @@
+.text-input-container {
+    display: flex;
+    flex-direction: column;
+}
+.text-input {
+    
+    padding: 1rem .8rem;
+    font-size: 1.6rem;
+    /* margin: .5rem 0; */
+    outline: none;
+    border: 1px solid var(--divider-color);
+    /* border-bottom: 1px solid var(--dark-primary-color); */
+    /* border-bottom: 1px solid var(--divider-color); */
+}
+
+.text-input--error {
+    padding: .5rem;
+    font-size: 1.2rem;
+    color: var(--danger-color);
+    display: block;
+}
+
+.text-input--valid {
+    padding: .5rem;
+    font-size: 1.2rem;
+    /* color: transparent; */
+    display: none;
+}
+
+.text-input::placeholder {
+    text-transform: capitalize;
+}
+
+.text-input:focus {
+    border: 1px solid var(--dark-primary-color);
+}
+
+.label {
+    font-size: 1.8rem;
+    color: var(--secondary-text-color);
+    font-weight: 600;
+    /* margin-bottom: 3px; */
+}

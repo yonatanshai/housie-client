@@ -1,0 +1,19 @@
+.error-modal {
+    font-size: 1.6rem;
+    color: var(--secondary-text-color);
+}
+
+.error-modal__title {
+    padding: 1rem;
+    margin: 0;
+    border-bottom: 1px solid var(--divider-color);
+    font-weight: 700;
+}
+
+.error-modal__content {
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
