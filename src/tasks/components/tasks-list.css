@@ -1,18 +1,22 @@
 .tasks-list {
     /* grid-column: 2;
     grid-row: 2; */
-    /* overflow-y: scroll;
-    scroll-behavior: smooth; */
+    
+    /* scroll-behavior: smooth; */
 }
 
 .task-list__data {
     /* border: 1px solid var(--divider-color); */
-    /* border-collapse: collapse; */
+    
     width: 100%;
+    /* overflow-y: scroll;
+    max-height: 100vh; */
+    padding: 0 0 2rem 0;
 }
 
 table {
     border-spacing: 1rem;
+    /* border-collapse: collapse; */
 }
 
 tr {
@@ -28,6 +32,8 @@ tr {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 4em;
 }
 
 .tasks-list__title > :not(:last-child) {

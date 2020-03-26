@@ -6,7 +6,7 @@
     box-shadow: var(--box-shadow-secondary); */
     color: var(--secondary-text-color);
     width: 100%;
-    padding: 1rem 2.5rem;
+    /* padding: 1rem 2.5rem; */
     font-size: 1.6rem;
     transition: all .1s ease-in-out;
 }

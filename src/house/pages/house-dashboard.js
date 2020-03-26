@@ -50,8 +50,6 @@ const HouseDashBoard = ({ ...props }) => {
         alert(houseId + ' ' + values.email);
     }
 
-    console.log(props.match)
-
     if (isLoading) {
         return (<Loader />)
     } else {
@@ -90,14 +88,16 @@ const HouseDashBoard = ({ ...props }) => {
                         <IconTextLabel textFirst text="Shopping" icon="cart" />
                     </NavLink>
                 </Sidebar>
-                <Switch>
-                    <PrivateRoute exact path={`${props.match.url}/members`}>
-                        <HouseMembersList house={house} members={house.members} admins={house.admins} onAddMember={handleAddMember} />
-                    </PrivateRoute>
-                    <PrivateRoute exact path={`${props.match.url}/tasks`}>
-                        <TasksList house={house} />
-                    </PrivateRoute>
-                </Switch>
+                <div className="house-dashboard__content">
+                    <Switch>
+                        <PrivateRoute exact path={`${props.match.url}/members`}>
+                            <HouseMembersList house={house} members={house.members} admins={house.admins} onAddMember={handleAddMember} />
+                        </PrivateRoute>
+                        <PrivateRoute exact path={`${props.match.url}/tasks`}>
+                            <TasksList house={house} />
+                        </PrivateRoute>
+                    </Switch>
+                </div>
                 {/* <HouseMembersList house={house} members={house.members} admins={house.admins} onAddMember={handleAddMember} />
                 <TasksList house={house} /> */}
                 {/* <ExpensesList expenses={house.expenses} /> */}

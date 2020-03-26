@@ -4,10 +4,11 @@
     align-items: center;
     width: 100%;
     box-sizing: border-box;
-    /* min-height: 6rem; */
     padding: 2rem 3rem;
     box-shadow: var(--box-shadow-secondary);
-    /* position: fixed; */
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
     z-index: 555;
     background-color: #FFFFFF;
     color: var(--secondary-text-color);

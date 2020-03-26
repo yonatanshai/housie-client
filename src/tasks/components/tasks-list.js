@@ -32,10 +32,11 @@ const TasksList = ({ ...props }) => {
                     url,
                     headers: {
                         'content-type': 'application/json',
-                        'authorization':  'Bearer ' + userData.token
+                        'authorization': 'Bearer ' + userData.token
                     }
                 });
                 setTasks(res.data)
+                console.log(res.data)
             } catch (error) {
                 const response = JSON.parse(error.request.response);
                 if (response.statusCode === 401) {
@@ -123,8 +124,8 @@ const TasksList = ({ ...props }) => {
 
     return (
         <Widget className="tasks-list">
-            <div className="tasks-list__title">
-                <ErrorModal 
+            <div className="tasks-list__title" onScrollCapture={() => alert('scrolled')}>
+                <ErrorModal
                     buttonText="Ok"
                     errorMessage={errors}
                     isOpen={errors}
@@ -139,18 +140,21 @@ const TasksList = ({ ...props }) => {
             </div>
             {isLoading ? <Loader /> :
                 tasks.length === 0 ? <p>No Tasks</p> :
-                    <table className="task-list__data">
-                        <tbody>
-                            <tr>
-                                <th>Title</th>
-                                <th>Create Date</th>
-                                <th>Status</th>
-                                <th>Priority</th>
-                                <th>Assigned To</th>
-                            </tr>
-                            {tasks.map(task => <TasksListItem key={task.id} task={task} onTaskCompleted={handleTaskCompleted} deleteTask={deleteTask} />)}
-                        </tbody>
-                    </table>}
+                    <div className="task-list__data">
+                        <table >
+                            <tbody>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Create Date</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                {tasks.map(task => <TasksListItem key={task.id} task={task} onTaskCompleted={handleTaskCompleted} deleteTask={deleteTask} />)}
+                            </tbody>
+                        </table>
+                    </div>}
 
         </Widget>
     )

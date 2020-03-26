@@ -3,6 +3,7 @@
     box-sizing: border-box;
     height: 100%;
     display: flex;
+    /* border: 1px solid var(--divider-color); */
 }
 
 @media only screen and (max-width: 600px) {
@@ -10,7 +11,10 @@
         flex-direction: column;
     }
 }
-
+.house-dashboard__content {
+    width: 100%;
+    box-sizing: border-box;
+}
 
 .house-dashboard__widgets {
     display: flex;
