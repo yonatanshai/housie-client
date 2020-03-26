@@ -6,6 +6,7 @@ import { TaskPriority } from '../../shared/enums/task-priority';
 import axios from 'axios';
 import { useAuth } from '../../context/auth-context';
 import Loader from '../../shared/components/ui-elements/loader';
+import { Redirect } from 'react-router-dom';
 
 // const DUMMY_HOUSES = [{name: 'My First House'}, {name: 'My Second house'}]
 const DUMMY_HOUSES = [
@@ -84,7 +85,8 @@ const MyHouses = props => {
     } else if (houses.length === 1) {
         return (
             // <div style={{fontSize: '150px'}}>{houses[0].name}</div>
-            <HouseDashBoard house={houses[0]} />
+            <Redirect to={`/dashboard/${houses[0].id}`} />
+            // <HouseDashBoard house={houses[0]} />
         )
     }
     return (

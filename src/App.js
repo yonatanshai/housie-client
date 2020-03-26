@@ -12,6 +12,7 @@ import moment from 'moment';
 import Modal from './shared/components/ui-elements/modal';
 import ErrorModal from './shared/components/ui-elements/error-modal';
 import Button from './shared/components/form-elements/button';
+import HouseDashBoard from './house/pages/house-dashboard';
 
 function App() {
   const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('userData')));
@@ -62,14 +63,19 @@ function App() {
             onButtonClick={handleTokenExpired}
             buttonText="Take Me To Login"
             errorMessage="Please login to continue"
-            
+
           />
-          <MainHeader />
-        <Switch>
-          <PrivateRoute exact path="/" component={MyHouses} />
-          <Route exact path="/auth" component={LoginPage} />
-          <Redirect to="/" />
-        </Switch>
+          <div style={{display:'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
+            <MainHeader />
+            <div style={{display:'flex', width: '100%', height: '100%'}}>
+              <Switch>
+                <PrivateRoute exact path="/" component={MyHouses} />
+                <Route exact path="/auth" component={LoginPage} />
+                {/* <Redirect to="/" /> */}
+              </Switch>
+              <PrivateRoute path="/dashboard/:houseId" component={HouseDashBoard} />
+            </div>
+          </div>
         </BrowserRouter>
       </AuthContext.Provider>
     </div >

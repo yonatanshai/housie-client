@@ -1,13 +1,14 @@
 .tasks-list {
     /* grid-column: 2;
     grid-row: 2; */
-
+    /* overflow-y: scroll;
+    scroll-behavior: smooth; */
 }
 
 .task-list__data {
     /* border: 1px solid var(--divider-color); */
     /* border-collapse: collapse; */
-    
+    width: 100%;
 }
 
 table {

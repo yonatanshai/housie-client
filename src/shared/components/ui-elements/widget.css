@@ -1,11 +1,11 @@
 .widget {
-    border: 1px solid var(--divider-color-secondary);
+    /* border: 1px solid var(--divider-color-secondary);
     border-radius: 3px;
     -webkit-box-shadow: var(--box-shadow-secondary);
     -moz-box-shadow: var(--box-shadow-secondary);
-    box-shadow: var(--box-shadow-secondary);
+    box-shadow: var(--box-shadow-secondary); */
     color: var(--secondary-text-color);
-    width: auto;
+    width: 100%;
     padding: 1rem 2.5rem;
     font-size: 1.6rem;
     transition: all .1s ease-in-out;

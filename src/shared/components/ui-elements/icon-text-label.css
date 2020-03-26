@@ -1,6 +1,7 @@
 .icon-text-label {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .icon-text-label > :not(:last-child) {

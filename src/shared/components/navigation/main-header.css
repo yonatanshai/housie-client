@@ -4,10 +4,10 @@
     align-items: center;
     width: 100%;
     box-sizing: border-box;
-    min-height: 6rem;
-    padding: 0 3rem;
+    /* min-height: 6rem; */
+    padding: 2rem 3rem;
     box-shadow: var(--box-shadow-secondary);
-    position: fixed;
+    /* position: fixed; */
     z-index: 555;
     background-color: #FFFFFF;
     color: var(--secondary-text-color);
@@ -39,7 +39,10 @@
 
 .main-header__navigation {
     margin-left: auto;
-    height: 100%;
+    /* padding: 2rem; */
+    /* height: 100%;
+    display: flex;
+    align-items: center; */
 }
 
 .main-header__link {
