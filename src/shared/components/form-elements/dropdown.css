@@ -4,6 +4,7 @@
     outline: none;
     border-radius: 3px;
     color: var(--secondary-text-color);
+    text-transform: capitalize;
 }
 
 .dropdown:focus {

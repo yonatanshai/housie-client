@@ -13,20 +13,29 @@ import axios from 'axios';
 import { TaskPriority } from '../../shared/enums/task-priority';
 import Loader from '../../shared/components/ui-elements/loader';
 import ErrorModal from '../../shared/components/ui-elements/error-modal';
+import DateFilter from '../../shared/components/dashboard/date-filter';
+import Dropdown from '../../shared/components/form-elements/dropdown';
+import Checkbox from '../../shared/components/form-elements/checkbox';
 
 
 const TasksList = ({ ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [errors, setErrors] = useState(false);
     const [tasks, setTasks] = useState([]);
+    const [fromDate, setFromDate] = useState(moment().startOf('month').toDate());
+    const [toDate, setToDate] = useState(moment().endOf('day').toDate());
+    const [filterStatus, setFilterStatus] = useState('Active');
     const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
     const { userData } = useAuth();
 
     useEffect(() => {
         const getTasks = async () => {
             setIsLoading(true);
-            const url = process.env.REACT_APP_API_BASE_URL + process.env.REACT_APP_GET_TASKS_URL + `/${props.house.id}`;
-
+            let url = `${process.env.REACT_APP_API_BASE_URL}${process.env.REACT_APP_GET_TASKS_URL}/${props.house.id}?fromDate=${fromDate.toISOString()}&toDate=${toDate.toISOString()}`;
+            if (filterStatus !== TaskStatus.completed) {
+                url = url + `&openOnly=true`;
+            }
+            console.log(url)
             try {
                 const res = await axios({
                     url,
@@ -36,19 +45,19 @@ const TasksList = ({ ...props }) => {
                     }
                 });
                 setTasks(res.data)
-                console.log(res.data)
             } catch (error) {
-                const response = JSON.parse(error.request.response);
-                if (response.statusCode === 401) {
-                    setErrors(`You can't access this house's tasks. Perhaps a login will do`)
-                }
+                console.log(error)
+                // const response = JSON.parse(error.request.response);
+                // if (response.statusCode === 401) {
+                //     setErrors(`You can't access this house's tasks. Perhaps a login will do`)
+                // }
             } finally {
                 setIsLoading(false);
             }
         }
 
         getTasks();
-    }, [userData.token, props.house.id])
+    }, [userData.token, props.house.id, filterStatus, fromDate, toDate])
 
     const toggleShowCreateTaskForm = () => {
         setShowCreateTaskModal(!showCreateTaskModal);
@@ -57,7 +66,8 @@ const TasksList = ({ ...props }) => {
     const handleCreateTask = async (values) => {
         setIsLoading(true);
         const assignee = props.house.members.find(m => m.username === values.assignee);
-        const priority = TaskPriority.findIndex(p => p === values.priority.toLowerCase());
+        // const priority = TaskPriority.findIndex(p => p === values.priority.toLowerCase());
+        // console.log({ priority, p: values.priority });
 
         const url = process.env.REACT_APP_API_BASE_URL + '/tasks';
 
@@ -66,7 +76,7 @@ const TasksList = ({ ...props }) => {
             title: values.title,
             description: values.description || null,
             userToAssignId: assignee.id,
-            priority
+            priority: values.priority
         });
 
         try {
@@ -109,17 +119,51 @@ const TasksList = ({ ...props }) => {
         }
     }
 
-    const handleTaskCompleted = (taskId) => {
-        tasks.forEach(task => {
-            if (task.id === taskId) {
-                task.status = 3
-                return;
-            }
-        })
+    const handleTaskCompleted = async (taskId) => {
+        const taskIndex = tasks.findIndex(t => t.id === taskId);
+        let id;
+        if (taskIndex !== -1) {
+            id = tasks[taskIndex].id;
+        }
+
+        try {
+            const res = await axios({
+                url: `${process.env.REACT_APP_API_BASE_URL}/tasks/${id}/status`,
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + userData.token
+                },
+                data: {
+                    status: TaskStatus.completed
+                }
+            });
+            const newTasks = tasks.map(t => t.id === id ? res.data : t);
+            setTasks(newTasks);
+        } catch (error) {
+            console.log(error.request);
+        }
     }
 
     const handleClearErrors = () => {
         setErrors(undefined);
+    }
+
+    const handleFromDateChange = (date) => {
+        setFromDate(date);
+    }
+
+    const handleToDateChange = (date) => {
+        setToDate(date);
+    }
+
+    const handleFilterStatusChanged = (status) => {
+        if (status === TaskStatus.completed) {
+            const newTasks = tasks.filter(t => t.status !== TaskStatus.completed);
+            console.log(newTasks)
+            setTasks(newTasks);
+        }
+        setFilterStatus(status);
     }
 
     return (
@@ -139,23 +183,32 @@ const TasksList = ({ ...props }) => {
                 <Button className="button button--inverse" onClick={toggleShowCreateTaskForm}>Create Task</Button>
             </div>
             {isLoading ? <Loader /> :
-                tasks.length === 0 ? <p>No Tasks</p> :
+                
                     <div className="task-list__data">
-                        <table >
-                            <tbody>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Create Date</th>
-                                    <th>Status</th>
-                                    <th>Priority</th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                                {tasks.map(task => <TasksListItem key={task.id} task={task} onTaskCompleted={handleTaskCompleted} deleteTask={deleteTask} />)}
-                            </tbody>
-                        </table>
-                    </div>}
-
+                        <div className="filters">
+                            <input type="text" placeholder="search" />
+                            <DateFilter
+                                fromDate={fromDate}
+                                toDate={toDate}
+                                onFromDateChange={handleFromDateChange}
+                                onToDateChange={handleToDateChange}
+                            />
+                            {/* <label>Status</label>
+                            <select>
+                                <option>Assigned</option>
+                                <option>In Progress</option>
+                                <option>Completed</option>
+                            </select> */}
+                            <Dropdown onSelect={handleFilterStatusChanged} value={filterStatus}>
+                                <option value="1">Active</option>
+                                {/* <option value={TaskStatus.InProgress}>In Progress</option> */}
+                                <option value={TaskStatus.completed}>Completed</option>
+                            </Dropdown>
+                            <Button type="button" className="button--inverse button--inverse-success">Search</Button>
+                        </div>
+                        {tasks.length === 0 ? <p>No Tasks</p> : tasks.map(task => <TasksListItem key={task.id} task={task} onTaskCompleted={handleTaskCompleted} deleteTask={deleteTask} />)}
+                    </div>
+            }
         </Widget>
     )
 };

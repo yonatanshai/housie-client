@@ -6,7 +6,6 @@
     box-sizing: border-box;
     padding: 2rem 3rem;
     box-shadow: var(--box-shadow-secondary);
-    position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0;
     z-index: 555;

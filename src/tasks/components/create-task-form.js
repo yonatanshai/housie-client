@@ -6,11 +6,12 @@ import TextInput from '../../shared/components/form-elements/text-input';
 import Dropdown from '../../shared/components/form-elements/dropdown';
 import Button from '../../shared/components/form-elements/button';
 import '../../shared/components/form-elements/dropdown.css';
+import { TaskStatus } from '../../shared/enums/task-status';
+import { TaskPriority } from '../../shared/enums/task-priority';
 
 const CreateTaskForm = ({ house, ...props }) => {
 
     const handleSubmit = (values) => {
-        // console.log(values);
         props.onSubmit(values);
     };
 
@@ -20,7 +21,7 @@ const CreateTaskForm = ({ house, ...props }) => {
                 title: '',
                 description: '',
                 assignee: house.members[0].username,
-                priority: 'Normal'
+                priority: TaskPriority.Normal
             }}
             validationSchema={yup.object({
                 title: yup.string().min(2, 'Title too short (min: 2)').max(30, 'Title too long (max: 30)').required('Required'),
@@ -47,9 +48,9 @@ const CreateTaskForm = ({ house, ...props }) => {
 
                         <label htmlFor="assignee" className="dropdown__label">Priority</label>
                         <Field className="dropdown sm-btm-mrgn" as="select" name="priority">
-                            <option className="dropdown__option" value="Low">Low</option>
-                            <option className="dropdown__option" value="Normal">Normal</option>
-                            <option className="dropdown__option" value="High">High</option>
+                            <option className="dropdown__option" value={TaskPriority.Low}>{TaskPriority.Low}</option>
+                            <option className="dropdown__option" value={TaskPriority.Normal}>{TaskPriority.Normal}</option>
+                            <option className="dropdown__option" value={TaskPriority.High}>{TaskPriority.High}</option>
                         </Field>
                         
                         <Button type="submit" disabled={isSubmitting || errors.title || errors.description} className="button--common">Submit</Button>

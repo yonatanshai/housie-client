@@ -1,1 +1,6 @@
-export const TaskStatus = ['new', 'assigned', 'in progress', 'completed']
+export const TaskStatus = {
+    New: 'new',
+    Assigned: 'assigned',
+    InProgress: 'inProgress',
+    completed: 'completed'
+}

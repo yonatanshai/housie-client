@@ -46,3 +46,13 @@ tr {
     font-weight: bold;
     border-bottom: 1px solid var(--divider-color);
 }
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    padding: 1rem;
+    margin: 1rem;
+    border-bottom: 1px solid var(--divider-color);
+}

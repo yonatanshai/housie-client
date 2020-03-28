@@ -11,7 +11,7 @@
 }
 
 .button:focus {
-    transform: scale(1.1);
+    transform: scale(1.01);
 }
 
 .button:active:focus {
@@ -94,6 +94,17 @@
 .button--inverse:hover {
     background-color: var(--default-primary-color);
     color: white;
+}
+
+.button--inverse-gray {
+    background-color: transparent;
+    border: 1px solid var(--other-color);
+    color: var(--other-color);
+}
+
+.button--inverse-gray:hover {
+    background-color: var(--light-hover-color);
+    /* color: white; */
 }
 
 .button--link {
