@@ -1,6 +1,7 @@
 .date-filter {
     display: flex;
     align-items: stretch;
+    padding: 1rem;
 }
 
 .date-filter__item {

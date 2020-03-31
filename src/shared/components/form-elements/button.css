@@ -112,7 +112,14 @@
     border: none;
     outline: none;
     background: none;
-    text-transform: capitalize;
+    color: var(--secondary-text-color);
+    text-decoration: none;
+    transition: all .05s ease-in-out;
+}
+
+.button--link:hover {
+    color: var(--default-primary-color);
+    text-decoration: underline;
 }
 
 .buttons-container {
@@ -120,4 +127,12 @@
     flex-direction: column;
     justify-content: space-evenly;
     padding: .8rem 0;
+}
+
+.button--icon {
+    background: none;
+}
+
+.button--icon:focus {
+    transform: scale(1) !important;
 }

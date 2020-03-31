@@ -16,7 +16,7 @@ const TextInput = ({ label, value, step, ...props }) => {
     return (
         <div className="text-input-container">
             {label && <label className="label" htmlFor={props.name}>{label}</label>}
-            <input className="text-input" {...field} {...props} autoComplete={props.autoComplete} value={value} step={step} />
+            <input data-tip={props.dataTip} className="text-input" {...field} {...props} autoComplete={props.autoComplete} value={value} step={step} />
             <span className={errorClass}>{errorClass.includes('error') ? meta.error : '___'}</span>
         </div>
     )

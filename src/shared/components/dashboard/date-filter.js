@@ -4,22 +4,24 @@ import moment from 'moment';
 import './date-filter.css';
 import "react-datepicker/dist/react-datepicker.css";
 import Button from '../form-elements/button';
+import {startOfMonth, endOfMonth, startOfYear, endOfYear, startOfDay, startOfWeek, endOfWeek} from 'date-fns'
 
 const DateFilter = ({ onFromDateChange, onToDateChange, toDate, fromDate, ...props }) => {
     const handleThisMonth = () => {
-        onFromDateChange(moment().startOf('month').toDate());
-        onToDateChange(new Date());
+        const start = startOfMonth(new Date());
+        onFromDateChange(start);
+        onToDateChange(endOfMonth(new Date()));
     };
 
     const handleThisYear = () => {
-        onFromDateChange(moment().startOf('year').toDate());
-        onToDateChange(new Date());
-    }
+        onFromDateChange(startOfYear(new Date()));
+        onToDateChange(endOfYear(new Date()));
+    };
 
     const handleThisWeek = () => {
-        onFromDateChange(moment().startOf('week').toDate());
-        onToDateChange(new Date());
-    }
+        onFromDateChange(startOfWeek(new Date()));
+        onToDateChange(endOfWeek(new Date()));
+    };
 
     return (
         <div className="date-filter">

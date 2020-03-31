@@ -8,10 +8,10 @@
 .task-list__data {
     /* border: 1px solid var(--divider-color); */
     
-    width: 100%;
+    /* width: 100%; */
     /* overflow-y: scroll;
     max-height: 100vh; */
-    padding: 0 0 2rem 0;
+    padding: 1rem;
 }
 
 table {
@@ -49,10 +49,37 @@ tr {
 
 .filters {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-around;
+    flex-direction: column;
+    /* align-items: center; */
+    /* justify-content: space-around; */
     padding: 1rem;
     margin: 1rem;
-    border-bottom: 1px solid var(--divider-color);
+    /* border-bottom: 1px solid var(--divider-color); */
+    /* border: 1px solid var(--divider-color); */
+    box-shadow: var(--box-shadow-secondary);
+}
+
+.filters > * {
+    margin-bottom: 1rem;
+}
+
+.filters__non-date {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    /* justify-content: space-between; */
+}
+
+.filters__non-date > :not(:last-child) {
+    margin-right: 1rem;
+}
+
+.down {
+    transform: rotateY(190deg);
+}
+
+.search {
+    font-size: 1.6rem;
+    padding: 1rem;
+    /* border-radius: 2px; */
 }

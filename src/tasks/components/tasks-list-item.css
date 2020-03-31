@@ -74,15 +74,7 @@
     background-color: var(--success-color);
 }
 
-.tasks-list-item__user {
-    color: var(--secondary-text-color);
-    padding: 0;
-}
 
-.tasks-list-item__user:hover {
-    color: var(--dark-primary-color);
-    text-decoration: underline;
-}
 
 .tasks-list-item__delete-task {
     background: none;
@@ -93,4 +85,9 @@
 
 .tasks-list-item__delete-task:hover {
     color: var(--danger-color);
+}
+
+.tasks-list-item__user {
+    padding: .9rem !important;
+    border-radius: 0 !important;
 }

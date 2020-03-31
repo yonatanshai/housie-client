@@ -56,3 +56,47 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  transition: all .1s ease;
+  border-bottom: 8px solid var(--secondary-text-color);
+}
+
+.arrow-up:active {
+  /* transform: rotateY(180deg); */
+}
+
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  transition: all .1s ease;
+  border-top: 8px solid var(--secondary-text-color);
+}
+
+.arrow-down:active {
+  /* transform: rotate(180deg); */
+}
+
+.arrow-right {
+  width: 0; 
+  height: 0; 
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  
+  border-left: 5px solid var(--secondary-text-color);
+}
+
+.arrow-left {
+  width: 0; 
+  height: 0; 
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent; 
+  
+  border-right:5px solid var(--secondary-text-color); 
+}

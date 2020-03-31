@@ -6,46 +6,51 @@ import Button from '../../shared/components/form-elements/button';
 import Icon from '../../shared/components/ui-elements/icon';
 import moment from 'moment';
 import { TaskPriority } from '../../shared/enums/task-priority';
+import ReactTooltip from 'react-tooltip';
+import {format} from 'date-fns';
+import Dropdown from '../../shared/components/form-elements/dropdown';
+
+const getUser = (userId, members) => {
+    const member = members.find(m => m.id === userId);
+    return member
+}
 
 const TasksListItem = ({ task, ...props }) => {
     const [isCompleted, setIsCompleted] = useState(task.status === 'completed');
-
+    const [assignedUser, setAssignedUser] = useState(getUser(task.userId, props.members));
     const handleCompleteTask = () => {
         setIsCompleted(!isCompleted);
         props.onTaskCompleted(task.id);
     }
 
     const handleAssignUserClicked = () => {
-        // alert(task.user.name);
+        console.log('handleAssignUserClicked')
+        alert(assignedUser.id)
     }
 
     const handleDeleteTask = () => {
         props.deleteTask(task.id);
     }
 
-    return (
-        // <tr className={`tasks-list-item`}>
-        // <tr className={`tasks-list-item`}>
-        //     <td className="tasks-list-item__title">{task.title}</td>
-        //     <td className="tasks-list-item__create-date">{moment(task.createdAt).format('LL')}</td>
-        //     <td className={`tasks-list-item__status tasks-list-item__status--${TaskStatus[task.status]}`}>{TaskStatus[task.status]}</td>
-        //     <td className={`tasks-list-item__priority tasks-list-item__priority--${TaskPriority[task.priority]}`}>{TaskPriority[task.priority]}</td>
-        //     <td>
-        //         <Checkbox className="tasks-list-item__complete-task" onChange={handleCompleteTask} checked={isCompleted} disabled={task.status === TaskStatus.Completed} />
-        //     </td>
-        //     <td>
-        //         <Button className="tasks-list-item__delete-task" onClick={handleDeleteTask}>
-        //             <Icon name="cancel-circle"  />
-        //         </Button>
+    console.log(props)
 
-        //     </td>
-        // </tr>
+    return (
         <div className="tasks-list-item">
             <span className="tasks-list-item__title">{task.title}</span>
-            <span className="tasks-list-item__create-date">{moment(task.createdAt).format('LL')}</span>
-            <span className={`tasks-list-item__status tasks-list-item__status--${task.status}`}>{task.status}</span>
-            <span className={`tasks-list-item__priority tasks-list-item__priority--${task.priority}`}>{task.priority}</span>
-            <Checkbox className="tasks-list-item__complete-task" onChange={handleCompleteTask} checked={isCompleted} disabled={task.status === TaskStatus.Completed} />
+            <span className="tasks-list-item__create-date">{format(new Date(task.createdAt), 'dd/MM/yyyy')}</span>
+            
+            <span data-tip="Task status" className={`tasks-list-item__status tasks-list-item__status--${task.status}`}>{task.status}</span>
+            <ReactTooltip delayShow={500} />
+            <span data-tip="Task Priority" className={`tasks-list-item__priority tasks-list-item__priority--${task.priority}`}>{task.priority}</span>
+            <ReactTooltip delayShow={500} />
+
+            <Dropdown value={assignedUser.id} className="tasks-list-item__user" onSelect={handleAssignUserClicked}>
+                {props.members.map(m => <option key={m.id} value={m.id}>{m.username}</option>)}
+            </Dropdown>
+
+            <Checkbox dataTip="Complete task" className="tasks-list-item__complete-task" onChange={handleCompleteTask} checked={isCompleted} disabled={task.status === TaskStatus.completed} />
+            <ReactTooltip delayShow={500} />
+
             <Button className="tasks-list-item__delete-task" onClick={handleDeleteTask}>
                 <Icon name="cancel-circle" />
             </Button>

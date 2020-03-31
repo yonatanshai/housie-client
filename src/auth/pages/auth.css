@@ -9,10 +9,22 @@
     overflow-y: hidden;
     box-sizing: border-box;
     background-color: rgba(0,0,0, .02);
+    color: white;
 }
 
 .auth-form {
-    padding: 10rem;
-    background-color: white;
-    border-radius: 5px;
+    padding: 5rem 12rem;
+    /* background: linear-gradient(var(--dark-primary-color), var(--default-primary-color), var(--light-primary-color)); */
+    border-radius: 5%;
+    text-align: left;
+    box-shadow: var(--box-shadow-secondary);
+}
+
+.auth-form__header {
+    font-size: 1.8rem;
+    color: var(--secondary-text-color);
+    letter-spacing: 1px;
+    font-weight: 300;
+    background: linear-gradient(var(--primary-text-color), var(--secondary-text-color));
+    background-clip: text;
 }

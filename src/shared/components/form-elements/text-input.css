@@ -38,6 +38,6 @@
 .label {
     font-size: 1.8rem;
     color: var(--secondary-text-color);
-    font-weight: 600;
+    font-weight: 400;
     /* margin-bottom: 3px; */
 }

@@ -3,12 +3,13 @@
     align-items: center;
     justify-content: space-between;
     margin: 0;
-    padding: 1.2rem 1rem;
+    padding: 1rem 4rem;
     font-size: 1.2;
-    /* width: 100%; */
     text-align: start;
     /* cursor: pointer; */
     transition: .2s ease-in-out;
+    text-transform: capitalize;
+    border-bottom: 1px solid var(--divider-color);
 }
 
 .is-admin {

@@ -8,11 +8,12 @@ import Button from '../../shared/components/form-elements/button';
 import './auth.css';
 import { useAuth } from '../../context/auth-context';
 import { Redirect } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
 
 
 const LoginPage = (props) => {
     const [isLogin, setIsLogin] = useState(true);
-    
+
     const { userData, setUserData } = useAuth();
     const [isAuthenticated, setIsAuthenticated] = useState(userData);
 
@@ -20,13 +21,15 @@ const LoginPage = (props) => {
         setIsLogin(prevMode => !prevMode);
     }
 
-    console.log({component: 'auth.js', state: {
-        userData,
-        isAuthenticated,
-        isLogin
-    }});
+    console.log({
+        component: 'auth.js', state: {
+            userData,
+            isAuthenticated,
+            isLogin
+        }
+    });
 
-    
+
     const handleSubmit = async (values) => {
         const baseUrl = process.env.REACT_APP_API_BASE_URL;
         const url = isLogin ? baseUrl + process.env.REACT_APP_LOGIN_URL : baseUrl + process.env.REACT_APP_SIGNUP_URL;
@@ -77,15 +80,24 @@ const LoginPage = (props) => {
         >
             {({ errors, isSubmitting }) => (
                 <div className="container">
+
                     <Form className="auth-form">
-                        {!isLogin && <TextInput label="Username" name="username" type="text" placeholder="username" />}
+                        <h2 className="auth-form__header">{isLogin ? 'Login' : 'Signup'}</h2>
+                        {
+                            !isLogin &&
+                            <div>
+                                <TextInput dataTip="This will be visible to other members of your house" label="Username" name="username" type="text" placeholder="username" />
+                                <ReactTooltip type="info" delayShow={500}/>
+                            </div>
+                        }
                         <TextInput label="Email" name="email" type="email" placeholder="email" />
                         <TextInput label="Password" name="password" type="password" placeholder="password" />
+                        {!isLogin && <TextInput label="Confirm password" name="password-retype" type="password" placeholder="confirm password" />}
                         <div className="buttons-container">
-                            <Button type="submit" disabled={isSubmitting} styleType="common">
+                            <Button type="submit" disabled={isSubmitting} className="button--common">
                                 {isLogin ? 'Login' : 'Create Account'}
                             </Button>
-                            <Button styleType="link" type="button" to="/" onClick={switchAuthMode}>
+                            <Button className="button--link" type="button" to="/" onClick={switchAuthMode}>
                                 {isLogin ? 'Or create account' : 'Already have an account'}
                             </Button>
                         </div>

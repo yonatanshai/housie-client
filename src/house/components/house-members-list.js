@@ -25,16 +25,20 @@ const HouseMembersList = ({ house, members, admins, ...props }) => {
         props.onAddMember({values, houseId: house.id});
     }
 
+    const handleRemoveMember = (id) => {
+        props.onRemoveMember(id);
+    }
+
     return (
         <Widget className="house-members-list">
             <Modal isOpen={showAddMemberForm} onRequestClose={toggleShowAddMembersForm}>
                 <AddMemberForm onSubmit={handleAddMember} />
             </Modal>
             <div className="house-members-list__title">
-                <IconTextLabel icon="man-woman" text="Members" />
+                <IconTextLabel icon="users" text="Members" />
                 <IconTextButton className="button button--inverse" icon="user-plus" text="add member" onClick={toggleShowAddMembersForm}/>
             </div>
-            {members.map(member => <HouseMembersListItem key={member.id} member={member} isAdmin={admins.some(a => a.id === member.id)} />)}
+            {members.map(member => <HouseMembersListItem onRemove={handleRemoveMember} key={member.id} member={member} isAdmin={admins.some(a => a.id === member.id)} />)}
         </Widget>
     )
 }
