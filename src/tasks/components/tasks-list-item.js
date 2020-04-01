@@ -24,7 +24,6 @@ const TasksListItem = ({ task, ...props }) => {
     }
 
     const handleAssignUserClicked = () => {
-        console.log('handleAssignUserClicked')
         alert(assignedUser.id)
     }
 
@@ -32,7 +31,6 @@ const TasksListItem = ({ task, ...props }) => {
         props.deleteTask(task.id);
     }
 
-    console.log(props)
 
     return (
         <div className="tasks-list-item">

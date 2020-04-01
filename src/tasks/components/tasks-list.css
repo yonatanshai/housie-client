@@ -34,6 +34,7 @@ tr {
     align-items: center;
     position: sticky;
     top: 4em;
+    border-bottom: 2px solid var(--divider-color);
 }
 
 .tasks-list__title > :not(:last-child) {

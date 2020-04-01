@@ -8,7 +8,7 @@
     align-items: center;
     padding: 1rem 2rem;
     font-weight: 700;
-    border-bottom: 1px solid var(--divider-color-secondary);
+    border-bottom: 2px solid var(--divider-color-secondary);
 
 }
 

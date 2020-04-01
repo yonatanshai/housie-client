@@ -32,7 +32,6 @@ const CreateExpenseForm = ({ house, ...props }) => {
                         <TextInput type="text" name="title" label="Title" placeholder="title" />
                         <TextInput type="text" name="description" label="Description" placeholder="description" />
                         <TextInput type="number" name="amount" label="Amount" step="0.01" placeholder="amount" />
-
                         <Button disabled={isSubmitting || errors.title || errors.description || errors.amount} type="submit" className="button--common">Submit</Button>
                     </div>
                 </Form>

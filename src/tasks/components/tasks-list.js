@@ -13,7 +13,7 @@ import Loader from '../../shared/components/ui-elements/loader';
 import ErrorModal from '../../shared/components/ui-elements/error-modal';
 import DateFilter from '../../shared/components/dashboard/date-filter';
 import Dropdown from '../../shared/components/form-elements/dropdown';
-import { format, startOfMonth, endOfMonth, formatISO } from 'date-fns';
+import { format, startOfMonth, startOfDay, endOfDay, endOfMonth, formatISO, subMonths } from 'date-fns';
 
 
 const TasksList = ({ ...props }) => {
@@ -22,8 +22,9 @@ const TasksList = ({ ...props }) => {
     const [tasks, setTasks] = useState([]);
     const [sortBy, setSortBy] = useState('date');
     const [sortDesc, setSortDesc] = useState(true);
-    const [fromDate, setFromDate] = useState(startOfMonth(new Date()));
-    const [toDate, setToDate] = useState(endOfMonth(new Date()));
+    
+    const [fromDate, setFromDate] = useState(subMonths(new Date(), 1));
+    const [toDate, setToDate] = useState(new Date());
     const [filterStatus, setFilterStatus] = useState('Active');
     const [filterTitle, setFilterTitle] = useState('');
     const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
@@ -32,8 +33,8 @@ const TasksList = ({ ...props }) => {
     useEffect(() => {
         const getTasks = async () => {
             setIsLoading(true);
-            const from = formatISO(fromDate, { representation: "date" });
-            const to = formatISO(toDate, { representation: "date" })
+            const from = format(startOfDay(fromDate), 'yyyy-MM-dd HH:mm:ss')
+            const to = format(endOfDay(toDate), 'yyyy-MM-dd HH:mm:ss')
             let url = `${process.env.REACT_APP_API_BASE_URL}/tasks?houseId=${props.house.id}&fromDate=${from}&toDate=${to}`;
             if (filterStatus !== TaskStatus.completed) {
                 url = url + `&openOnly=true`;
@@ -163,7 +164,6 @@ const TasksList = ({ ...props }) => {
 
     const handleFilterTitleChange = (e) => {
         setFilterTitle(e.target.value);
-        // console.log(e.target.value)
     }
 
     const handleFilterStatusChanged = (status) => {
@@ -218,7 +218,7 @@ const TasksList = ({ ...props }) => {
 
     return (
         <Widget className="tasks-list">
-            <div className="tasks-list__title" onScrollCapture={() => alert('scrolled')}>
+            <div className="tasks-list__title">
                 <ErrorModal
                     buttonText="Ok"
                     errorMessage={errors}

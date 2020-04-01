@@ -167,7 +167,7 @@ const HouseDashBoard = ({ ...props }) => {
                     <NavLink
                         className="sidebar__item"
                         activeClassName="sidebar__item--active"
-                        to="/"
+                        to={`${props.match.url}/expenses`}
                     >
                         <IconTextLabel textFirst text="Expenses" icon="coin-dollar" />
                     </NavLink>
@@ -191,6 +191,9 @@ const HouseDashBoard = ({ ...props }) => {
                         </PrivateRoute>
                         <PrivateRoute exact path={`${props.match.url}/tasks`}>
                             <TasksList house={house} />
+                        </PrivateRoute>
+                        <PrivateRoute exact path={`${props.match.url}/expenses`}>
+                            <ExpensesList house={house} />
                         </PrivateRoute>
                     </Switch>
                 </div>
