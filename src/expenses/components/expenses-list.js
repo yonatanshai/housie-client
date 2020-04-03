@@ -15,6 +15,7 @@ import ErrorModal from '../../shared/components/ui-elements/error-modal';
 import DateFilter from '../../shared/components/dashboard/date-filter';
 import { subMonths, formatISO, endOfDay, format, setHours, setMinutes, setDate, setSeconds, startOfDay } from 'date-fns';
 import InputNumber from 'rc-input-number';
+import ExpenseStats from './expense-stats';
 
 const ExpensesList = ({ house, ...props }) => {
     const [expenses, setExpenses] = useState([]);
@@ -195,6 +196,7 @@ const ExpensesList = ({ house, ...props }) => {
                 {expenses.length === 0 ? <p>No Expenses</p> :
                 expenses.map(ex => <ExpensesListItem key={ex.id} expense={ex} onDelete={handleDeleteExpense} />)}
             </div>
+            <ExpenseStats expenses={expenses}/>
         </Widget>
     )
 };

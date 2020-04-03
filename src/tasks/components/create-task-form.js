@@ -30,6 +30,7 @@ const CreateTaskForm = ({ house, ...props }) => {
                 priority: yup.string().required('Required')
             })}
             onSubmit={handleSubmit}
+
         >
             {({ errors, isSubmitting, values }) => (
                 <Form className="create-task-form">

@@ -1,0 +1,15 @@
+.shopping-list {
+}
+
+.shopping-list__title {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    justify-items: start;
+    border-bottom: 2px solid var(--divider-color);
+}
+
+.add-item {
+    width: max-content;
+    justify-self: end;
+}

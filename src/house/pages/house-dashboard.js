@@ -11,6 +11,7 @@ import Sidebar from '../../shared/components/ui-elements/sidebar';
 import Loader from '../../shared/components/ui-elements/loader';
 import IconTextLabel from '../../shared/components/ui-elements/icon-text-label';
 import ErrorModal from '../../shared/components/ui-elements/error-modal';
+import Shopping from '../../shopping/pages/shopping';
 
 const HouseDashBoard = ({ ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -174,7 +175,7 @@ const HouseDashBoard = ({ ...props }) => {
                     <NavLink
                         className="sidebar__item"
                         activeClassName="sidebar__item--active"
-                        to="/"
+                        to={`${props.match.url}/shopping`}
                     >
                         <IconTextLabel textFirst text="Shopping" icon="cart" />
                     </NavLink>
@@ -194,6 +195,9 @@ const HouseDashBoard = ({ ...props }) => {
                         </PrivateRoute>
                         <PrivateRoute exact path={`${props.match.url}/expenses`}>
                             <ExpensesList house={house} />
+                        </PrivateRoute>
+                        <PrivateRoute exact path={`${props.match.url}/shopping`}>
+                            <Shopping house={house} />
                         </PrivateRoute>
                     </Switch>
                 </div>

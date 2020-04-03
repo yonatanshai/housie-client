@@ -1,0 +1,16 @@
+.add-item-form {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+}
+
+.add-item-button {
+    color: currentColor;
+    background: none !important;
+    outline: none !important;
+    border: none !important;
+}
+
+.add-item-button:hover {
+color: var(--success-color);
+}

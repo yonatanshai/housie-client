@@ -260,6 +260,7 @@ const TasksList = ({ ...props }) => {
                             <div className={sortDesc ? "arrow-down" : "arrow-up"} onClick={handleSortDirectionChanged}></div>
                             {/* <Button type="button" className="button--inverse button--inverse-success">Search</Button> */}
                         </div>
+                        <span style={{padding: '0 1rem', fontWeight: '600'}}>{`Results: ${tasks.length}`}</span>
                     </div>
                     <div className="task-list__data">
                         {tasks.length === 0 ? <p>No Tasks</p> : tasks.map(task => <TasksListItem key={task.id} task={task} members={props.house.members} onTaskCompleted={handleTaskCompleted} deleteTask={deleteTask} />)}

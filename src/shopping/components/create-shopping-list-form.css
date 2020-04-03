@@ -1,0 +1,26 @@
+.form {
+    color: var(--secondary-text-color);
+    /* display: flex;
+    flex-direction: column;
+    text-align: start;
+    align-items: stretch; */
+}
+
+.form__title {
+    font-size: 1.8rem;
+    border-bottom: 1px solid var(--divider-color);
+    margin: 0;
+    padding: 1rem;
+}
+
+.form__content {
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    align-items: stretch;
+}
+
+.form__content > :not(:last-child) {
+    margin-bottom: 1rem;
+}

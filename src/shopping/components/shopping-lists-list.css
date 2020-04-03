@@ -1,0 +1,19 @@
+.list {
+    display: grid;
+    grid-template-columns: 1fr max-content auto auto;
+    column-gap: 10px;
+    align-items: center;
+    justify-items: start;
+    padding: .2rem 1rem;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.list--active, .list:hover {
+    background-color: var(--light-hover-color);
+}
+
+.list__name {
+    text-transform: capitalize;
+    
+}
