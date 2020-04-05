@@ -1,5 +1,5 @@
 
-import React, { Fragment, useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios'
@@ -21,13 +21,7 @@ const LoginPage = (props) => {
         setIsLogin(prevMode => !prevMode);
     }
 
-    console.log({
-        component: 'auth.js', state: {
-            userData,
-            isAuthenticated,
-            isLogin
-        }
-    });
+    console.log(props)
 
 
     const handleSubmit = async (values) => {
@@ -61,6 +55,13 @@ const LoginPage = (props) => {
     }
 
     if (isAuthenticated) {
+        try {
+            if (props.location.state.referer) {
+                return <Redirect to={props.location.state.referer} />
+            }
+        } catch (error) {
+            return <Redirect to='/' />
+        }
         return (<Redirect to='/' />)
     }
 

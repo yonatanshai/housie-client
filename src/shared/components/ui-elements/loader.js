@@ -1,6 +1,5 @@
 import React from 'react';
 import './loader.css';
-import ContentLoader from 'react-content-loader';
 import Spinner from 'react-loader-spinner';
 
 const Loader = (props) => {

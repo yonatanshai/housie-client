@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useField } from 'formik';
 import './text-input.css'
 

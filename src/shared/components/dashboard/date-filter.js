@@ -1,10 +1,9 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
 import './date-filter.css';
 import "react-datepicker/dist/react-datepicker.css";
 import Button from '../form-elements/button';
-import {startOfMonth, endOfMonth, startOfYear, endOfYear, startOfDay, startOfWeek, endOfWeek} from 'date-fns'
+import {startOfMonth, endOfMonth, startOfYear, endOfYear, startOfWeek, endOfWeek} from 'date-fns'
 
 const DateFilter = ({ onFromDateChange, onToDateChange, toDate, fromDate, ...props }) => {
     const handleThisMonth = () => {
@@ -24,7 +23,7 @@ const DateFilter = ({ onFromDateChange, onToDateChange, toDate, fromDate, ...pro
     };
 
     return (
-        <div className="date-filter">
+        <div className={`date-filter ${props.className}`}>
             <div className="date-filter__item">
                 <label className="date-filter__item__label">From</label>
                 <DatePicker

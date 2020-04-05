@@ -3,10 +3,8 @@ import './create-task-form.css';
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import TextInput from '../../shared/components/form-elements/text-input';
-import Dropdown from '../../shared/components/form-elements/dropdown';
 import Button from '../../shared/components/form-elements/button';
 import '../../shared/components/form-elements/dropdown.css';
-import { TaskStatus } from '../../shared/enums/task-status';
 import { TaskPriority } from '../../shared/enums/task-priority';
 
 const CreateTaskForm = ({ house, ...props }) => {

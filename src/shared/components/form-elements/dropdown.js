@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 
 import './dropdown.css';
-import { useField } from 'formik';
 
 const Dropdown = ({ options, label, name, defaultValue, value, ...props }) => {
     const handleSelect = (e) => {

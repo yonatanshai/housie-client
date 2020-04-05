@@ -2,19 +2,15 @@ import React, { useState, useEffect } from 'react';
 import Widget from '../../shared/components/ui-elements/widget';
 import ExpensesListItem from './expenses-list-item';
 import './expenses-list.css';
-import Icon from '../../shared/components/ui-elements/icon';
 import Button from '../../shared/components/form-elements/button';
 import IconTextLabel from '../../shared/components/ui-elements/icon-text-label';
 import Modal from '../../shared/components/ui-elements/modal';
 import CreateExpenseForm from './create-expense-form';
-import moment from 'moment';
-import TextInput from '../../shared/components/form-elements/text-input';
 import Axios from 'axios';
 import { useAuth } from '../../context/auth-context';
 import ErrorModal from '../../shared/components/ui-elements/error-modal';
 import DateFilter from '../../shared/components/dashboard/date-filter';
-import { subMonths, formatISO, endOfDay, format, setHours, setMinutes, setDate, setSeconds, startOfDay } from 'date-fns';
-import InputNumber from 'rc-input-number';
+import { subMonths, endOfDay, format, startOfDay } from 'date-fns';
 import ExpenseStats from './expense-stats';
 
 const ExpensesList = ({ house, ...props }) => {
@@ -27,7 +23,7 @@ const ExpensesList = ({ house, ...props }) => {
     const [filterMinAmount, setFilterMinAmount] = useState('');
     const [filterMaxAmount, setFilterMaxAmount] = useState('');
     const [showCreateExpenseForm, setShowCreateExpenseForm] = useState(false);
-    const [filtersSearchText, setFiltersSearchText] = useState(undefined);
+    // const [filtersSearchText, setFiltersSearchText] = useState(undefined);
     const [error, setError] = useState(null);
     const { userData } = useAuth();
 
@@ -189,7 +185,7 @@ const ExpensesList = ({ house, ...props }) => {
                     <Button className="button--inverse-modify" onClick={handleFilter}>Filter</Button>
                     <Button className="button--inverse-gray" onClick={resetFilters}>Reset</Button>
                 </div>
-                <h4>Results: <span>{expenses.length}</span></h4>
+                <h4 style={{padding: '0 1rem', margin: '0'}}>Results: <span>{expenses.length}</span></h4>
 
             </div>
             <div className="expense-list__data">

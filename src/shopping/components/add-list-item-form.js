@@ -24,7 +24,7 @@ const AddListItemForm = ({ ...props }) => {
         >
             {({ errors, isSubmitting, values }) => (
                 <Form className="add-item-form" >
-                    <TextInput value={values.name} hideError={true} orientation="horizontal" type="text" name="name" placeholder="name" />
+                    <TextInput value={values.name} hideError={true} orientation="horizontal" type="text" name="name" placeholder="Item name" />
                     <Button disabled={errors.name} type="submit" className="button--icon add-item-button">
                         <Icon name="plus" />
                     </Button>

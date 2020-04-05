@@ -1,7 +1,6 @@
 import React from 'react';
 import './house-members-list-item.css'
 import Button from '../../shared/components/form-elements/button';
-import Icon from '../../shared/components/ui-elements/icon';
 import DeleteButton from '../../shared/components/ui-elements/delete-button';
 import IconTextLabel from '../../shared/components/ui-elements/icon-text-label';
 const HouseMembersListItem = ({ member, isAdmin, ...props }) => {

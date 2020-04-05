@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import HouseList from '../components/house-list';
-import HouseDashBoard from './house-dashboard';
-import moment from 'moment';
-import { TaskPriority } from '../../shared/enums/task-priority';
 import axios from 'axios';
 import { useAuth } from '../../context/auth-context';
 import Loader from '../../shared/components/ui-elements/loader';

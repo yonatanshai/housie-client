@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import './tasks-list.css';
 import TasksListItem from './tasks-list-item';
 import Widget from '../../shared/components/ui-elements/widget';
@@ -13,7 +13,7 @@ import Loader from '../../shared/components/ui-elements/loader';
 import ErrorModal from '../../shared/components/ui-elements/error-modal';
 import DateFilter from '../../shared/components/dashboard/date-filter';
 import Dropdown from '../../shared/components/form-elements/dropdown';
-import { format, startOfMonth, startOfDay, endOfDay, endOfMonth, formatISO, subMonths } from 'date-fns';
+import { format, startOfDay, endOfDay, subMonths } from 'date-fns';
 
 
 const TasksList = ({ ...props }) => {
@@ -95,10 +95,11 @@ const TasksList = ({ ...props }) => {
                 data
             });
             setTasks([...tasks, res.data]);
-            setIsLoading(false)
         } catch (error) {
 
-            console.log(error.request.response);
+            setErrors(JSON.parse(error.request.response).message);
+        } finally {
+            setIsLoading(false);
         }
         toggleShowCreateTaskForm();
     }

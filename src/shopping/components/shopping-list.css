@@ -1,4 +1,5 @@
 .shopping-list {
+    
 }
 
 .shopping-list__title {
@@ -13,3 +14,30 @@
     width: max-content;
     justify-self: end;
 }
+
+.archive-list-button {
+    justify-self: end;
+    background: none;
+    color: currentColor;
+    letter-spacing: 2px;
+}
+
+.archive-list-button:hover {
+    color: var(--danger-color);
+    text-decoration: underline;
+}
+
+.display-enter {
+    opacity: 0;
+  }
+  .display-enter-active {
+    opacity: 1;
+    transition: opacity 1000ms;
+  }
+  .display-exit {
+    opacity: 1;
+  }
+  .display-exit-active {
+    opacity: 0;
+    transition: opacity 1000ms;
+  }

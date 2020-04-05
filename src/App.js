@@ -1,5 +1,5 @@
 import React, { useState, useEffect, } from 'react';
-import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import LoginPage from './auth/pages/auth';
 import MyHouses from './house/pages/my-houses';
 import './App.css';
@@ -9,9 +9,7 @@ import MainHeader from './shared/components/navigation/main-header';
 import PrivateRoute from './routes/private-route';
 import jwt_decode from 'jwt-decode';
 import moment from 'moment';
-import Modal from './shared/components/ui-elements/modal';
 import ErrorModal from './shared/components/ui-elements/error-modal';
-import Button from './shared/components/form-elements/button';
 import HouseDashBoard from './house/pages/house-dashboard';
 
 function App() {
@@ -61,7 +59,7 @@ function App() {
             isOpen={showExpiredSessionModal}
             title="Session Expired"
             onButtonClick={handleTokenExpired}
-            buttonText="Take Me To Login"
+            buttonText="Ok"
             errorMessage="Please login to continue"
 
           />

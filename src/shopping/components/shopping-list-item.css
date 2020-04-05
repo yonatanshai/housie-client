@@ -1,0 +1,49 @@
+.list-item {
+    display: grid;
+    grid-template-columns: 1fr repeat(3, max-content);
+    justify-items: start;
+    align-items: center;
+    padding: .2rem 1rem;
+    column-gap: 10px;
+    border-bottom: 1px solid var(--divider-color);
+    color: var(--secondary-text-color);
+    text-transform: capitalize;
+}
+
+.list-item-enter {
+    opacity: 0;
+}
+
+.list-item-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+
+.list-item-exit {
+    opacity: 1;
+}
+
+.list-item-exit-active {
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+  }
+
+.list-item--checked {
+    background-color: var(--light-hover-color);
+}
+
+.list-item__delete, .list-item__edit {
+    color: currentColor;
+}
+
+.list-item__delete:hover {
+    color: var(--danger-color);
+}
+
+.list-item__edit:hover {
+    color: var(--natural-color);
+}
+
+.list-item__checkbox {
+    padding: 1rem;
+}

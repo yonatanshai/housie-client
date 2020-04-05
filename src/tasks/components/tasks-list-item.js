@@ -4,8 +4,6 @@ import Checkbox from '../../shared/components/form-elements/checkbox';
 import { TaskStatus } from '../../shared/enums/task-status';
 import Button from '../../shared/components/form-elements/button';
 import Icon from '../../shared/components/ui-elements/icon';
-import moment from 'moment';
-import { TaskPriority } from '../../shared/enums/task-priority';
 import ReactTooltip from 'react-tooltip';
 import {format} from 'date-fns';
 import Dropdown from '../../shared/components/form-elements/dropdown';

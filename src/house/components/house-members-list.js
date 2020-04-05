@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import Modal from '../../shared/components/ui-elements/modal';
 import HouseMembersListItem from './house-members-list-item';
-import Button from '../../shared/components/form-elements/button';
 import './house-members-list.css'
 import '../../shared/components/ui-elements/modal.css'
-import { Formik, Form } from 'formik';
-import TextInput from '../../shared/components/form-elements/text-input';
-import * as yup from 'yup';
 import Widget from '../../shared/components/ui-elements/widget';
-import Icon from '../../shared/components/ui-elements/icon';
 import IconTextButton from '../../shared/components/form-elements/icon-text-button';
 import IconTextLabel from '../../shared/components/ui-elements/icon-text-label';
 import AddMemberForm from './add-member-form';

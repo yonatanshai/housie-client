@@ -3,7 +3,7 @@ import HouseMembersList from '../components/house-members-list';
 import './house-dashboard.css';
 import TasksList from '../../tasks/components/tasks-list';
 import ExpensesList from '../../expenses/components/expenses-list';
-import { BrowserRouter, Switch, NavLink, Route, Redirect } from 'react-router-dom';
+import { Switch, NavLink, Redirect } from 'react-router-dom';
 import PrivateRoute from '../../routes/private-route';
 import { useAuth } from '../../context/auth-context';
 import axios from 'axios';
@@ -12,13 +12,14 @@ import Loader from '../../shared/components/ui-elements/loader';
 import IconTextLabel from '../../shared/components/ui-elements/icon-text-label';
 import ErrorModal from '../../shared/components/ui-elements/error-modal';
 import Shopping from '../../shopping/pages/shopping';
+import SidebarItem from '../../shared/components/navigation/sidebar-item';
 
 const HouseDashBoard = ({ ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [house, setHouse] = useState();
     const [error, setError] = useState(null);
     const { userData } = useAuth();
-    
+
     useEffect(() => {
         const fetchHouse = async () => {
             setIsLoading(true);
@@ -112,7 +113,7 @@ const HouseDashBoard = ({ ...props }) => {
                 const statusCode = JSON.parse(error.request.response).statusCode;
 
                 switch (statusCode) {
-                    case 400: 
+                    case 400:
                         setError('To remove yourself please go to setting -> exit group');
                         break;
                     case 401:
@@ -150,45 +151,34 @@ const HouseDashBoard = ({ ...props }) => {
                 />
                 {/* <h2 className="house-dashboard__title">{house.name}</h2> */}
                 <Sidebar title={house.name}>
-                    <NavLink
-                        className="sidebar__item"
-                        activeClassName="sidebar__item--active"
-                        to={`${props.match.url}/members`}
-                    >
+                    <SidebarItem to={`${props.match.url}/members`}>
                         <IconTextLabel textFirst text="Members" icon="users" />
-                    </NavLink>
-
-                    <NavLink
-                        className="sidebar__item"
-                        activeClassName="sidebar__item--active"
-                        to={`${props.match.url}/tasks`}
-                    >
+                    </SidebarItem>
+                    <SidebarItem to={`${props.match.url}/tasks`}>
                         <IconTextLabel textFirst text="Tasks" icon="tasks" />
-                    </NavLink>
-                    <NavLink
-                        className="sidebar__item"
-                        activeClassName="sidebar__item--active"
-                        to={`${props.match.url}/expenses`}
-                    >
+                    </SidebarItem>
+                    <SidebarItem to={`${props.match.url}/expenses`}>
                         <IconTextLabel textFirst text="Expenses" icon="coin-dollar" />
-                    </NavLink>
-                    <NavLink
-                        className="sidebar__item"
-                        activeClassName="sidebar__item--active"
-                        to={`${props.match.url}/shopping`}
-                    >
+                    </SidebarItem>
+                    <SidebarItem to={`${props.match.url}/shopping`}>
                         <IconTextLabel textFirst text="Shopping" icon="cart" />
-                    </NavLink>
+                    </SidebarItem>
+                    <SidebarItem to={`${props.match.url}/chat`}>
+                        <IconTextLabel textFirst text="Chat" icon="bubble" />
+                    </SidebarItem>
+                    <SidebarItem to={`${props.match.url}/settings`}>
+                        <IconTextLabel textFirst text="Settings" icon="cog" />
+                    </SidebarItem>
                 </Sidebar>
                 <div className="house-dashboard__content">
                     <Switch>
                         <PrivateRoute exact path={`${props.match.url}/members`}>
                             <HouseMembersList
-                                house={house} 
-                                members={house.members} 
-                                admins={house.admins} 
-                                onAddMember={handleAddMember} 
-                                onRemoveMember={handleRemoveMember}/>
+                                house={house}
+                                members={house.members}
+                                admins={house.admins}
+                                onAddMember={handleAddMember}
+                                onRemoveMember={handleRemoveMember} />
                         </PrivateRoute>
                         <PrivateRoute exact path={`${props.match.url}/tasks`}>
                             <TasksList house={house} />
@@ -198,6 +188,12 @@ const HouseDashBoard = ({ ...props }) => {
                         </PrivateRoute>
                         <PrivateRoute exact path={`${props.match.url}/shopping`}>
                             <Shopping house={house} />
+                        </PrivateRoute>
+                        <PrivateRoute exact path={`${props.match.url}/chat`}>
+                            <div>Chat</div>
+                        </PrivateRoute>
+                        <PrivateRoute exact path={`${props.match.url}/settings`}>
+                            <div>Settings</div>
                         </PrivateRoute>
                     </Switch>
                 </div>

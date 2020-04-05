@@ -1,6 +1,6 @@
 import React from 'react';
 import './create-expense-form.css';
-import { Formik, yupToFormErrors, Form } from 'formik';
+import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import TextInput from '../../shared/components/form-elements/text-input';
 import Button from '../../shared/components/form-elements/button';

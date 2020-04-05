@@ -5,7 +5,6 @@
     align-items: center;
     justify-items: start;
     padding: .2rem 1rem;
-    cursor: pointer;
     transition: all .2s ease;
 }
 
@@ -13,7 +12,26 @@
     background-color: var(--light-hover-color);
 }
 
+.list--archived {
+    background-color: #ffe6e6;
+}
+
 .list__name {
     text-transform: capitalize;
-    
+    cursor: pointer;
 }
+
+.display-enter {
+    opacity: 0;
+  }
+  .display-enter-active {
+    opacity: 1;
+    transition: opacity 1000ms;
+  }
+  .display-exit {
+    opacity: 1;
+  }
+  .display-exit-active {
+    opacity: 0;
+    transition: opacity 1000ms;
+  }

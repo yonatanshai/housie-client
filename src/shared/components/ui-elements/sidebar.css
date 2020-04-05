@@ -18,19 +18,4 @@
     /* border-bottom: 1px solid var(--divider-color); */
 }
 
-.sidebar__item {
-    padding: 2rem;
-    text-decoration: none;
-    color: var(--secondary-text-color);
-    font-size: 1.6rem;
-    
-}
 
-/* .sidebar__item:hover {
-    background-color: var(--dark-primary-color);
-} */
-
-.sidebar__item--active, .sidebar__item:hover {
-    background-color: var(--dark-primary-color);
-    color: white;
-}
