@@ -1,0 +1,11 @@
+.archive-form {
+    /* padding: 0 2.5rem 2.5rem 2.5rem; */
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.archive-form > :not(:last-child) {
+    margin-bottom: 1rem;
+}

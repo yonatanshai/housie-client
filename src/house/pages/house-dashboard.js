@@ -13,6 +13,7 @@ import IconTextLabel from '../../shared/components/ui-elements/icon-text-label';
 import ErrorModal from '../../shared/components/ui-elements/error-modal';
 import Shopping from '../../shopping/pages/shopping';
 import SidebarItem from '../../shared/components/navigation/sidebar-item';
+import Chat from '../../chat/pages/chat';
 
 const HouseDashBoard = ({ ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -190,7 +191,7 @@ const HouseDashBoard = ({ ...props }) => {
                             <Shopping house={house} />
                         </PrivateRoute>
                         <PrivateRoute exact path={`${props.match.url}/chat`}>
-                            <div>Chat</div>
+                            <Chat house={house} />
                         </PrivateRoute>
                         <PrivateRoute exact path={`${props.match.url}/settings`}>
                             <div>Settings</div>

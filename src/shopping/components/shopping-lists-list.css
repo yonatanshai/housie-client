@@ -6,9 +6,15 @@
     justify-items: start;
     padding: .2rem 1rem;
     transition: all .2s ease;
+    
 }
 
-.list--active, .list:hover {
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+.list--active, .list:hover, .list:active, .list:focus {
     background-color: var(--light-hover-color);
 }
 

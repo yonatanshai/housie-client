@@ -28,13 +28,13 @@ const ShoppingListItem = ({ item, ...props }) => {
                 <Checkbox
                     checked={checked}
                     onChange={handleCheck}
-                    disabled={checked}
+                    disabled={checked || !props.isActive}
                 />
             </div>
-            <Button className="button--icon list-item__edit">
+            <Button disabled={!props.isActive} className="button--icon list-item__edit">
                 <Icon name="pencil" />
             </Button>
-            <Button className="button--icon list-item__delete" onClick={handleDelete}>
+            <Button disabled={!props.isActive} className="button--icon list-item__delete" onClick={handleDelete}>
                 <Icon name="cancel-circle" />
             </Button>
         </div>

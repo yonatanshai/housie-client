@@ -32,11 +32,26 @@
     color: inherit;
 }
 
-.button--common {
-    
+.button--common { 
     background-color: var(--default-primary-color);
     color: var(--text-primary-color);
     font-size: 1.6rem;
+}
+
+.button--secondary {
+    background-color: var(--other-color);
+    font-size: 1.6rem;
+    color: white;
+}
+
+.button--normal {
+    background-color: var(--light-hover-color);
+    font-size: 1.6rem;
+    color: currentColor;
+}
+
+.button--normal:hover {
+    background-color: var(--divider-color-secondary);
 }
 
 .button--common:hover {
@@ -56,6 +71,8 @@
     background-color: inherit;
     color: var(--success-color);
     border: 1px solid currentColor;
+    border-radius: 5px;
+    letter-spacing: 2px;
 }
 
 .button--inverse-success:hover {

@@ -1,0 +1,16 @@
+.message-form {
+    display: flex;
+    align-items: center;
+}
+
+.send-button {
+    color: var(--success-color);
+    outline: none !important;
+    background: none !important;
+    border: none !important;
+    /* transform: rotateX(45deg); */
+}
+
+.send-button:disabled {
+    color: currentColor;
+}

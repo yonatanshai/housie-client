@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './shopping-list.css';
 import AddListItemForm from './add-list-item-form';
 import ShoppingListItem from './shopping-list-item';
 import Button from '../../shared/components/form-elements/button';
+import Modal from '../../shared/components/ui-elements/modal';
+import './archive-list-form';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import ArchiveListForm from './archive-list-form';
 
 const ShoppingList = ({ list, ...props }) => {
+    const [showArchiveDialog, setShowArchiveDialog] = useState(false);
+    const [showAddToExpensesForm, setShowAddToExpensesForm] = useState(false);
+
     const handleAddItem = ({ name }) => {
         props.onAddItem({ name, listId: list.id });
     };
@@ -25,32 +31,59 @@ const ShoppingList = ({ list, ...props }) => {
         props.onUpdateItem({ listId: list.id, itemId: values.id, ...values });
     }
 
-    const archiveList = () => {
-        props.onUpdate({ listId: list.id, isActive: false });
+    const archiveList = (values) => {
+        setShowAddToExpensesForm(false);
+        setShowArchiveDialog(false);
+        props.onUpdate({ listId: list.id, isActive: false, updateExpenses: !!values.amount, ...values });
+    };
+
+    const cancelArchive = () => {
+        setShowAddToExpensesForm(false);
     }
 
 
     return (
-        <CSSTransition
-            classNames="display"
-            timeout="1000"
-        >
-            <div className="shopping-list">
-                <div className="shopping-list__title">
-                    <h3 >{list.name}</h3>
-                    <AddListItemForm onSubmit={handleAddItem} />
-                    <p>Items: {list.items.filter(li => li.checked).length} / {list.items.length}</p>
-                    <Button className="archive-list-button" onClick={archiveList}>Archive</Button>
-                </div>
+        <div className="shopping-list">
+            <Modal
+                isOpen={showArchiveDialog}
+                onRequestClose={() => setShowArchiveDialog(false)}
+            >
+                <div className="archive-dialog">
+                    <h2 className="archive-dialog__title">Archive list</h2>
 
-                {list.items.map(item => <ShoppingListItem
-                    key={item.id}
-                    item={item}
-                    onItemCheck={handleCheckItem}
-                    onItemDelete={handleDeleteItem}
-                />)}
+                    {showAddToExpensesForm ?
+                        <ArchiveListForm
+                            onSubmit={archiveList}
+                            onCancel={cancelArchive}
+                        />
+                        :
+                        <div className="archive-dialog__options">
+                            <p>Would you like to add the list to your expenses?</p>
+                            <div className="archive-dialog__actions">
+                                <Button className="button--inverse-success" onClick={() => setShowAddToExpensesForm(true)}>Yes</Button>
+                                <Button className="button--inverse-danger" onClick={archiveList}>No</Button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </Modal>
+            <div className="shopping-list__title">
+                <h3 >{list.name}</h3>
+                {list.isActive ? <AddListItemForm onSubmit={handleAddItem} /> : <div></div>}
+                <p>Items: {list.items.filter(li => li.checked).length} / {list.items.length}</p>
+                {list.isActive &&
+                    <Button className="archive-list-button" onClick={() => setShowArchiveDialog(true)}>Archive</Button>
+                }
             </div>
-        </CSSTransition>
+
+            {list.items.map(item => <ShoppingListItem
+                key={item.id}
+                item={item}
+                isActive={list.isActive}
+                onItemCheck={handleCheckItem}
+                onItemDelete={handleDeleteItem}
+            />)}
+        </div>
     )
 };
 

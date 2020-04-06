@@ -176,8 +176,8 @@ const Shopping = ({ house, ...props }) => {
         }
     }
 
-    const handleUpdateList = async ({ listId, isActive, name, updateExpenses, totalAmount }) => {
-        console.log('update')
+    const handleUpdateList = async ({ listId, isActive, name, updateExpenses, amount }) => {
+
         try {
             const res = await Axios({
                 method: 'PATCH',
@@ -186,7 +186,7 @@ const Shopping = ({ house, ...props }) => {
                     isActive,
                     name,
                     updateExpenses: updateExpenses ? updateExpenses : false,
-                    totalAmount
+                    totalAmount: amount
                 }),
                 headers: {
                     'content-type': 'application/json',
@@ -259,28 +259,25 @@ const Shopping = ({ house, ...props }) => {
             </div>
 
             {activeList &&
-                <TransitionGroup>
-                    <aside className="shopping__lists">
-                        {shoppingLists.map((list) => <ShoppingListsList
-                            onDelete={handleDeleteList}
-                            selected={list.id === activeList.id}
-                            key={list.id}
-                            list={list}
-                            onClick={handleListClicked} />)}
-                    </aside>
-                </TransitionGroup>
+                <ul className="shopping__lists">
+                    {shoppingLists.map((list) => <ShoppingListsList
+                        onDelete={handleDeleteList}
+                        selected={list.id === activeList.id}
+                        key={list.id}
+                        list={list}
+                        onClick={handleListClicked} />)}
+
+                </ul>
             }
-            <TransitionGroup>
-                <div className="shopping__active-list">
-                    {activeList && <ShoppingList
-                        list={activeList}
-                        onAddItem={handleAddItem}
-                        onUpdateItem={updateItem}
-                        onDeleteItem={handleDeleteItem}
-                        onUpdate={handleUpdateList}
-                    />}
-                </div>
-            </TransitionGroup>
+            <div className="shopping__active-list">
+                {activeList && <ShoppingList
+                    list={activeList}
+                    onAddItem={handleAddItem}
+                    onUpdateItem={updateItem}
+                    onDeleteItem={handleDeleteItem}
+                    onUpdate={handleUpdateList}
+                />}
+            </div>
         </div>
     )
 };
