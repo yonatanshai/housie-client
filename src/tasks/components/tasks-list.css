@@ -3,6 +3,7 @@
     grid-row: 2; */
     
     /* scroll-behavior: smooth; */
+    transition: all 1s ease-in-out;
 }
 
 .task-list__data {

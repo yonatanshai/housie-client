@@ -13,6 +13,7 @@ import ReactTooltip from 'react-tooltip';
 
 const LoginPage = (props) => {
     const [isLogin, setIsLogin] = useState(true);
+    const [error, setError] = useState(null);
 
     const { userData, setUserData } = useAuth();
     const [isAuthenticated, setIsAuthenticated] = useState(userData);
@@ -24,7 +25,7 @@ const LoginPage = (props) => {
     console.log(props)
 
 
-    const handleSubmit = async (values) => {
+    const handleSubmit = async (values, {errors}) => {
         const baseUrl = process.env.REACT_APP_API_BASE_URL;
         const url = isLogin ? baseUrl + process.env.REACT_APP_LOGIN_URL : baseUrl + process.env.REACT_APP_SIGNUP_URL;
         let data = {
@@ -50,7 +51,14 @@ const LoginPage = (props) => {
             setUserData(res.data);
             setIsAuthenticated(true);
         } catch (error) {
-            console.log(error);
+            try {
+                const e = JSON.parse(error.request.response);
+                if (e.statusCode === 401) {
+                    setError('Wrong username or password');
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 
@@ -94,6 +102,7 @@ const LoginPage = (props) => {
                         <TextInput label="Email" name="email" type="email" placeholder="email" />
                         <TextInput label="Password" name="password" type="password" placeholder="password" />
                         {!isLogin && <TextInput label="Confirm password" name="password-retype" type="password" placeholder="confirm password" />}
+                        {error && <p className="error-message">{error}</p>}
                         <div className="buttons-container">
                             <Button type="submit" disabled={isSubmitting} className="button--common">
                                 {isLogin ? 'Login' : 'Create Account'}

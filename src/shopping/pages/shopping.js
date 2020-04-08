@@ -199,6 +199,12 @@ const Shopping = ({ house, ...props }) => {
                 shoppingLists.filter(list => list.id !== listId);
 
             setShoppingLists(newList);
+            if (updateExpenses) {
+                props.onAlertChange({
+                    message: 'Shopping list added to expenses',
+                    type: 'success'
+                })
+            }
         } catch (error) {
             const e = JSON.parse(error.request.response);
             console.log(e.message);

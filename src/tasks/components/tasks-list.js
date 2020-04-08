@@ -14,6 +14,8 @@ import ErrorModal from '../../shared/components/ui-elements/error-modal';
 import DateFilter from '../../shared/components/dashboard/date-filter';
 import Dropdown from '../../shared/components/form-elements/dropdown';
 import { format, startOfDay, endOfDay, subMonths } from 'date-fns';
+import { Provider as AlertProvider, positions, transitions, useAlert, } from 'react-alert';
+import AlertTemplate from "react-alert-template-basic";
 
 
 const TasksList = ({ ...props }) => {
@@ -22,12 +24,13 @@ const TasksList = ({ ...props }) => {
     const [tasks, setTasks] = useState([]);
     const [sortBy, setSortBy] = useState('date');
     const [sortDesc, setSortDesc] = useState(true);
-    
+
     const [fromDate, setFromDate] = useState(subMonths(new Date(), 1));
     const [toDate, setToDate] = useState(new Date());
     const [filterStatus, setFilterStatus] = useState('Active');
     const [filterTitle, setFilterTitle] = useState('');
     const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
+
 
     const { userData } = useAuth();
     useEffect(() => {
@@ -71,7 +74,7 @@ const TasksList = ({ ...props }) => {
     }
 
     const handleCreateTask = async (values) => {
-        setIsLoading(true);
+
         const assignee = props.house.members.find(m => m.username === values.assignee);
 
         const url = process.env.REACT_APP_API_BASE_URL + '/tasks';
@@ -95,9 +98,14 @@ const TasksList = ({ ...props }) => {
                 data
             });
             setTasks([...tasks, res.data]);
+            props.onAlertChange({
+                message: 'Task Created',
+                type: 'success'
+            });
         } catch (error) {
-
-            setErrors(JSON.parse(error.request.response).message);
+            // setErrors(error.toString())
+            console.log(error)
+            // setErrors(JSON.parse(error.request.response).message);
         } finally {
             setIsLoading(false);
         }
@@ -105,7 +113,6 @@ const TasksList = ({ ...props }) => {
     }
 
     const deleteTask = async (taskId) => {
-        setIsLoading(true);
         try {
             await axios({
                 url: `${process.env.REACT_APP_API_BASE_URL}/tasks/${taskId}`,
@@ -116,10 +123,16 @@ const TasksList = ({ ...props }) => {
                 }
             });
             setTasks(tasks.filter(task => task.id !== taskId));
-
+            props.onAlertChange({
+                message: 'Task Deleted',
+                type: 'success'
+            })
         } catch (error) {
-            alert('oops something went wrong');
-            console.log(error);
+            props.onAlertChange({
+                message: 'Error Deleting',
+                type: 'error'
+            })
+            setErrors(JSON.parse(error.request.response).message)
         } finally {
             setIsLoading(false);
         }
@@ -148,6 +161,34 @@ const TasksList = ({ ...props }) => {
             setTasks(newTasks);
         } catch (error) {
             console.log(error.request);
+        }
+    }
+
+    const handleTaskUpdate = async ({ taskId, priority, user, title, description }) => {
+        console.log({ priority, user });
+
+        try {
+            const res = await axios({
+                method: 'PATCH',
+                url: `${process.env.REACT_APP_API_BASE_URL}/tasks/${taskId}`,
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + userData.token
+                },
+                data: JSON.stringify({
+                    title,
+                    priority,
+                    description,
+                    assignedUserId: user && user.id
+                })
+            });
+            setTasks(tasks.map(task => task.id === taskId ? res.data : task));
+            props.onAlertChange({
+                message: 'Task Updated!',
+                type: 'success'
+            })
+        } catch (error) {
+            setErrors(JSON.parse(error.request.response).message);
         }
     }
 
@@ -228,7 +269,9 @@ const TasksList = ({ ...props }) => {
                     title="Oops"
                 />
                 <Modal isOpen={showCreateTaskModal} onRequestClose={toggleShowCreateTaskForm}>
-                    <CreateTaskForm house={props.house} onSubmit={handleCreateTask} />
+                    <CreateTaskForm
+                        house={props.house}
+                        onSubmit={handleCreateTask} />
                 </Modal>
                 <IconTextLabel icon="tasks" text="Tasks" />
                 <Button className="button button--inverse" onClick={toggleShowCreateTaskForm}>Create Task</Button>
@@ -236,7 +279,6 @@ const TasksList = ({ ...props }) => {
             {isLoading ? <Loader /> :
                 <Fragment>
                     <div className="filters">
-
                         <DateFilter
                             fromDate={fromDate}
                             toDate={toDate}
@@ -261,10 +303,18 @@ const TasksList = ({ ...props }) => {
                             <div className={sortDesc ? "arrow-down" : "arrow-up"} onClick={handleSortDirectionChanged}></div>
                             {/* <Button type="button" className="button--inverse button--inverse-success">Search</Button> */}
                         </div>
-                        <span style={{padding: '0 1rem', fontWeight: '600'}}>{`Results: ${tasks.length}`}</span>
+                        <span style={{ padding: '0 1rem', fontWeight: '600' }}>{`Results: ${tasks.length}`}</span>
                     </div>
                     <div className="task-list__data">
-                        {tasks.length === 0 ? <p>No Tasks</p> : tasks.map(task => <TasksListItem key={task.id} task={task} members={props.house.members} onTaskCompleted={handleTaskCompleted} deleteTask={deleteTask} />)}
+                        {tasks.length === 0 ? <p>No Tasks</p> :
+                            tasks.map(task =>
+                                <TasksListItem
+                                    key={task.id}
+                                    task={task}
+                                    members={props.house.members}
+                                    onUpdate={handleTaskUpdate}
+                                    onTaskCompleted={handleTaskCompleted}
+                                    deleteTask={deleteTask} />)}
                     </div>
                 </Fragment>
             }

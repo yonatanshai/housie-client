@@ -11,6 +11,9 @@ import jwt_decode from 'jwt-decode';
 import moment from 'moment';
 import ErrorModal from './shared/components/ui-elements/error-modal';
 import HouseDashBoard from './house/pages/house-dashboard';
+import { Provider as AlertProvider, positions, transitions } from 'react-alert';
+// import AlertTemplate from "react-alert-template-basic";
+import AlertTemplate from './shared/components/ui-elements/alert-template';
 
 function App() {
   const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('userData')));
@@ -50,32 +53,42 @@ function App() {
   }
 
   console.log('app.js');
+  const alertOptions = {
+    position: positions.BOTTOM_CENTER,
+    timeout: 3000,
+    transition: transitions.SCALE,
+  }
 
   return (
     <div className="App">
-      <AuthContext.Provider value={{ userData, setUserData: updateUserData }}>
-        <BrowserRouter>
-          <ErrorModal
-            isOpen={showExpiredSessionModal}
-            title="Session Expired"
-            onButtonClick={handleTokenExpired}
-            buttonText="Ok"
-            errorMessage="Please login to continue"
+      <AlertProvider
+        template={AlertTemplate}
+        {...alertOptions}
+      >
+        <AuthContext.Provider value={{ userData, setUserData: updateUserData }}>
+          <BrowserRouter>
+            <ErrorModal
+              isOpen={showExpiredSessionModal}
+              title="Session Expired"
+              onButtonClick={handleTokenExpired}
+              buttonText="Ok"
+              errorMessage="Please login to continue"
 
-          />
-          <div style={{display:'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
-            <MainHeader />
-            <div style={{display:'flex', width: '100%', height: '100%'}}>
-              <Switch>
-                <PrivateRoute exact path="/" component={MyHouses} />
-                <Route exact path="/auth" component={LoginPage} />
-                {/* <Redirect to="/" /> */}
-              </Switch>
-              <PrivateRoute path="/dashboard/:houseId" component={HouseDashBoard} />
+            />
+            <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
+              <MainHeader />
+              <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+                <Switch>
+                  <PrivateRoute exact path="/" component={MyHouses} />
+                  <Route exact path="/auth" component={LoginPage} />
+                  {/* <Redirect to="/" /> */}
+                </Switch>
+                <PrivateRoute path="/dashboard/:houseId" component={HouseDashBoard} />
+              </div>
             </div>
-          </div>
-        </BrowserRouter>
-      </AuthContext.Provider>
+          </BrowserRouter>
+        </AuthContext.Provider>
+      </AlertProvider>
     </div >
   );
 }

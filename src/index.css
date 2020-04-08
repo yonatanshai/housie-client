@@ -35,10 +35,12 @@ html {
   --light-hover-color: #f2f2f2;
 
   --danger-color: #bb2124;
+  --light-danger-color:  #ff8080;
   --success-color: #22bb33;
+  --light-success-color: #e6ffe6;
   --warning-color: #f0ad4e;
-  --natural-color: #5bc0de;
-  --other-color: #aaaaaa;
+  --natural-color: #66e0ff;
+  --other-color: #bfbfbf;
 
   --box-shadow-primary:  7px 6px 10px -6px rgba(0,0,0,0.75);
   --box-shadow-secondary: 7px 6px 10px -9px rgba(0,0,0,0.75);

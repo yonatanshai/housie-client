@@ -1,11 +1,12 @@
 import React from 'react';
 import HouseListItem from './house-list-item';
+import './house-list.css';
 
 const HouseList = props => {
     return (
-        <div>
-            {props.houses.map(house => <HouseListItem name={house.name} />)}
-        </div>
+        <ul className="house-list">
+            {props.houses.map(house => <HouseListItem key={house.id} house={house} onClick={(id) => props.onHouseClicked(id)} />)}
+        </ul>
     )
 }
 

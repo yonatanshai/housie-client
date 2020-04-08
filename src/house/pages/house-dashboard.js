@@ -14,12 +14,14 @@ import ErrorModal from '../../shared/components/ui-elements/error-modal';
 import Shopping from '../../shopping/pages/shopping';
 import SidebarItem from '../../shared/components/navigation/sidebar-item';
 import Chat from '../../chat/pages/chat';
+import { useAlert } from 'react-alert';
 
 const HouseDashBoard = ({ ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [house, setHouse] = useState();
     const [error, setError] = useState(null);
     const { userData } = useAuth();
+    const alert = useAlert();
 
     useEffect(() => {
         const fetchHouse = async () => {
@@ -132,6 +134,12 @@ const HouseDashBoard = ({ ...props }) => {
         }
     }
 
+    const showAlert = ({message, type}) => {
+        alert.show(message, {
+            type
+        })
+    }
+
     const clearErrors = () => {
         setError(null);
     }
@@ -182,13 +190,13 @@ const HouseDashBoard = ({ ...props }) => {
                                 onRemoveMember={handleRemoveMember} />
                         </PrivateRoute>
                         <PrivateRoute exact path={`${props.match.url}/tasks`}>
-                            <TasksList house={house} />
+                            <TasksList house={house} onAlertChange={showAlert} />
                         </PrivateRoute>
                         <PrivateRoute exact path={`${props.match.url}/expenses`}>
-                            <ExpensesList house={house} />
+                            <ExpensesList house={house} onAlertChange={showAlert} />
                         </PrivateRoute>
                         <PrivateRoute exact path={`${props.match.url}/shopping`}>
-                            <Shopping house={house} />
+                            <Shopping house={house} onAlertChange={showAlert} />
                         </PrivateRoute>
                         <PrivateRoute exact path={`${props.match.url}/chat`}>
                             <Chat house={house} />

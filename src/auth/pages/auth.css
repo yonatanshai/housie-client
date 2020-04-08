@@ -28,3 +28,11 @@
     background: linear-gradient(var(--primary-text-color), var(--secondary-text-color));
     background-clip: text;
 }
+
+.error-message {
+    color: var(--danger-color);
+    margin: 0;
+    font-size: 1.4rem;
+    padding: 1rem;
+    font-weight: 600;
+}

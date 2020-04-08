@@ -27,3 +27,8 @@
     background-color: var(--default-primary-color);
     color: white;
 }
+
+option {
+    background-color: white;
+    color: var(--secondary-text-color);
+}

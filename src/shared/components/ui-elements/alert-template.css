@@ -1,0 +1,20 @@
+.alert {
+    /* background-color: var(--light-success-color); */
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: center; 
+    padding: 1.2rem 2rem;
+    font-size: 1.6rem;
+    border-radius: 10px;
+}
+
+.alert--success {
+    background-color: var(--light-success-color);
+    color: var(--secondary-text-color);
+}
+
+.alert--error {
+    background-color: var(--light-danger-color);
+    color: white;
+}

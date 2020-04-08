@@ -1,11 +1,15 @@
 .tasks-list-item {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-between;
     padding: .5rem 1rem;
     color: var(--secondary-text-color);
     transition: all .2s ease-in;
     border-bottom: 1px solid var(--divider-color);
+}
+
+.task-list-item--edited {
+    background-color: var(--light-success-color);
 }
 
 .tasks-list-item > * {
@@ -21,6 +25,29 @@
     flex: 0;
     align-self: center;
     justify-self: center;
+}
+
+.title-container {
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    display: flex;
+    padding: 0 1rem;
+    align-items: center;
+}
+
+.title-container:hover {
+    background-color: var(--light-hover-color);
+}
+
+.title-container > input{ 
+    padding: 1rem;
+    transition: all .2s ease-in-out;
+    transform: translateX(-1rem);
+    width: 100%;
+    margin: 0;
+    outline: none;
+    border: 1px solid var(--default-primary-color);
+    font-size: 1.6rem;
 }
 
 .tasks-list-item__title {
@@ -40,7 +67,13 @@
     text-align-last: center;
     border: none;
     border-radius: 0 !important;
+    -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+  cursor: pointer;
 }
+
+
 
 .tasks-list-item__priority--low {
     background-color: var(--natural-color);
@@ -51,7 +84,7 @@
 }
 
 .tasks-list-item__priority--high {
-    background-color: var(--danger-color);
+    background-color: var(--light-danger-color);
 }
 
 .tasks-list-item__status {
@@ -88,6 +121,39 @@
 }
 
 .tasks-list-item__user {
+    position: relative;
     padding: .9rem !important;
     border-radius: 0 !important;
+    -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.changes-container {
+    flex: 0;
+    display: flex;
+    
+}
+
+.tasks-list-item__user-confirm {
+    /* position: absolute; */
+    /* right: 10px; */
+    flex: 0;
+    color: currentColor;
+    background: none;
+}
+
+.tasks-list-item__user-confirm:hover {
+    color: var(--success-color);
+}
+
+.tasks-list-item__cancel-changes {
+    flex: 0;
+    color: currentColor;
+    background: none;
+}
+
+.tasks-list-item__cancel-changes:hover {
+    color: var(--danger-color);
 }

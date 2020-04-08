@@ -1,0 +1,21 @@
+.house-list-item {
+    padding: 1rem;
+    font-size: 1.6rem;
+    color: var(--secondary-text-color);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: start;
+    gap: 10px;
+    align-items: center;
+    border-bottom: 1px solid var(--divider-color);
+    transition: background .2s ease-in-out;
+    cursor: pointer;
+}
+
+.house-list-item:hover {
+    background-color: var(--light-hover-color);
+}
+
+.house-name {
+    margin: 0;
+}

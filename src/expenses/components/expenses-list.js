@@ -90,7 +90,8 @@ const ExpensesList = ({ house, ...props }) => {
                     'authorization': 'Bearer ' + userData.token
                 }
             });
-            setExpenses([...expenses, res.data])
+            setExpenses([...expenses, res.data]);
+            props.onAlertChange({message: 'Expense Added', type: 'success'});
         } catch (error) {
             const e = JSON.parse(error.request.response);
             setError(e.error);
@@ -109,8 +110,8 @@ const ExpensesList = ({ house, ...props }) => {
                     'authorization': 'Bearer ' + userData.token
                 }
             });
-
             setExpenses(expenses.filter(e => e.id !== expenseId));
+            props.onAlertChange({message: 'Expense Deleted', type: 'success'});
         } catch (error) {
             const e = JSON.parse(error.request.response);
             setError(e.error);
@@ -192,7 +193,6 @@ const ExpensesList = ({ house, ...props }) => {
                 {expenses.length === 0 ? <p>No Expenses</p> :
                 expenses.map(ex => <ExpensesListItem key={ex.id} expense={ex} onDelete={handleDeleteExpense} />)}
             </div>
-            <ExpenseStats expenses={expenses}/>
         </Widget>
     )
 };
