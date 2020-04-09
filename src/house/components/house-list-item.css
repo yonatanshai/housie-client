@@ -1,15 +1,13 @@
 .house-list-item {
-    padding: 1rem;
+    padding: 1rem 0;
     font-size: 1.6rem;
     color: var(--secondary-text-color);
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: auto 1fr 1fr auto;
     justify-items: start;
-    gap: 10px;
     align-items: center;
-    border-bottom: 1px solid var(--divider-color);
+    gap: 10px;
     transition: background .2s ease-in-out;
-    cursor: pointer;
 }
 
 .house-list-item:hover {
@@ -18,4 +16,13 @@
 
 .house-name {
     margin: 0;
+    cursor: pointer;
+}
+
+.delete-house-button {
+    color: currentColor;
+}
+
+.delete-house-button:hover {
+    color: var(--danger-color);
 }

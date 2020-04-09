@@ -17,9 +17,12 @@ html {
 }
 
 :root {
-  --default-primary-color: #ab47bc;
+  /* --default-primary-color: #ab47bc;
   --dark-primary-color:  #790e8b;
-  --light-primary-color:  #df78ef;
+  --light-primary-color:  #df78ef; */
+  --default-primary-color: #4caf50;
+  --light-primary-color: #80e27e;
+  --dark-primary-color: #087f23;
   /* --dark-primary-color:  #8c9900;
   --default-primary-color: #c0ca33;
   --light-primary-color:  #f5fd67; */

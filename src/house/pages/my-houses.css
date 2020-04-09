@@ -1,18 +1,42 @@
 .my-houses {
-    display: flex;
-    flex-direction: column;
-    margin: 10rem;
-    padding: 0 10rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 5rem auto;
+    padding: 1rem 10rem;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    border: 1px solid var(--divider-color);
+    box-shadow: var(--box-shadow-secondary);
 }
 
 .my-houses-title {
-    color: var(--primary-text-color);
-    /* text-align: left; */
-    /* width: 100%; */
-    padding: 1rem;
-    align-self: flex-start;
+    color: var(--secondary-text-color);
+    padding: 1rem 0;
+    margin: 0;
+    text-align: start;
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.my-houses-content {
+    padding: 1rem 0;
+    grid-row: 2;
+    grid-column: 1 / -1;
+}
+
+.create-house-button {
+    grid-row: 1;
+    grid-column: 3;
+}
+
+.no-houses {
+    color: var(--secondary-text-color);
+    font-size: 1.8rem;
+    grid-row: 2;
+    grid-column: 1 / -1;
+    
+}
+
+.no-houses-button {
+    transition: all .2s ease-in-out;
+    font-size: 1.8rem;
 }

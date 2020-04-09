@@ -5,7 +5,11 @@ import './house-list.css';
 const HouseList = props => {
     return (
         <ul className="house-list">
-            {props.houses.map(house => <HouseListItem key={house.id} house={house} onClick={(id) => props.onHouseClicked(id)} />)}
+            {props.houses.map(house => <HouseListItem
+                key={house.id}
+                house={house}
+                onDelete={(id) => props.onDeleteHouse(id)}
+                onClick={(id) => props.onHouseClicked(id)} />)}
         </ul>
     )
 }

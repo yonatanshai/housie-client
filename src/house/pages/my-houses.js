@@ -39,7 +39,7 @@ const MyHouses = props => {
         getHouses();
     }, [userData.token]);
 
-    const handleAddHouse = async ({name}) => {
+    const handleAddHouse = async ({ name }) => {
         setShowAddHouseForm(false);
         try {
             const res = await axios({
@@ -55,10 +55,31 @@ const MyHouses = props => {
             });
             console.log(res.data);
             setHouses([...houses, res.data]);
-            alert.show('House Created!', {type: 'success'});
+            alert.show('House Created!', { type: 'success' });
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const handleHouseDelete = async (houseId) => {
+        try {
+            await axios({
+                method: 'DELETE',
+                url: `${process.env.REACT_APP_API_BASE_URL}/house/${houseId}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userData.token}`
+                }
+            });
+            setHouses(houses.filter(house => house.id !== houseId));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleHouseClicked = (id) => {
+        props.history.push(`/dashboard/${id}`);
+        
     }
 
     if (isLoading) {
@@ -67,49 +88,29 @@ const MyHouses = props => {
         )
     }
 
-    // else if (houses.length === 0) {
-    //     return (
-    //         <div>
-    //             No houses. Click here to create one!
-    //         </div>
-    //     )
-    // } else if (houses.length === 1) {
-    //     return (
-    //         // <div style={{fontSize: '150px'}}>{houses[0].name}</div>
-    //         <Redirect to={`/dashboard/${houses[0].id}`} />
-    //         // <HouseDashBoard house={houses[0]} />
-    //     )
-    // }
-    // return (
-    //     <div>
-    //         <HouseList houses={houses} />
-    //     </div>
-    // )
+    
 
-    const handleHouseClicked = (id) => {
-        console.log(props.history.push(`/dashboard/${id}`));
-        // return <Redirect to={} />
-    }
+    
 
     return (
         <div className="my-houses">
             <h1 className="my-houses-title">My Houses</h1>
+            {houses.length > 0 && <Button className="button--inverse create-house-button" onClick={() => setShowAddHouseForm(true)}>Create House</Button>}
             <Modal
                 isOpen={showAddHouseForm}
                 onRequestClose={() => setShowAddHouseForm(false)}
             >
-                <AddHouseForm onSubmit={handleAddHouse}/>
+                <AddHouseForm onSubmit={handleAddHouse} />
             </Modal>
             {houses.length === 0 &&
-                <div>
-                    <p>You don't have any houses</p>
-                    <Button className="button--link" onClick={() => setShowAddHouseForm(true)}>Click here to create one</Button>
+                <div className="no-houses">
+                    <p className="no-houses-message">You don't have any houses</p>
+                    <Button className="button--link no-houses-button" onClick={() => setShowAddHouseForm(true)}>Click here to create one</Button>
                 </div>}
             {/* {houses.length === 1 && <Redirect to={`/dashboard/${houses[0].id}`} />} */}
             {houses.length >= 1 &&
                 <div className="my-houses-content">
-                    <Button className="button--common" onClick={() => setShowAddHouseForm(true)}>Create House</Button>
-                    <HouseList houses={houses} onHouseClicked={handleHouseClicked} />
+                    <HouseList houses={houses} onHouseClicked={handleHouseClicked} onDeleteHouse={handleHouseDelete} />
                 </div>
             }
         </div>

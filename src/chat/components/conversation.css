@@ -1,0 +1,4 @@
+.conversation {
+    display: grid;
+    /* justify-items: stretch; */
+}

@@ -19,7 +19,6 @@ const TasksListItem = ({ task, ...props }) => {
     const [selectedPriority, setSelectedPriority] = useState(task.priority);
     const [showEditTitle, setShowEditTitle] = useState(false);
     const [title, setTitle] = useState(task.title);
-    const titleInput = useRef(null);
     const [valueChanged, setValueChanged] = useState(false);
 
     const handleCompleteTask = () => {
@@ -75,7 +74,6 @@ const TasksListItem = ({ task, ...props }) => {
         }
         setShowEditTitle(false);
     }
-
 
     return (
 

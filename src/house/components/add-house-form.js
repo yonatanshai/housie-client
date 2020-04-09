@@ -1,5 +1,5 @@
 import React from 'react';
-import './add-member-form.css';
+import './add-house-form.css';
 import { Formik, Form } from 'formik';
 import TextInput from '../../shared/components/form-elements/text-input';
 import Button from '../../shared/components/form-elements/button'
@@ -17,7 +17,7 @@ const AddHouseForm = ({ onSubmit, ...props }) => {
             onSubmit={onSubmit}
         >
             {({ values, errors, isSubmitting }) => (
-                <Form>
+                <Form className="add-house-form">
                     <h3 className="form-title">Create House</h3>
                     <section className="form-body">
                         <TextInput type="text" autoComplete="off" name="name" placeholder="My house" value={values.name} />

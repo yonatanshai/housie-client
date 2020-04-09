@@ -19,6 +19,7 @@ import { useAlert } from 'react-alert';
 const HouseDashBoard = ({ ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [house, setHouse] = useState();
+    const [isAdmin, setIsAdmin] = useState(false);
     const [error, setError] = useState(null);
     const { userData } = useAuth();
     const alert = useAlert();
@@ -50,8 +51,9 @@ const HouseDashBoard = ({ ...props }) => {
     useEffect(() => {
         if (house) {
             setIsLoading(false);
+            setIsAdmin(house.admins.some(a => a.id === userData.user.id));
         }
-    }, [house]);
+    }, [house, userData]);
 
     const handleAddMember = async ({ values, houseId }) => {
         setIsLoading(true);
@@ -148,7 +150,6 @@ const HouseDashBoard = ({ ...props }) => {
         return (<Loader />)
     } else {
 
-
         return (
             <div className="house-dashboard">
                 <ErrorModal
@@ -166,18 +167,19 @@ const HouseDashBoard = ({ ...props }) => {
                     <SidebarItem to={`${props.match.url}/tasks`}>
                         <IconTextLabel textFirst text="Tasks" icon="tasks" />
                     </SidebarItem>
+                    {isAdmin && 
                     <SidebarItem to={`${props.match.url}/expenses`}>
                         <IconTextLabel textFirst text="Expenses" icon="coin-dollar" />
-                    </SidebarItem>
+                    </SidebarItem>}
                     <SidebarItem to={`${props.match.url}/shopping`}>
                         <IconTextLabel textFirst text="Shopping" icon="cart" />
                     </SidebarItem>
                     <SidebarItem to={`${props.match.url}/chat`}>
                         <IconTextLabel textFirst text="Chat" icon="bubble" />
                     </SidebarItem>
-                    <SidebarItem to={`${props.match.url}/settings`}>
+                    {/* <SidebarItem to={`${props.match.url}/settings`}>
                         <IconTextLabel textFirst text="Settings" icon="cog" />
-                    </SidebarItem>
+                    </SidebarItem> */}
                 </Sidebar>
                 <div className="house-dashboard__content">
                     <Switch>
@@ -192,9 +194,10 @@ const HouseDashBoard = ({ ...props }) => {
                         <PrivateRoute exact path={`${props.match.url}/tasks`}>
                             <TasksList house={house} onAlertChange={showAlert} />
                         </PrivateRoute>
+                        {isAdmin &&
                         <PrivateRoute exact path={`${props.match.url}/expenses`}>
                             <ExpensesList house={house} onAlertChange={showAlert} />
-                        </PrivateRoute>
+                        </PrivateRoute>}
                         <PrivateRoute exact path={`${props.match.url}/shopping`}>
                             <Shopping house={house} onAlertChange={showAlert} />
                         </PrivateRoute>
