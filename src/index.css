@@ -16,6 +16,13 @@ html {
   
 }
 
+.transparent {
+  color: transparent;
+  background: none;
+  border: none;
+  outline: none;
+}
+
 :root {
   /* --default-primary-color: #ab47bc;
   --dark-primary-color:  #790e8b;

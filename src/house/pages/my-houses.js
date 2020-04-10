@@ -10,12 +10,14 @@ import AddHouseForm from '../components/add-house-form';
 import './my-houses.css';
 import { useAlert } from 'react-alert';
 import AlertTemplate from '../../shared/components/ui-elements/alert-template';
+import ErrorModal from '../../shared/components/ui-elements/error-modal';
 
 const MyHouses = props => {
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [houses, setHouses] = useState([]);
     const [showAddHouseForm, setShowAddHouseForm] = useState(false);
-    const { userData } = useAuth();
+    const { userData, setUserData } = useAuth();
     const alert = useAlert();
 
     useEffect(() => {
@@ -33,7 +35,13 @@ const MyHouses = props => {
                 setIsLoading(false);
                 setHouses(res.data);
             } catch (error) {
-                console.log(error);
+                console.log(error.request.status)
+                if (error.request) {
+                    const e = (JSON.parse(error.request.response));
+                    setError({ code: e.statusCode, message: e.message });
+                } else {
+                    setError(error.message);
+                }
             }
         }
         getHouses();
@@ -53,11 +61,13 @@ const MyHouses = props => {
                     'Authorization': `Bearer ${userData.token}`
                 }
             });
-            console.log(res.data);
             setHouses([...houses, res.data]);
             alert.show('House Created!', { type: 'success' });
         } catch (error) {
-            console.log(error);
+            if (error.request) {
+                const e = JSON.parse(error.request.response);
+                setError({ message: e.message, code: e.statusCode });
+            }
         }
     }
 
@@ -73,13 +83,34 @@ const MyHouses = props => {
             });
             setHouses(houses.filter(house => house.id !== houseId));
         } catch (error) {
-            console.log(error);
+            if (error.request) {
+                const e = JSON.parse(error.request.response);
+                setError({ code: e.code, message: e.message });
+            }
         }
     }
 
     const handleHouseClicked = (id) => {
         props.history.push(`/dashboard/${id}`);
-        
+    }
+
+    const handleClearError = () => {
+        if (error.code === 401 || error.code === 403) {
+            setUserData(null);
+        }
+        setError(null);
+    }
+
+    if (error) {
+        return (
+            <ErrorModal
+                isOpen={error}
+                errorMessage={error.message}
+                onButtonClick={handleClearError}
+                title="Error"
+                buttonText="Ok"
+            />
+        )
     }
 
     if (isLoading) {
@@ -87,10 +118,6 @@ const MyHouses = props => {
             <h1>Loading...</h1>
         )
     }
-
-    
-
-    
 
     return (
         <div className="my-houses">
@@ -104,10 +131,10 @@ const MyHouses = props => {
             </Modal>
             {houses.length === 0 &&
                 <div className="no-houses">
-                    <p className="no-houses-message">You don't have any houses</p>
+                    <p className="no-houses-message">You don't have any houses yet</p>
                     <Button className="button--link no-houses-button" onClick={() => setShowAddHouseForm(true)}>Click here to create one</Button>
-                </div>}
-            {/* {houses.length === 1 && <Redirect to={`/dashboard/${houses[0].id}`} />} */}
+                </div>
+            }
             {houses.length >= 1 &&
                 <div className="my-houses-content">
                     <HouseList houses={houses} onHouseClicked={handleHouseClicked} onDeleteHouse={handleHouseDelete} />
@@ -116,7 +143,5 @@ const MyHouses = props => {
         </div>
     )
 }
-
-// onClick={() => <Redirect to={`/dashboard/${houses[0].id}`} />}
 
 export default MyHouses;

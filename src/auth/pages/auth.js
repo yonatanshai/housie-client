@@ -25,7 +25,7 @@ const LoginPage = (props) => {
     console.log(props)
 
 
-    const handleSubmit = async (values, {errors}) => {
+    const handleSubmit = async (values, {errors, resetForm}) => {
         const baseUrl = process.env.REACT_APP_API_BASE_URL;
         const url = isLogin ? baseUrl + process.env.REACT_APP_LOGIN_URL : baseUrl + process.env.REACT_APP_SIGNUP_URL;
         let data = {
@@ -33,6 +33,7 @@ const LoginPage = (props) => {
             password: values.password
         }
 
+        resetForm();
         if (!isLogin) {
             data = {
                 username: values.username,
@@ -55,6 +56,10 @@ const LoginPage = (props) => {
                 const e = JSON.parse(error.request.response);
                 if (e.statusCode === 401) {
                     setError('Wrong username or password');
+                }
+
+                if (e.statusCode === 409) {
+                    setError('There is already a user with this email')
                 }
             } catch (error) {
                 console.log(error);
@@ -83,28 +88,34 @@ const LoginPage = (props) => {
             validationSchema={yup.object({
                 username: isLogin ? null : yup.string().max(14).min(2).required('Required'),
                 email: yup.string().email('Invalid email address').required('Required'),
-                password: yup.string().min(8, 'Password must be at least 8 characters').required('Required')
+                password: yup.string().min(8, 'Password must be at least 8 characters').required('Required'),
+                confirmPassword: !isLogin && yup.string().when('password', {
+                    is: val => val && val.length > 0  ? true : false,
+                    then: yup.string().oneOf(
+                        [yup.ref('password')],
+                        'passwords need to match'
+                    ).required('Required')
+                })
             })}
             onSubmit={handleSubmit}
         >
-            {({ errors, isSubmitting }) => (
+            {({ errors, isSubmitting, values }) => (
                 <div className="container">
-
-                    <Form className="auth-form">
+                    <Form className="auth-form" onClick={() => console.log(errors)}>
                         <h2 className="auth-form__header">{isLogin ? 'Login' : 'Signup'}</h2>
                         {
                             !isLogin &&
                             <div>
-                                <TextInput dataTip="This will be visible to other members of your house" label="Username" name="username" type="text" placeholder="username" />
+                                <TextInput dataTip="This will be visible to other members of your house" value={values.username} label="Username" name="username" type="text" placeholder="username" />
                                 <ReactTooltip type="info" delayShow={500}/>
                             </div>
                         }
-                        <TextInput label="Email" name="email" type="email" placeholder="email" />
-                        <TextInput label="Password" name="password" type="password" placeholder="password" />
-                        {!isLogin && <TextInput label="Confirm password" name="password-retype" type="password" placeholder="confirm password" />}
+                        <TextInput value={values.email} label="Email" name="email" type="email" placeholder="email" />
+                        <TextInput value={values.password} label="Password" name="password" type="password" placeholder="password" />
+                        {!isLogin && <TextInput value={values.confirmPassword} label="Confirm password" name="confirmPassword" type="password" placeholder="confirm password" />}
                         {error && <p className="error-message">{error}</p>}
                         <div className="buttons-container">
-                            <Button type="submit" disabled={isSubmitting} className="button--common">
+                            <Button type="submit" disabled={isSubmitting || errors.username || errors.password || errors.email || errors.confirmPassword} className="button--common">
                                 {isLogin ? 'Login' : 'Create Account'}
                             </Button>
                             <Button className="button--link" type="button" to="/" onClick={switchAuthMode}>

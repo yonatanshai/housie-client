@@ -70,3 +70,8 @@
     fill: currentColor;
     display: block;
 }
+
+.main-header__username {
+    color: var(--default-primary-color);
+    margin: 0 1rem;
+}

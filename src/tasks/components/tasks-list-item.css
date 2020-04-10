@@ -1,6 +1,6 @@
 .tasks-list-item {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     justify-content: space-between;
     padding: .5rem 1rem;
     color: var(--secondary-text-color);
@@ -28,18 +28,16 @@
 }
 
 .title-container {
-    cursor: pointer;
+    /* cursor: pointer; */
     transition: all .2s ease-in-out;
     display: flex;
     padding: 0 1rem;
     align-items: center;
+    align-self: stretch;
 }
 
-.title-container:hover {
-    background-color: var(--light-hover-color);
-}
 
-.title-container > input{ 
+/* .title-container > input{ 
     padding: 1rem;
     transition: all .2s ease-in-out;
     transform: translateX(-1rem);
@@ -48,7 +46,7 @@
     outline: none;
     border: 1px solid var(--default-primary-color);
     font-size: 1.6rem;
-}
+} */
 
 .tasks-list-item__title {
     text-transform: capitalize;
@@ -130,30 +128,3 @@
   cursor: pointer;
 }
 
-.changes-container {
-    flex: 0;
-    display: flex;
-    
-}
-
-.tasks-list-item__user-confirm {
-    /* position: absolute; */
-    /* right: 10px; */
-    flex: 0;
-    color: currentColor;
-    background: none;
-}
-
-.tasks-list-item__user-confirm:hover {
-    color: var(--success-color);
-}
-
-.tasks-list-item__cancel-changes {
-    flex: 0;
-    color: currentColor;
-    background: none;
-}
-
-.tasks-list-item__cancel-changes:hover {
-    color: var(--danger-color);
-}

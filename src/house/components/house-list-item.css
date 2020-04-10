@@ -3,7 +3,7 @@
     font-size: 1.6rem;
     color: var(--secondary-text-color);
     display: grid;
-    grid-template-columns: auto 1fr 1fr auto;
+    grid-template-columns: max-content 1fr 1fr auto;
     justify-items: start;
     align-items: center;
     gap: 10px;

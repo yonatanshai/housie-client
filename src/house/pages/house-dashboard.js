@@ -15,13 +15,14 @@ import Shopping from '../../shopping/pages/shopping';
 import SidebarItem from '../../shared/components/navigation/sidebar-item';
 import Chat from '../../chat/pages/chat';
 import { useAlert } from 'react-alert';
+import Settings from '../../settings/pages/settings';
 
 const HouseDashBoard = ({ ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [house, setHouse] = useState();
     const [isAdmin, setIsAdmin] = useState(false);
     const [error, setError] = useState(null);
-    const { userData } = useAuth();
+    const { userData, setUserData } = useAuth();
     const alert = useAlert();
 
     useEffect(() => {
@@ -39,10 +40,8 @@ const HouseDashBoard = ({ ...props }) => {
                 });
                 setHouse(res.data);
             } catch (error) {
-                console.log(error.request.response);
-                if (error.request.response.statusCode === 401) {
-                    return <Redirect to="/auth" />
-                }
+                const {statusCode, message} = JSON.parse(error.request.response);
+                setError({code: statusCode, message});
             }
         }
         fetchHouse();
@@ -75,22 +74,20 @@ const HouseDashBoard = ({ ...props }) => {
             setHouse(res.data);
 
         } catch (error) {
-            let statusCode = 0;
-            if (error.request.response) {
-                statusCode = JSON.parse(error.request.response).statusCode;
-            }
-            console.log(error.request.response)
+            const { statusCode, message } = JSON.parse(error.request.response);
+
             switch (statusCode) {
                 case 400:
-                    setError('You are already a member (duh!)')
+                    setError({code: statusCode, message})
                     break;
                 case 401:
-                    setError('Access denied. Please login');
+                    setError({code: statusCode, message: 'Access denied. Please login'});
                     break;
                 case 404:
-                    setError('A user with this email was not found')
+                    setError({code: statusCode, message: 'A user with this email was not found'})
                     break;
                 default:
+                    setError({code: statusCode, message});
                     break;
             }
         } finally {
@@ -110,24 +107,18 @@ const HouseDashBoard = ({ ...props }) => {
                     'Authorization': `Bearer ${userData.token}`
                 }
             });
-            console.log(res.data);
             setHouse(res.data);
         } catch (error) {
-            console.log(error)
             if (error && error.request && error.request.response) {
-                const statusCode = JSON.parse(error.request.response).statusCode;
+                const { statusCode, message } = JSON.parse(error.request.response);
 
                 switch (statusCode) {
                     case 400:
-                        setError('To remove yourself please go to setting -> exit group');
+                        setError({ code: statusCode, message: 'To remove yourself please go to settings ;&rarr exit group' });
                         break;
-                    case 401:
-                        setError('Please login');
-                        break;
-                    case 404:
-                        setError('Oops. User not found');
-                        break;
+
                     default:
+                        setError({ code: statusCode, message });
                         break;
                 }
             }
@@ -136,30 +127,72 @@ const HouseDashBoard = ({ ...props }) => {
         }
     }
 
-    const showAlert = ({message, type}) => {
+    const handleLeaveHouse = async (houseId) => {
+        try {
+            const res = await axios({
+                method: 'DELETE',
+                url: `${process.env.REACT_APP_API_BASE_URL}/house/${houseId}/me`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userData.token}`
+                }
+            });
+            setHouse(res.data);
+            props.history.push('/');
+        } catch (error) {
+            const e = JSON.parse(error.request.response);
+            setError({ code: e.code, message: e.message });
+        }
+    }
+
+    const handleMakeMemberAdmin = async (id) => {
+        try {
+            const res = await axios({
+                method: 'POST',
+                url: `${process.env.REACT_APP_API_BASE_URL}/house/${house.id}/admins/${id}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${userData.token}`
+                }
+            });
+            setHouse(res.data);
+        } catch (error) {
+            const e = JSON.parse(error.request.response);
+            setError({ code: e.code, message: e.message });
+        }
+    }
+
+    const showAlert = ({ message, type }) => {
         alert.show(message, {
             type
         })
     }
 
     const clearErrors = () => {
+        const { code } = error;
+        if (code === 401 || code === 403) {
+            setUserData(null);
+        }
         setError(null);
+    }
+
+    if (error) {
+        return (
+            <ErrorModal
+                isOpen={error}
+                buttonText="OK"
+                errorMessage={error.message}
+                onButtonClick={clearErrors}
+                title={"Error"}
+            />
+        )
     }
 
     if (isLoading) {
         return (<Loader />)
     } else {
-
         return (
             <div className="house-dashboard">
-                <ErrorModal
-                    isOpen={error}
-                    buttonText="OK"
-                    errorMessage={error}
-                    onButtonClick={clearErrors}
-                    title={"Error"}
-                />
-                {/* <h2 className="house-dashboard__title">{house.name}</h2> */}
                 <Sidebar title={house.name}>
                     <SidebarItem to={`${props.match.url}/members`}>
                         <IconTextLabel textFirst text="Members" icon="users" />
@@ -167,19 +200,19 @@ const HouseDashBoard = ({ ...props }) => {
                     <SidebarItem to={`${props.match.url}/tasks`}>
                         <IconTextLabel textFirst text="Tasks" icon="tasks" />
                     </SidebarItem>
-                    {isAdmin && 
-                    <SidebarItem to={`${props.match.url}/expenses`}>
-                        <IconTextLabel textFirst text="Expenses" icon="coin-dollar" />
-                    </SidebarItem>}
+                    {isAdmin &&
+                        <SidebarItem to={`${props.match.url}/expenses`}>
+                            <IconTextLabel textFirst text="Expenses" icon="coin-dollar" />
+                        </SidebarItem>}
                     <SidebarItem to={`${props.match.url}/shopping`}>
                         <IconTextLabel textFirst text="Shopping" icon="cart" />
                     </SidebarItem>
                     <SidebarItem to={`${props.match.url}/chat`}>
                         <IconTextLabel textFirst text="Chat" icon="bubble" />
                     </SidebarItem>
-                    {/* <SidebarItem to={`${props.match.url}/settings`}>
+                    <SidebarItem to={`${props.match.url}/settings`}>
                         <IconTextLabel textFirst text="Settings" icon="cog" />
-                    </SidebarItem> */}
+                    </SidebarItem>
                 </Sidebar>
                 <div className="house-dashboard__content">
                     <Switch>
@@ -189,15 +222,16 @@ const HouseDashBoard = ({ ...props }) => {
                                 members={house.members}
                                 admins={house.admins}
                                 onAddMember={handleAddMember}
+                                onMakeMemberAdmin={handleMakeMemberAdmin}
                                 onRemoveMember={handleRemoveMember} />
                         </PrivateRoute>
                         <PrivateRoute exact path={`${props.match.url}/tasks`}>
                             <TasksList house={house} onAlertChange={showAlert} />
                         </PrivateRoute>
                         {isAdmin &&
-                        <PrivateRoute exact path={`${props.match.url}/expenses`}>
-                            <ExpensesList house={house} onAlertChange={showAlert} />
-                        </PrivateRoute>}
+                            <PrivateRoute exact path={`${props.match.url}/expenses`}>
+                                <ExpensesList house={house} onAlertChange={showAlert} />
+                            </PrivateRoute>}
                         <PrivateRoute exact path={`${props.match.url}/shopping`}>
                             <Shopping house={house} onAlertChange={showAlert} />
                         </PrivateRoute>
@@ -205,13 +239,10 @@ const HouseDashBoard = ({ ...props }) => {
                             <Chat house={house} />
                         </PrivateRoute>
                         <PrivateRoute exact path={`${props.match.url}/settings`}>
-                            <div>Settings</div>
+                            <Settings house={house} onLeaveHouse={handleLeaveHouse} />
                         </PrivateRoute>
                     </Switch>
                 </div>
-                {/* <HouseMembersList house={house} members={house.members} admins={house.admins} onAddMember={handleAddMember} />
-                <TasksList house={house} /> */}
-                {/* <ExpensesList expenses={house.expenses} /> */}
             </div>
         )
     }

@@ -19,12 +19,13 @@ import AlertTemplate from "react-alert-template-basic";
 
 
 const TasksList = ({ ...props }) => {
+    const { userData, setUserData } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
-    const [errors, setErrors] = useState(false);
+    const [error, setError] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [sortBy, setSortBy] = useState('date');
     const [sortDesc, setSortDesc] = useState(true);
-
+    const [isAdmin, setIsAdmin] = useState(props.house.admins.some(a => a.id === userData.user.id));
     const [fromDate, setFromDate] = useState(subMonths(new Date(), 1));
     const [toDate, setToDate] = useState(new Date());
     const [filterStatus, setFilterStatus] = useState('Active');
@@ -32,7 +33,7 @@ const TasksList = ({ ...props }) => {
     const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
 
 
-    const { userData } = useAuth();
+    
     useEffect(() => {
         const getTasks = async () => {
             setIsLoading(true);
@@ -57,10 +58,8 @@ const TasksList = ({ ...props }) => {
                 });
                 setTasks(res.data)
             } catch (error) {
-                const response = JSON.parse(error.request.response);
-                if (response.statusCode === 401) {
-                    setErrors(`Seems like you need to login`)
-                }
+                const { statusCode, message } = JSON.parse(error.request.response)
+                setError({ code: statusCode, message });
             } finally {
                 setIsLoading(false);
             }
@@ -103,9 +102,8 @@ const TasksList = ({ ...props }) => {
                 type: 'success'
             });
         } catch (error) {
-            // setErrors(error.toString())
-            console.log(error)
-            // setErrors(JSON.parse(error.request.response).message);
+            const { statusCode, message } = JSON.parse(error.request.response)
+            setError({ code: statusCode, message });
         } finally {
             setIsLoading(false);
         }
@@ -132,7 +130,8 @@ const TasksList = ({ ...props }) => {
                 message: 'Error Deleting',
                 type: 'error'
             })
-            setErrors(JSON.parse(error.request.response).message)
+            const { statusCode, message } = JSON.parse(error.request.response)
+            setError({ code: statusCode, message });
         } finally {
             setIsLoading(false);
         }
@@ -160,7 +159,8 @@ const TasksList = ({ ...props }) => {
             const newTasks = tasks.map(t => t.id === id ? res.data : t);
             setTasks(newTasks);
         } catch (error) {
-            console.log(error.request);
+            const { statusCode, message } = JSON.parse(error.request.response)
+            setError({ code: statusCode, message });
         }
     }
 
@@ -188,13 +188,11 @@ const TasksList = ({ ...props }) => {
                 type: 'success'
             })
         } catch (error) {
-            setErrors(JSON.parse(error.request.response).message);
+            const { statusCode, message } = JSON.parse(error.request.response)
+            setError({ code: statusCode, message });
         }
     }
 
-    const handleClearErrors = () => {
-        setErrors(undefined);
-    }
 
     const handleFromDateChange = (date) => {
         setFromDate(date);
@@ -258,23 +256,36 @@ const TasksList = ({ ...props }) => {
         }
     }
 
+    const handleClearError = () => {
+        if (error.code === 401 || error.code === 403) {
+            setUserData(null);
+        }
+        setError(null);
+    }
+
+    if (error) {
+        return (
+            <ErrorModal
+                isOpen={error}
+                errorMessage={error.message}
+                onButtonClick={handleClearError}
+                title="Error"
+                buttonText="Ok"
+            />
+        )
+    }
+
+
     return (
         <Widget className="tasks-list">
             <div className="tasks-list__title">
-                <ErrorModal
-                    buttonText="Ok"
-                    errorMessage={errors}
-                    isOpen={errors}
-                    onButtonClick={handleClearErrors}
-                    title="Oops"
-                />
                 <Modal isOpen={showCreateTaskModal} onRequestClose={toggleShowCreateTaskForm}>
                     <CreateTaskForm
                         house={props.house}
                         onSubmit={handleCreateTask} />
                 </Modal>
                 <IconTextLabel icon="tasks" text="Tasks" />
-                <Button className="button button--inverse" onClick={toggleShowCreateTaskForm}>Create Task</Button>
+                {isAdmin && <Button className="button button--inverse" onClick={toggleShowCreateTaskForm}>Create Task</Button>}
             </div>
             {isLoading ? <Loader /> :
                 <Fragment>
@@ -312,6 +323,7 @@ const TasksList = ({ ...props }) => {
                                     key={task.id}
                                     task={task}
                                     members={props.house.members}
+                                    admins={props.house.admins}
                                     onUpdate={handleTaskUpdate}
                                     onTaskCompleted={handleTaskCompleted}
                                     deleteTask={deleteTask} />)}

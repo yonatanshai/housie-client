@@ -52,7 +52,6 @@ function App() {
     toggleShowSessionExpiredModal();
   }
 
-  console.log('app.js');
   const alertOptions = {
     position: positions.BOTTOM_CENTER,
     timeout: 3000,

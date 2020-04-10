@@ -40,13 +40,15 @@
     text-transform: capitalize;
 }
 
-.text-input:focus {
+.text-input:focus, .valid {
     border: 1px solid var(--dark-primary-color);
 }
 
 .error {
-    border: 1px solid var(--danger-color);
+    border: 1px solid var(--danger-color) !important;
 }
+
+
 
 .label {
     font-size: 1.8rem;

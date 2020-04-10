@@ -19,17 +19,15 @@
 }
 
 .button:disabled {
-    color: currentColor;
+    color: var(--secondary-text-color);
     cursor: not-allowed;
     background-color: var(--light-hover-color);
-    border: 1px solid currentColor;
+    /* border: 1px solid currentColor; */
 }
 
 .button:disabled:hover {
-    /* background-color: var(--light-hover-color);
-    color: currentColor; */
-    background-color: inherit;
-    color: inherit;
+    color: var(--secondary-text-color);
+    background-color: var(--light-hover-color);
 }
 
 .button--common { 
@@ -148,6 +146,13 @@
 
 .button--icon {
     background: none;
+    cursor: pointer;
+}
+
+.button--icon:disabled, .button--icon:disabled:hover {
+    background: none;
+    cursor: initial;
+    color: transparent;
 }
 
 .button--icon:focus {

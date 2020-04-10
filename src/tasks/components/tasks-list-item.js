@@ -7,10 +7,17 @@ import Icon from '../../shared/components/ui-elements/icon';
 import ReactTooltip from 'react-tooltip';
 import { format } from 'date-fns';
 import Dropdown from '../../shared/components/form-elements/dropdown';
+import { useAuth } from '../../context/auth-context';
+import EditableText from '../../shared/components/form-elements/editable-text';
+import ListItemSaveChanges from '../../shared/components/form-elements/list-item-save-changes';
 
 const getUser = (userId, members) => {
     const member = members.find(m => m.id === userId);
     return member
+}
+
+const isAdmin = (admins, userId) => {
+    return admins.some(a => a.id === userId);
 }
 
 const TasksListItem = ({ task, ...props }) => {
@@ -19,6 +26,7 @@ const TasksListItem = ({ task, ...props }) => {
     const [selectedPriority, setSelectedPriority] = useState(task.priority);
     const [showEditTitle, setShowEditTitle] = useState(false);
     const [title, setTitle] = useState(task.title);
+    const { userData } = useAuth();
     const [valueChanged, setValueChanged] = useState(false);
 
     const handleCompleteTask = () => {
@@ -60,11 +68,13 @@ const TasksListItem = ({ task, ...props }) => {
     }
 
     const handleTitleDoubleClicked = () => {
-        setShowEditTitle(true);
+        if (isAdmin(props.admins, userData.user.id)) {
+            setShowEditTitle(true);
+        }
     }
 
-    const handleTitleChanged = (e) => {
-        setTitle(e.target.value);
+    const handleTitleChanged = (value) => {
+        setTitle(value);
         setValueChanged(true);
     }
 
@@ -80,18 +90,13 @@ const TasksListItem = ({ task, ...props }) => {
 
         <div className={`tasks-list-item ${valueChanged && 'task-list-item--edited'}`}>
             <div className="title-container" data-tip="Double click to edit" onDoubleClick={handleTitleDoubleClicked} >
-                {
-                    showEditTitle ?
-                        <input
-                            className="tasks-list-item__title"
-                            type="text"
-                            value={title}
-                            autoFocus
-                            disabled={!showEditTitle}
-                            onBlur={handleTitleBlur}
-                            onChange={handleTitleChanged}
-                        /> :
-                        !showEditTitle && <span className="tasks-list-item__title">{title}</span>}
+                <EditableText
+                    value={title}
+                    autoFocus
+                    mode={showEditTitle ? 'EDIT' : 'TEXT'}
+                    onBlur={handleTitleBlur}
+                    onChange={handleTitleChanged}
+                />
             </div>
             <ReactTooltip delayShow={500} />
 
@@ -101,32 +106,35 @@ const TasksListItem = ({ task, ...props }) => {
             <ReactTooltip delayShow={500} />
 
             {/* <span data-tip="Task Priority" className={`tasks-list-item__priority tasks-list-item__priority--${task.priority}`}>{task.priority}</span> */}
-            <Dropdown dataTip="Priority" onSelect={handlePriorityChanged} value={selectedPriority} className={`tasks-list-item__priority tasks-list-item__priority--${selectedPriority}`}>
+            <Dropdown disabled={!isAdmin(props.admins, userData.user.id)} dataTip="Priority" onSelect={handlePriorityChanged} value={selectedPriority} className={`tasks-list-item__priority tasks-list-item__priority--${selectedPriority}`}>
                 <option value="low">Low</option>
                 <option value="normal">Normal</option>
                 <option value="high">High</option>
             </Dropdown>
             <ReactTooltip delayShow={500} />
 
-            <Dropdown value={assignedUser.id} className="tasks-list-item__user" onSelect={handleAssignUserClicked}>
+            <Dropdown disabled={!isAdmin(props.admins, userData.user.id)} value={assignedUser.id} className="tasks-list-item__user" onSelect={handleAssignUserClicked}>
                 {props.members.map(m => <option key={m.id} value={m.id}>{m.username}</option>)}
             </Dropdown>
 
-            <Checkbox dataTip="Complete task" className="tasks-list-item__complete-task" onChange={handleCompleteTask} checked={isCompleted} disabled={task.status === TaskStatus.completed} />
+
+            <Checkbox dataTip="Complete task" className="tasks-list-item__complete-task" onChange={handleCompleteTask} checked={isCompleted} disabled={(task.status === TaskStatus.completed) || (task.userId !== userData.user.id)} />
             <ReactTooltip delayShow={500} />
 
-            <Button className="tasks-list-item__delete-task" onClick={handleDeleteTask}>
-                <Icon name="cancel-circle" />
-            </Button>
+            {isAdmin(props.admins, userData.user.id) &&
+                <Button className="tasks-list-item__delete-task" onClick={handleDeleteTask}>
+                    <Icon name="cancel-circle" />
+                </Button>}
             {valueChanged &&
-                <div className="changes-container">
-                    <Button className="tasks-list-item__user-confirm" onClick={handleConfirmChanges}>
-                        <Icon name="checkmark" />
-                    </Button>
-                    <Button className="tasks-list-item__cancel-changes" onClick={handleCancelChanges}>
-                        <Icon name="cross" />
-                    </Button>
-                </div>
+                // <div className="changes-container">
+                //     <Button className="tasks-list-item__user-confirm" onClick={handleConfirmChanges}>
+                //         <Icon name="checkmark" />
+                //     </Button>
+                //     <Button className="tasks-list-item__cancel-changes" onClick={handleCancelChanges}>
+                //         <Icon name="cross" />
+                //     </Button>
+                // </div>
+                <ListItemSaveChanges onConfirmChanges={handleConfirmChanges} onCancelChanges={handleCancelChanges}/>
             }
         </div>
     )

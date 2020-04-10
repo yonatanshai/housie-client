@@ -6,6 +6,7 @@
     padding: 1rem 4rem;
     font-size: 1.2;
     text-align: start;
+    height: 4rem;
     /* cursor: pointer; */
     transition: .2s ease-in-out;
     text-transform: capitalize;

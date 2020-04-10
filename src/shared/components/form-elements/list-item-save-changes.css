@@ -1,0 +1,27 @@
+.changes-container {
+    flex: 0;
+    display: flex;
+    
+}
+
+.tasks-list-item__user-confirm {
+    /* position: absolute; */
+    /* right: 10px; */
+    flex: 0;
+    color: currentColor;
+    background: none;
+}
+
+.tasks-list-item__user-confirm:hover {
+    color: var(--success-color);
+}
+
+.tasks-list-item__cancel-changes {
+    flex: 0;
+    color: currentColor;
+    background: none;
+}
+
+.tasks-list-item__cancel-changes:hover {
+    color: var(--danger-color);
+}

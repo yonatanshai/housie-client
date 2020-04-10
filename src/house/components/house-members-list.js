@@ -24,6 +24,12 @@ const HouseMembersList = ({ house, members, admins, ...props }) => {
         props.onRemoveMember(id);
     }
 
+    const handleMakeAdmin = (id) => {
+        props.onMakeMemberAdmin(id);
+    }
+
+    console.log(house)
+
     return (
         <Widget className="house-members-list">
             <Modal isOpen={showAddMemberForm} onRequestClose={toggleShowAddMembersForm}>
@@ -33,7 +39,13 @@ const HouseMembersList = ({ house, members, admins, ...props }) => {
                 <IconTextLabel icon="users" text="Members" />
                 <IconTextButton className="button button--inverse" icon="user-plus" text="add member" onClick={toggleShowAddMembersForm}/>
             </div>
-            {members.map(member => <HouseMembersListItem onRemove={handleRemoveMember} key={member.id} member={member} isAdmin={admins.some(a => a.id === member.id)} />)}
+            {members.map(member => <HouseMembersListItem
+                onRemove={handleRemoveMember}
+                onMakeAdmin={handleMakeAdmin}
+                key={member.id}
+                member={member}
+                admins={admins}
+                isAdmin={admins.some(a => a.id === member.id)} />)}
         </Widget>
     )
 }

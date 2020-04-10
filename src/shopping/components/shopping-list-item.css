@@ -8,6 +8,11 @@
     border-bottom: 1px solid var(--divider-color);
     color: var(--secondary-text-color);
     text-transform: capitalize;
+    transition: all .2s ease-in-out;
+}
+
+.altered {
+    background-color: var(--light-success-color);
 }
 
 .list-item-enter {

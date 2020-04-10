@@ -1,12 +1,12 @@
 import React from 'react';
-import {  NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import './main-header.css'
 import Icon from '../ui-elements/icon';
 import { useAuth } from '../../../context/auth-context';
 
 const MainHeader = props => {
     const { userData, setUserData } = useAuth();
-    
+
     const logout = () => {
         setUserData(null);
     }
@@ -20,7 +20,9 @@ const MainHeader = props => {
                 <Icon className="logo-container__icon" name="home" />
                 <span className="main-header__app-name">Housie</span>
             </NavLink>
+
             <div className="main-header__navigation">
+                {userData && <span className="main-header__username">Hello {userData.user.username}</span>}
                 <NavLink className="main-header__link" to="/">
                     My Houses
                 </NavLink>
@@ -29,9 +31,9 @@ const MainHeader = props => {
                     :
                     <NavLink className="main-header__link" to="/auth">
                         Login
-                    </NavLink> 
-                    
+                    </NavLink>
                 }
+
             </div>
         </div>
     )

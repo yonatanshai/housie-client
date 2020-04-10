@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import './dropdown.css';
 
-const Dropdown = ({ options, label, name, defaultValue, value, ...props }) => {
+const Dropdown = ({ options, label, name, defaultValue, value, disabled, ...props }) => {
     const handleSelect = (e) => {
         props.onSelect(e.target.value);
     }
@@ -10,7 +10,7 @@ const Dropdown = ({ options, label, name, defaultValue, value, ...props }) => {
     return (
         <Fragment>
             {label && <label className="dropdown__label" htmlFor={name}>{label}</label>}
-            <select data-tip={props.dataTip} placeholder="Status" className={`dropdown ${props.className}`} value={value} onChange={handleSelect}>
+            <select disabled={disabled} data-tip={props.dataTip} placeholder="Status" className={`dropdown ${props.className}`} value={value} onChange={handleSelect}>
                 {/* {options.map(option => <option className="dropdown__option" key={option.id} value={option.value}>{option.text}</option>)} */}
                 {props.children}
             </select>

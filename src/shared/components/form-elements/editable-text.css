@@ -1,0 +1,17 @@
+.editable-text {
+    font-size: inherit;
+    padding: inherit;
+    border-bottom: solid 2px transparent;   
+}
+
+.editable-text:hover{
+    border-bottom: 2px solid var(--default-primary-color);
+}
+
+.input {
+    font-size: inherit;
+    text-transform: inherit;
+    padding: .5rem;
+    border: none;
+    outline: none;
+}
