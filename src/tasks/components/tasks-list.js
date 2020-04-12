@@ -14,8 +14,75 @@ import ErrorModal from '../../shared/components/ui-elements/error-modal';
 import DateFilter from '../../shared/components/dashboard/date-filter';
 import Dropdown from '../../shared/components/form-elements/dropdown';
 import { format, startOfDay, endOfDay, subMonths } from 'date-fns';
-import { Provider as AlertProvider, positions, transitions, useAlert, } from 'react-alert';
-import AlertTemplate from "react-alert-template-basic";
+import Icon from '../../shared/components/ui-elements/icon';
+
+const statusRank = {
+    'new': 0,
+    'assigned': 1,
+    'inProgress': 2,
+    'completed': 3
+}
+
+const priorityRank = {
+    'low': 0,
+    'normal': 1,
+    'high': 2
+}
+
+console.log(statusRank['a'])
+
+const sortTasks = (tasks, sortBy, sortDir) => {
+    let sortedTasks = [...tasks];
+    switch (sortBy) {
+        case 'date':
+            sortedTasks = [...tasks].sort((a, b) => {
+                if (a.createdAt === b.createdAt) {
+                    return 0;
+                } else if (a.createdAt < b.createdAt) {
+                    return sortDir === 'asc' ? -1 : 1;
+                } else {
+                    return sortDir === 'asc' ? 1 : -1;
+                }
+            });
+            break;
+        case 'title':
+            sortedTasks = [...tasks].sort((a, b) => {
+                if (a.title === b.title) {
+                    return 0;
+                } else if (a.title < b.title) {
+                    return sortDir === 'asc' ? -1 : 1;
+                } else {
+                    return sortDir === 'asc' ? 1 : -1;
+                }
+            });
+            break;
+        case 'status':
+            sortedTasks.sort((a, b) => {
+                if (statusRank[a.status] === statusRank[b.status]) {
+                    return 0;
+                } else if (statusRank[a.status] < statusRank[b.status]) {
+                    return sortDir === 'asc' ? -1 : 1;
+                } else {
+                    return sortDir === 'asc' ? 1 : -1;
+                }
+            })
+            break;
+        case 'priority':
+            sortedTasks.sort((a, b) => {
+                if (priorityRank[a.priority] === priorityRank[b.priority]) {
+                    return 0;
+                } else if (priorityRank[a.priority] < priorityRank[b.priority]) {
+                    return sortDir === 'asc' ? -1 : 1;
+                } else {
+                    return sortDir === 'asc' ? 1 : -1;
+                }
+            })
+            break;
+        default:
+            break;
+    }
+    return sortedTasks;
+}
 
 
 const TasksList = ({ ...props }) => {
@@ -24,7 +91,7 @@ const TasksList = ({ ...props }) => {
     const [error, setError] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [sortBy, setSortBy] = useState('date');
-    const [sortDesc, setSortDesc] = useState(true);
+    const [sortDir, setSortDir] = useState('desc');
     const [isAdmin, setIsAdmin] = useState(props.house.admins.some(a => a.id === userData.user.id));
     const [fromDate, setFromDate] = useState(subMonths(new Date(), 1));
     const [toDate, setToDate] = useState(new Date());
@@ -33,7 +100,7 @@ const TasksList = ({ ...props }) => {
     const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
 
 
-    
+
     useEffect(() => {
         const getTasks = async () => {
             setIsLoading(true);
@@ -56,7 +123,7 @@ const TasksList = ({ ...props }) => {
                         'authorization': 'Bearer ' + userData.token
                     }
                 });
-                setTasks(res.data)
+                setTasks(sortTasks(res.data, 'date', 'desc'));
             } catch (error) {
                 const { statusCode, message } = JSON.parse(error.request.response)
                 setError({ code: statusCode, message });
@@ -215,45 +282,11 @@ const TasksList = ({ ...props }) => {
     }
 
     const handleSortByChanged = (value) => {
-        sortTasks(value);
+        setSortBy(value);
     };
 
     const handleSortDirectionChanged = () => {
-        setSortDesc(prev => !prev);
-        sortTasks(sortBy)
-    }
-
-    const sortTasks = (value) => {
-        setSortBy(value);
-        let sortedTasks;
-        switch (value) {
-            case 'date':
-                sortedTasks = [...tasks].sort((a, b) => {
-                    if (a.createdAt === b.createdAt) {
-                        return 0;
-                    } else if (a.createdAt < b.createdAt) {
-                        return sortDesc ? 1 : -1;
-                    } else {
-                        return sortDesc ? -1 : 1;
-                    }
-                });
-                setTasks(sortedTasks);
-                break;
-            case 'title':
-                sortedTasks = [...tasks].sort((a, b) => {
-                    if (a.title === b.title) {
-                        return 0;
-                    } else if (a.title < b.title) {
-                        return sortDesc ? 1 : -1;
-                    } else {
-                        return sortDesc ? -1 : 1;
-                    }
-                });
-                setTasks(sortedTasks);
-                break;
-            default:
-                break;
-        }
+        setSortDir(prev => prev === 'asc' ? 'desc' : 'asc');
     }
 
     const handleClearError = () => {
@@ -262,6 +295,10 @@ const TasksList = ({ ...props }) => {
         }
         setError(null);
     }
+
+    useEffect(() => {
+        setTasks(prev => sortTasks(prev, sortBy, sortDir));
+    }, [sortDir, sortBy])
 
     if (error) {
         return (
@@ -311,7 +348,9 @@ const TasksList = ({ ...props }) => {
                                 <option value="priority">Priority</option>
                             </Dropdown>
 
-                            <div className={sortDesc ? "arrow-down" : "arrow-up"} onClick={handleSortDirectionChanged}></div>
+                            <Button className="button--icon" onClick={handleSortDirectionChanged}>
+                                <Icon name={`${sortDir === 'asc' ? 'move-up' : 'move-down'}`} />
+                            </Button>
                             {/* <Button type="button" className="button--inverse button--inverse-success">Search</Button> */}
                         </div>
                         <span style={{ padding: '0 1rem', fontWeight: '600' }}>{`Results: ${tasks.length}`}</span>

@@ -20,6 +20,11 @@
     padding: 0 1rem;
 }
 
+.down {
+    background-color: red;
+    transform: translateX(90deg);
+}
+
 .number-input {
     padding: 1rem;
     font-size: 1.6rem;

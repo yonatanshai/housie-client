@@ -11,7 +11,53 @@ import { useAuth } from '../../context/auth-context';
 import ErrorModal from '../../shared/components/ui-elements/error-modal';
 import DateFilter from '../../shared/components/dashboard/date-filter';
 import { subMonths, endOfDay, format, startOfDay } from 'date-fns';
-import ExpenseStats from './expense-stats';
+import Dropdown from '../../shared/components/form-elements/dropdown';
+import Icon from '../../shared/components/ui-elements/icon';
+import ReactTooltip from 'react-tooltip';
+
+
+const sortExpenses = (expenses, sortBy, sortDir) => {
+    let sortedExpenses = [...expenses];
+    switch (sortBy) {
+        case 'amount':
+
+            sortedExpenses.sort((a, b) => {
+                if (a.amount < b.amount) {
+                    return sortDir === 'asc' ? -1 : 1;
+                } else if (b.amount < a.amount) {
+                    return sortDir === 'asc' ? 1 : -1;
+                } else {
+                    return 0;
+                }
+            });
+            break;
+        case 'title':
+            sortedExpenses.sort((a, b) => {
+                if (a.title === b.title) {
+                    return 0;
+                } else if (a.title < b.title) {
+                    return sortDir === 'asc' ? -1 : 1;
+                } else {
+                    return sortDir === 'asc' ? 1 : -1;
+                }
+            })
+            break;
+        case 'date':
+            sortedExpenses.sort((a, b) => {
+                if (a.createdAt === b.createdAt) {
+                    return 0;
+                } else if (a.createdAt < b.createdAt) {
+                    return sortDir === 'asc' ? -1 : 1;
+                } else {
+                    return sortDir === 'asc' ? 1 : -1;
+                }
+            });
+            break;
+        default:
+            break;
+    }
+    return sortedExpenses;
+}
 
 const ExpensesList = ({ house, ...props }) => {
     const [expenses, setExpenses] = useState([]);
@@ -23,6 +69,8 @@ const ExpensesList = ({ house, ...props }) => {
     const [filterMinAmount, setFilterMinAmount] = useState('');
     const [filterMaxAmount, setFilterMaxAmount] = useState('');
     const [showCreateExpenseForm, setShowCreateExpenseForm] = useState(false);
+    const [sortBy, setSortBy] = useState('date');
+    const [sortByDir, setSortByDir] = useState('desc');
     // const [filtersSearchText, setFiltersSearchText] = useState(undefined);
     const [error, setError] = useState(null);
     const { userData } = useAuth();
@@ -47,7 +95,6 @@ const ExpensesList = ({ house, ...props }) => {
                 url += `&smallerThan=${maxAmount}`;
             }
 
-            console.log(url)
             try {
                 setIsLoading(true);
                 const res = await Axios({
@@ -58,9 +105,9 @@ const ExpensesList = ({ house, ...props }) => {
                         'authorization': 'Bearer ' + userData.token
                     },
                 });
-                setExpenses(res.data)
+                setExpenses(sortExpenses(res.data, 'date', 'desc'));
+                
             } catch (error) {
-                console.log(error.request)
                 setError('error');
             } finally {
                 setIsLoading(false)
@@ -172,14 +219,20 @@ const ExpensesList = ({ house, ...props }) => {
     }
 
     const handleFilter = () => {
-
         filterMinAmount.trim().length > 0 ? setMinAmount(filterMinAmount) : setMinAmount(null);
         filterMaxAmount.trim().length > 0 ? setMaxAmount(filterMaxAmount) : setMaxAmount(null);
     }
 
-    if (isLoading) {
-        return <h1>Loading...</h1>
+    const handleSortBy = (val) => {
+        setSortBy(val);
     }
+
+
+
+    useEffect(() => {
+        // const e = sortExpenses(expenses, sortBy, sortByDir);
+        setExpenses(e => sortExpenses(e, sortBy, sortByDir));
+    }, [sortBy, sortByDir]);
 
     return (
         <Widget className="expenses-list">
@@ -209,6 +262,18 @@ const ExpensesList = ({ house, ...props }) => {
                         <input value={filterMinAmount} onChange={handleMinAmountFilterChange} min="0" className="number-input" type="number" name="amount" step="0.01" placeholder="greater than" />
                         <input value={filterMaxAmount} onChange={handleMaxAmountFilterChange} min="0" className="number-input" type="number" name="amount" label="Amount" step="0.01" placeholder="smaller than" />
                     </div>
+                    <Dropdown
+                        value={sortBy}
+                        label="Sort By" onSelect={handleSortBy}
+                    >
+                        <option value="date">Date</option>
+                        <option value="amount">Amount</option>
+                        <option value="title">Title</option>
+                    </Dropdown>
+                    <Button className="button--icon" dataTip="Sort Direction" onClick={() => setSortByDir(prev => prev === 'asc' ? 'desc' : 'asc')}>
+                        <Icon name={`${sortByDir === 'asc' ? 'move-up' : 'move-down'}`} />
+                    </Button>
+                    <ReactTooltip delayShow={400} />
                     <Button className="button--inverse-modify" onClick={handleFilter}>Filter</Button>
                     <Button className="button--inverse-gray" onClick={resetFilters}>Reset</Button>
                 </div>
