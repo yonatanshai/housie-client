@@ -91,7 +91,7 @@ const ExpensesList = ({ house, ...props }) => {
                 }
             });
             setExpenses([...expenses, res.data]);
-            props.onAlertChange({message: 'Expense Added', type: 'success'});
+            props.onAlertChange({ message: 'Expense Added', type: 'success' });
         } catch (error) {
             const e = JSON.parse(error.request.response);
             setError(e.error);
@@ -111,10 +111,36 @@ const ExpensesList = ({ house, ...props }) => {
                 }
             });
             setExpenses(expenses.filter(e => e.id !== expenseId));
-            props.onAlertChange({message: 'Expense Deleted', type: 'success'});
+            props.onAlertChange({ message: 'Expense Deleted', type: 'success' });
         } catch (error) {
             const e = JSON.parse(error.request.response);
             setError(e.error);
+        }
+    }
+
+    const handleUpdateExpense = async (values) => {
+        try {
+            const res = await Axios({
+                method: 'PATCH',
+                url: `${process.env.REACT_APP_API_BASE_URL}/expenses/${values.expenseId}`,
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': 'Bearer ' + userData.token
+                },
+                data: {
+                    title: values.title,
+                    amount: values.amount ? parseFloat(values.amount) : null,
+                    houseId: house.id
+                }
+            });
+            setExpenses(expenses.map(expense => expense.id === values.expenseId ? res.data : expense));
+            props.onAlertChange({
+                message: 'Expense updated!',
+                type: 'success'
+            })
+        } catch (error) {
+            const e = JSON.parse(error.request.response);
+            setError(e.message);
         }
     }
 
@@ -146,7 +172,7 @@ const ExpensesList = ({ house, ...props }) => {
     }
 
     const handleFilter = () => {
-        
+
         filterMinAmount.trim().length > 0 ? setMinAmount(filterMinAmount) : setMinAmount(null);
         filterMaxAmount.trim().length > 0 ? setMaxAmount(filterMaxAmount) : setMaxAmount(null);
     }
@@ -186,12 +212,16 @@ const ExpensesList = ({ house, ...props }) => {
                     <Button className="button--inverse-modify" onClick={handleFilter}>Filter</Button>
                     <Button className="button--inverse-gray" onClick={resetFilters}>Reset</Button>
                 </div>
-                <h4 style={{padding: '0 1rem', margin: '0'}}>Results: <span>{expenses.length}</span></h4>
+                <h4 style={{ padding: '0 1rem', margin: '0' }}>Results: <span>{expenses.length}</span></h4>
 
             </div>
             <div className="expense-list__data">
                 {expenses.length === 0 ? <p>No Expenses</p> :
-                expenses.map(ex => <ExpensesListItem key={ex.id} expense={ex} onDelete={handleDeleteExpense} />)}
+                    expenses.map(ex => <ExpensesListItem
+                        key={ex.id}
+                        expense={ex}
+                        onUpdate={handleUpdateExpense}
+                        onDelete={handleDeleteExpense} />)}
             </div>
         </Widget>
     )

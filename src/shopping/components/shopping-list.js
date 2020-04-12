@@ -33,10 +33,6 @@ const ShoppingList = ({ list, admins, ...props }) => {
         props.onUpdateItem({ listId: list.id, itemId: values.id, ...values });
     }
 
-    const handleEditItem = (id) => {
-        console.log(id);
-    }
-
     const archiveList = (values) => {
         setShowAddToExpensesForm(false);
         setShowArchiveDialog(false);

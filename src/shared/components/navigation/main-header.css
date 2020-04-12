@@ -1,5 +1,5 @@
 .main-header {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     display: flex;
     align-items: center;
     width: 100%;
@@ -11,6 +11,7 @@
     z-index: 555;
     background-color: #FFFFFF;
     color: var(--secondary-text-color);
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .logo-container {
@@ -39,10 +40,17 @@
 
 .main-header__navigation {
     margin-left: auto;
+    padding: 0;
+    display: flex;
+    align-items: center;
     /* padding: 2rem; */
     /* height: 100%;
     display: flex;
     align-items: center; */
+}
+
+.main-header__navigation > * {
+    padding: 0;
 }
 
 .main-header__link {
@@ -72,6 +80,7 @@
 }
 
 .main-header__username {
-    color: var(--default-primary-color);
+    /* color: var(--default-primary-color); */
     margin: 0 1rem;
+    text-decoration: underline;
 }

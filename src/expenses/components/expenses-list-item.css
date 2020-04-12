@@ -11,6 +11,10 @@
     transition: all .2s ease-in;
 }
 
+.expense-list-item--edited {
+    background-color: var(--light-success-color);
+}
+
 .expenses-list-item:hover {
     background-color: var(--light-hover-color);
 }

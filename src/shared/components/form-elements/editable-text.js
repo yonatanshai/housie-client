@@ -6,9 +6,21 @@ const MODE_EDIT = 'EDIT';
 
 
 
-const EditableText = ({ mode, value, autoFocus, disabled, onChange, onBlur, ...props }) => {
+const EditableText = ({
+    mode,
+    value,
+    autoFocus,
+    disabled,
+    onChange,
+    onBlur,
+    type,
+    step,
+    min,
+    name,
+    ...props }) => {
+
     const handleChange = (e) => {
-        onChange(e.target.value);
+        onChange({value: e.target.value, name});
     }
 
     return (
@@ -16,10 +28,14 @@ const EditableText = ({ mode, value, autoFocus, disabled, onChange, onBlur, ...p
             {mode === MODE_EDIT && <input
                 className="input"
                 onChange={handleChange}
-                onBlur={() => onBlur()}
+                onBlur={() => onBlur(name)}
                 value={value}
                 autoFocus={autoFocus}
                 disabled={disabled}
+                name={name}
+                type={type}
+                step={step}
+                min={min}
             />}
             {mode !== MODE_EDIT && <span>{value}</span>}
         </div>

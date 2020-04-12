@@ -207,6 +207,11 @@ const Shopping = ({ house, ...props }) => {
                     message: 'Shopping list added to expenses',
                     type: 'success'
                 })
+            } else if (!isActive) {
+                props.onAlertChange({
+                    message: 'List archived',
+                    type: 'success'
+                })
             }
         } catch (error) {
             const { statusCode, message } = JSON.parse(error.request.response)

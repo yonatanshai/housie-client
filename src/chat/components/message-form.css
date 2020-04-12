@@ -1,9 +1,18 @@
 .message-form {
     display: flex;
     align-items: center;
+    flex: 0;
+    align-self: flex-end;
+    position: relative;
+    
+    /* width: 100%; */
 }
 
-.message-form input {
+.message-form > * {
+    width: 100%;
+}
+
+.message-form > input {
     width: 100%;
 }
 

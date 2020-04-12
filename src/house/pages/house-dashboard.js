@@ -207,9 +207,9 @@ const HouseDashBoard = ({ ...props }) => {
                     <SidebarItem to={`${props.match.url}/shopping`}>
                         <IconTextLabel textFirst text="Shopping" icon="cart" />
                     </SidebarItem>
-                    <SidebarItem to={`${props.match.url}/chat`}>
+                    {/* <SidebarItem to={`${props.match.url}/chat`}>
                         <IconTextLabel textFirst text="Chat" icon="bubble" />
-                    </SidebarItem>
+                    </SidebarItem> */}
                     <SidebarItem to={`${props.match.url}/settings`}>
                         <IconTextLabel textFirst text="Settings" icon="cog" />
                     </SidebarItem>
@@ -235,9 +235,9 @@ const HouseDashBoard = ({ ...props }) => {
                         <PrivateRoute exact path={`${props.match.url}/shopping`}>
                             <Shopping house={house} onAlertChange={showAlert} />
                         </PrivateRoute>
-                        <PrivateRoute exact path={`${props.match.url}/chat`}>
+                        {/* <PrivateRoute exact path={`${props.match.url}/chat`}>
                             <Chat house={house} />
-                        </PrivateRoute>
+                        </PrivateRoute> */}
                         <PrivateRoute exact path={`${props.match.url}/settings`}>
                             <Settings house={house} onLeaveHouse={handleLeaveHouse} />
                         </PrivateRoute>

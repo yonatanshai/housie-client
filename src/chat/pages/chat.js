@@ -4,7 +4,7 @@ import Conversation from '../components/conversation';
 
 const  Chat = ({...props}) => {
     return (
-        <div>
+        <div className="chat-page">
             <Conversation />
         </div>
     )

@@ -66,14 +66,14 @@ function App() {
       >
         <AuthContext.Provider value={{ userData, setUserData: updateUserData }}>
           <BrowserRouter>
-            <ErrorModal
+            {/* <ErrorModal
               isOpen={showExpiredSessionModal}
               title="Session Expired"
               onButtonClick={handleTokenExpired}
               buttonText="Ok"
               errorMessage="Please login to continue"
 
-            />
+            /> */}
             <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
               <MainHeader />
               <div style={{ display: 'flex', width: '100%', height: '100%' }}>

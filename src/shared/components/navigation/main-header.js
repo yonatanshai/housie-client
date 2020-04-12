@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import './main-header.css'
 import Icon from '../ui-elements/icon';
 import { useAuth } from '../../../context/auth-context';
+import IconTextLabel from '../ui-elements/icon-text-label';
 
 const MainHeader = props => {
     const { userData, setUserData } = useAuth();
@@ -27,7 +28,7 @@ const MainHeader = props => {
                     My Houses
                 </NavLink>
                 {userData ?
-                    <NavLink to="/auth" className="button--link main-header__link" onClick={logout}>Logout</NavLink>
+                    <NavLink to="/auth" className="button--link main-header__link" onClick={logout}><IconTextLabel textFirst icon="exit" text="Logout"/></NavLink>
                     :
                     <NavLink className="main-header__link" to="/auth">
                         Login

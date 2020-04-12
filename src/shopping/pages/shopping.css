@@ -9,7 +9,7 @@
 .shopping__title {
     grid-column: 1 / -1;
     grid-row: 1;
-
+    
     text-align: start;
     font-weight: 700;
     display: flex;
