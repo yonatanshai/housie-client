@@ -34,7 +34,7 @@ const ShoppingListItem = ({ item, ...props }) => {
         props.onItemCheck(item.id);
     }
 
-    const handleTitleChange = (value) => {
+    const handleTitleChange = ({value}) => {
         setTitleValue(value);
     }
 
@@ -60,8 +60,9 @@ const ShoppingListItem = ({ item, ...props }) => {
             <div onDoubleClick={() => setEditTitle(true)}>
                 <EditableText 
                     value={titleValue}
-                    mode={editTitle ? 'EDIT' : 'TEXT'}
+                    mode={editTitle && props.isActive ? 'EDIT' : 'TEXT'}
                     autoFocus
+                    disabled={!props.isActive}
                     onBlur={handleTitleEditBlur}
                     onChange={handleTitleChange}
                 />
@@ -77,7 +78,7 @@ const ShoppingListItem = ({ item, ...props }) => {
             <Button disabled={!props.isActive} className="button--icon list-item__delete" onClick={handleDelete}>
                 <Icon name="cancel-circle" />
             </Button>
-            {valuesChanged &&
+            {valuesChanged && props.isActive &&
                 <ListItemSaveChanges onCancelChanges={handleCancelChanges} onConfirmChanges={handleConfirmChanges}/>
             }
         </div>

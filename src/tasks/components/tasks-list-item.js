@@ -121,7 +121,6 @@ const TasksListItem = ({ task, members, ...props }) => {
                 {!assignedUser && [...members, { id: -1, username: '-' }].map(m => <option key={m.id} value={m.id}>{m.username}</option>)}
             </Dropdown>
 
-
             <Checkbox dataTip="Complete task" className="tasks-list-item__complete-task" onChange={handleCompleteTask} checked={isCompleted} disabled={(task.status === TaskStatus.completed) || (task.userId !== userData.user.id)} />
             <ReactTooltip delayShow={500} />
 
