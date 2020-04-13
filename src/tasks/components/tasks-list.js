@@ -141,7 +141,7 @@ const TasksList = ({ ...props }) => {
 
     const handleCreateTask = async (values) => {
 
-        const assignee = props.house.members.find(m => m.username === values.assignee);
+        const assignee = values.assignee === '-' ? null : props.house.members.find(m => m.username === values.assignee);
 
         const url = process.env.REACT_APP_API_BASE_URL + '/tasks';
 
@@ -149,7 +149,7 @@ const TasksList = ({ ...props }) => {
             houseId: props.house.id,
             title: values.title,
             description: values.description || null,
-            userToAssignId: assignee.id,
+            userToAssignId: assignee && assignee.id,
             priority: values.priority
         });
 

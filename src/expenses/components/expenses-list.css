@@ -12,6 +12,10 @@
     border-bottom: 2px solid var(--divider-color);   
 }
 
+.results-summary {
+    display: flex;
+}
+
 .expenses-list__title > :not(:last-child) {
     margin-right: 1rem;
 }

@@ -16,13 +16,16 @@ import SidebarItem from '../../shared/components/navigation/sidebar-item';
 import Chat from '../../chat/pages/chat';
 import { useAlert } from 'react-alert';
 import Settings from '../../settings/pages/settings';
+import Dialog from '../../shared/components/ui-elements/yes-no-dialog';
 
 const HouseDashBoard = ({ ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [house, setHouse] = useState();
     const [isAdmin, setIsAdmin] = useState(false);
     const [error, setError] = useState(null);
+    const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
     const { userData, setUserData } = useAuth();
+
     const alert = useAlert();
 
     useEffect(() => {
@@ -40,8 +43,8 @@ const HouseDashBoard = ({ ...props }) => {
                 });
                 setHouse(res.data);
             } catch (error) {
-                const {statusCode, message} = JSON.parse(error.request.response);
-                setError({code: statusCode, message});
+                const { statusCode, message } = JSON.parse(error.request.response);
+                setError({ code: statusCode, message });
             }
         }
         fetchHouse();
@@ -78,16 +81,17 @@ const HouseDashBoard = ({ ...props }) => {
 
             switch (statusCode) {
                 case 400:
-                    setError({code: statusCode, message})
+                    setError({ code: statusCode, message })
                     break;
                 case 401:
-                    setError({code: statusCode, message: 'Access denied. Please login'});
+                    setError({ code: statusCode, message: 'Access denied. Please login' });
                     break;
                 case 404:
-                    setError({code: statusCode, message: 'A user with this email was not found'})
+                    // setError({code: statusCode, message: 'A user with this email was not found'})
+                    setShowAddMemberDialog(true);
                     break;
                 default:
-                    setError({code: statusCode, message});
+                    setError({ code: statusCode, message });
                     break;
             }
         } finally {
@@ -176,6 +180,7 @@ const HouseDashBoard = ({ ...props }) => {
         setError(null);
     }
 
+
     if (error) {
         return (
             <ErrorModal
@@ -193,6 +198,14 @@ const HouseDashBoard = ({ ...props }) => {
     } else {
         return (
             <div className="house-dashboard">
+                <Dialog
+                    header="Invite member"
+                    message="No user with this email was found. Would you like to send an invitation by email?"
+                    show={showAddMemberDialog}
+                    onNegative={() => setShowAddMemberDialog(false)}
+                    onPositive={() => console.log('adding user')}
+                    type="YesNo"
+                />
                 <Sidebar title={house.name}>
                     <SidebarItem to={`${props.match.url}/members`}>
                         <IconTextLabel textFirst text="Members" icon="users" />

@@ -106,7 +106,7 @@ const ExpensesList = ({ house, ...props }) => {
                     },
                 });
                 setExpenses(sortExpenses(res.data, 'date', 'desc'));
-                
+
             } catch (error) {
                 setError('error');
             } finally {
@@ -277,7 +277,11 @@ const ExpensesList = ({ house, ...props }) => {
                     <Button className="button--inverse-modify" onClick={handleFilter}>Filter</Button>
                     <Button className="button--inverse-gray" onClick={resetFilters}>Reset</Button>
                 </div>
-                <h4 style={{ padding: '0 1rem', margin: '0' }}>Results: <span>{expenses.length}</span></h4>
+                <summary className="results-summary">
+                    <h4 style={{ padding: '0 1rem', margin: '0' }}>{`Results: ${expenses.length}`}</h4>
+                    <h4 style={{ padding: '0 1rem', margin: '0' }}>{`Total: ${expenses.map(e => e.amount).reduce((acc, curr) => acc + curr, 0)}`}</h4>
+                </summary>
+
 
             </div>
             <div className="expense-list__data">
@@ -288,7 +292,7 @@ const ExpensesList = ({ house, ...props }) => {
                         onUpdate={handleUpdateExpense}
                         onDelete={handleDeleteExpense} />)}
             </div>
-        </Widget>
+        </Widget >
     )
 };
 

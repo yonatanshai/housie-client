@@ -18,7 +18,8 @@ const CreateTaskForm = ({ house, ...props }) => {
             initialValues={{
                 title: '',
                 description: '',
-                assignee: house.members[0].username,
+                // assignee: house.members[0].username,
+                assignee: '-',
                 priority: TaskPriority.Normal
             }}
             validationSchema={yup.object({
@@ -38,7 +39,8 @@ const CreateTaskForm = ({ house, ...props }) => {
                         <TextInput type="text" name="description" label="Description" placeholder="description" autoComplete="off" />
                         
                         <label htmlFor="assignee" className="dropdown__label">Assignee</label>
-                        <Field className="dropdown" as="select" name="assignee"> 
+                        <Field value={values.assignee} className="dropdown" as="select" name="assignee">
+                            <option value="-">-</option>
                             {house.members.map(member => 
                             <option className="dropdown__option" key={member.id} value={member.name}>
                                 {member.username}

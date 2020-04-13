@@ -12,7 +12,7 @@
 }
 
 .expense-list-item--edited {
-    background-color: var(--light-success-color);
+    background-color: var(--light-success-color) !important;
 }
 
 .expenses-list-item:hover {

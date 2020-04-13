@@ -12,6 +12,7 @@ import EditableText from '../../shared/components/form-elements/editable-text';
 import ListItemSaveChanges from '../../shared/components/form-elements/list-item-save-changes';
 
 const getUser = (userId, members) => {
+    if (!userId) return null;
     const member = members.find(m => m.id === userId);
     return member
 }
@@ -20,9 +21,9 @@ const isAdmin = (admins, userId) => {
     return admins.some(a => a.id === userId);
 }
 
-const TasksListItem = ({ task, ...props }) => {
+const TasksListItem = ({ task, members, ...props }) => {
     const [isCompleted, setIsCompleted] = useState(task.status === 'completed');
-    const [assignedUser, setAssignedUser] = useState(getUser(task.userId, props.members));
+    const [assignedUser, setAssignedUser] = useState(getUser(task.userId, members));
     const [selectedPriority, setSelectedPriority] = useState(task.priority);
     const [showEditTitle, setShowEditTitle] = useState(false);
     const [title, setTitle] = useState(task.title);
@@ -35,13 +36,13 @@ const TasksListItem = ({ task, ...props }) => {
     }
 
     const handleAssignUserClicked = (id) => {
-        const member = getUser(parseInt(id), props.members);
+        const member = getUser(parseInt(id), members);
         setAssignedUser(member);
         setValueChanged(true);
     };
 
     const handleCancelChanges = () => {
-        setAssignedUser(getUser(task.userId, props.members))
+        setAssignedUser(getUser(task.userId, members))
         setSelectedPriority(task.priority);
         setTitle(task.title);
         setValueChanged(false);
@@ -50,7 +51,7 @@ const TasksListItem = ({ task, ...props }) => {
     const handleConfirmChanges = () => {
         setValueChanged(false);
         const priority = selectedPriority !== task.priority ? selectedPriority : null;
-        const user = assignedUser.id !== task.userId ? assignedUser : null;
+        const user = assignedUser && assignedUser.id !== task.userId ? assignedUser : null;
         const newTitle = title !== task.title ? title : null;
 
         if (priority || user || newTitle) {
@@ -73,7 +74,7 @@ const TasksListItem = ({ task, ...props }) => {
         }
     }
 
-    const handleTitleChanged = (value) => {
+    const handleTitleChanged = ({ value }) => {
         setTitle(value);
         setValueChanged(true);
     }
@@ -84,10 +85,8 @@ const TasksListItem = ({ task, ...props }) => {
         }
         setShowEditTitle(false);
     }
-
+    
     return (
-
-
         <div className={`tasks-list-item ${valueChanged && 'task-list-item--edited'}`}>
             <div className="title-container" data-tip="Double click to edit" onDoubleClick={handleTitleDoubleClicked} >
                 <EditableText
@@ -113,8 +112,13 @@ const TasksListItem = ({ task, ...props }) => {
             </Dropdown>
             <ReactTooltip delayShow={500} />
 
-            <Dropdown disabled={!isAdmin(props.admins, userData.user.id)} value={assignedUser.id} className="tasks-list-item__user" onSelect={handleAssignUserClicked}>
-                {props.members.map(m => <option key={m.id} value={m.id}>{m.username}</option>)}
+            <Dropdown
+                disabled={!isAdmin(props.admins, userData.user.id)}
+                value={assignedUser ? assignedUser.id : -1}
+                className="tasks-list-item__user"
+                onSelect={handleAssignUserClicked}>
+                {assignedUser && members.map(m => <option key={m.id} value={m.id}>{m.username}</option>)}
+                {!assignedUser && [...members, { id: -1, username: '-' }].map(m => <option key={m.id} value={m.id}>{m.username}</option>)}
             </Dropdown>
 
 
@@ -126,15 +130,7 @@ const TasksListItem = ({ task, ...props }) => {
                     <Icon name="cancel-circle" />
                 </Button>}
             {valueChanged &&
-                // <div className="changes-container">
-                //     <Button className="tasks-list-item__user-confirm" onClick={handleConfirmChanges}>
-                //         <Icon name="checkmark" />
-                //     </Button>
-                //     <Button className="tasks-list-item__cancel-changes" onClick={handleCancelChanges}>
-                //         <Icon name="cross" />
-                //     </Button>
-                // </div>
-                <ListItemSaveChanges onConfirmChanges={handleConfirmChanges} onCancelChanges={handleCancelChanges}/>
+                <ListItemSaveChanges onConfirmChanges={handleConfirmChanges} onCancelChanges={handleCancelChanges} />
             }
         </div>
     )
