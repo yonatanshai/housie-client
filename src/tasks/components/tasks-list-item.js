@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './tasks-list-item.css';
 import Checkbox from '../../shared/components/form-elements/checkbox';
 import { TaskStatus } from '../../shared/enums/task-status';
@@ -29,10 +29,17 @@ const TasksListItem = ({ task, members, ...props }) => {
     const [title, setTitle] = useState(task.title);
     const { userData } = useAuth();
     const [valueChanged, setValueChanged] = useState(false);
+    const [status, setStatus] = useState(task.status);
+
+    useEffect(() => {
+        setStatus(task.status);
+        setAssignedUser(getUser(task.userId, members));
+    }, [task.status, task.userId, members]);
 
     const handleCompleteTask = () => {
         setIsCompleted(!isCompleted);
-        props.onTaskCompleted(task.id);
+        setStatus(TaskStatus.completed);
+        props.onUpdateStatus(task.id, TaskStatus.completed);
     }
 
     const handleAssignUserClicked = (id) => {
@@ -85,7 +92,28 @@ const TasksListItem = ({ task, members, ...props }) => {
         }
         setShowEditTitle(false);
     }
-    
+
+    const handleChangeStatusClicked = () => {
+        if (status === TaskStatus.Assigned && assignedUser.id === userData.user.id) {
+            // setStatus(TaskStatus.InProgress);
+            props.onUpdateStatus(task.id, TaskStatus.InProgress);
+        } else if (status === TaskStatus.New) {
+            props.onUpdate({taskId: task.id, user: {id: userData.user.id}});
+        }
+    }
+
+
+    const getStatusDataTip = () => {
+        
+        if (status === TaskStatus.Assigned && assignedUser && assignedUser.id === userData.user.id) {
+            return 'Change to in progress'
+        }
+
+        if (status === TaskStatus.New) {
+            return 'Signup'
+        }
+    }
+
     return (
         <div className={`tasks-list-item ${valueChanged && 'task-list-item--edited'}`}>
             <div className="title-container" data-tip="Double click to edit" onDoubleClick={handleTitleDoubleClicked} >
@@ -101,7 +129,12 @@ const TasksListItem = ({ task, members, ...props }) => {
 
             <span className="tasks-list-item__create-date">{format(new Date(task.createdAt), 'dd/MM/yyyy')}</span>
 
-            <span data-tip="Task status" className={`tasks-list-item__status tasks-list-item__status--${task.status}`}>{task.status}</span>
+            <Button
+                className={`tasks-list-item__status tasks-list-item__status--${status}`}
+                dataTip={getStatusDataTip()}
+                onClick={handleChangeStatusClicked} >
+                {status}
+            </Button>
             <ReactTooltip delayShow={500} />
 
             {/* <span data-tip="Task Priority" className={`tasks-list-item__priority tasks-list-item__priority--${task.priority}`}>{task.priority}</span> */}

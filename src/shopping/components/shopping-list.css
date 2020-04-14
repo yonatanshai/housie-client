@@ -74,3 +74,25 @@
     opacity: 0;
     transition: opacity 350ms;
   }
+
+  @media screen and (max-width: 410px) {
+    .archive-list-button {
+      justify-self: start;
+    }
+
+    .shopping-list__title {
+      /* grid-template-columns: min-content, 1fr; */
+      display: flex;
+      flex-direction: column;
+    }
+
+    .shopping-list__title > h3 {
+      display: none;
+    }
+
+    .shopping-list__item-count {
+      display: none;
+    }
+
+    
+  }

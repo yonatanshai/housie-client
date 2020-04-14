@@ -20,7 +20,12 @@ body {
 html {
   font-size: 62.5%;
   height: 100%;
-  
+}
+
+@media screen and (max-width: 700px) {
+  html {
+    font-size: 50%;
+  }
 }
 
 .transparent {

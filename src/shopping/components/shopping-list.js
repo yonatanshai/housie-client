@@ -72,7 +72,7 @@ const ShoppingList = ({ list, admins, ...props }) => {
             <div className="shopping-list__title">
                 <h3 >{list.name}</h3>
                 {list.isActive ? <AddListItemForm onSubmit={handleAddItem} /> : <div></div>}
-                <p>Items: {list.items.filter(li => li.checked).length} / {list.items.length}</p>
+                <p className="shopping-list__item-count">Items: {list.items.filter(li => li.checked).length} / {list.items.length}</p>
                 {list.isActive && admins.some(a => a.id === userData.user.id) &&
                     <Button className="archive-list-button" onClick={() => setShowArchiveDialog(true)}>Archive</Button>
                 }

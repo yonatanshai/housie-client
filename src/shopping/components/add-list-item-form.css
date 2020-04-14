@@ -14,3 +14,10 @@
 .add-item-button:hover {
 color: var(--success-color);
 }
+
+@media screen and (max-width: 460px) {
+    .add-item-button {
+      transform: translate(-32px, 2px);
+
+    }
+  }

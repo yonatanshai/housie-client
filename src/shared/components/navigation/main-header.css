@@ -84,3 +84,9 @@
     margin: 0 1rem;
     text-decoration: underline;
 }
+
+@media screen and (max-width: 360px) {
+    .main-header__username {
+        display: none;
+    }
+}

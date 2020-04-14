@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import './date-filter.css';
 import "react-datepicker/dist/react-datepicker.css";
 import Button from '../form-elements/button';
-import {startOfMonth, endOfMonth, startOfYear, endOfYear, startOfWeek, endOfWeek} from 'date-fns'
+import { startOfMonth, endOfMonth, startOfYear, endOfYear, startOfWeek, endOfWeek } from 'date-fns'
 
 const DateFilter = ({ onFromDateChange, onToDateChange, toDate, fromDate, ...props }) => {
     const handleThisMonth = () => {
@@ -42,9 +42,11 @@ const DateFilter = ({ onFromDateChange, onToDateChange, toDate, fromDate, ...pro
                     minDate={fromDate}
                 />
             </div>
-            <Button type="button" className="button--inverse-gray" onClick={handleThisWeek}>This Week</Button>
-            <Button type="button" className="button--inverse-gray" onClick={handleThisMonth}>This Month</Button>
-            <Button type="button" className="button--inverse-gray" onClick={handleThisYear}>This Year</Button>
+            <div className="date-filter__preset-buttons">
+                <Button type="button" className="button--inverse-gray" onClick={handleThisWeek}>This Week</Button>
+                <Button type="button" className="button--inverse-gray" onClick={handleThisMonth}>This Month</Button>
+                <Button type="button" className="button--inverse-gray" onClick={handleThisYear}>This Year</Button>
+            </div>
         </div>
     )
 };

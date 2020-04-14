@@ -9,6 +9,11 @@
     text-transform: capitalize;
     border-bottom: 1px solid var(--divider-color);
     transition: all .2s ease-in;
+    /* min-width: 0; */
+    /* flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; */
 }
 
 .expense-list-item--edited {
@@ -30,4 +35,15 @@
 }
 .expenses-list-item__icon--cancel:hover {
     color: var(--danger-color);
+}
+
+@media screen and (max-width: 490px) {
+    .expenses-list-item__title {
+        text-align: left;
+        /* max-width: 12rem; */
+        /* max-height: 3.4rem; */
+        /* white-space: nowrap !important; */
+        /* overflow: hidden !important; */
+        /* text-overflow: ellipsis !important; */
+    }
 }

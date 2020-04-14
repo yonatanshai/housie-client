@@ -27,6 +27,8 @@ ul {
     cursor: pointer;
 }
 
+
+
 .display-enter {
     opacity: 0;
   }
@@ -40,4 +42,10 @@ ul {
   .display-exit-active {
     opacity: 0;
     transition: opacity 1000ms;
+  }
+
+  @media screen and (max-width: 460px) {
+    .list__items-count {
+      display: none;
+    }
   }

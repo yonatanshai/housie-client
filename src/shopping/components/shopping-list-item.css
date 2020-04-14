@@ -52,3 +52,9 @@
 .list-item__checkbox {
     padding: 1rem;
 }
+
+@media screen and (max-width: 410px) {
+    .list-item {
+        grid-template-columns: repeat(3, min-content);
+    }
+}

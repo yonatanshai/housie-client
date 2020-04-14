@@ -43,6 +43,8 @@
     
 }
 
+
+
 .filters-non-date {
     padding: 1rem;
     display: flex;
@@ -57,3 +59,14 @@
 .amount-filter {
     margin-right: auto;
 }
+
+@media screen and (max-width: 1050px) {
+    .filters {
+        padding: 0;
+    }
+
+    .filters-non-date {
+        display: none;
+    }
+}
+

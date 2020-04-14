@@ -85,3 +85,9 @@ tr {
     padding: 1rem;
     /* border-radius: 2px; */
 }
+
+@media screen and (max-width: 480px) {
+    .filters__non-date {
+        display: none;
+    }
+}

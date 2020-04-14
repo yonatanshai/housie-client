@@ -14,9 +14,6 @@ const MainHeader = props => {
 
     return (
         <div className="main-header">
-            {/* <div style={{width: '85px'}}>
-                <img className="main-header__logo" src="/images/Group 1.jpg" alt="logo" />
-            </div> */}
             <NavLink to="/" className="logo-container">
                 <Icon className="logo-container__icon" name="home" />
                 <span className="main-header__app-name">Housie</span>
@@ -24,7 +21,7 @@ const MainHeader = props => {
 
             <div className="main-header__navigation">
                 {userData && <span className="main-header__username">Hello {userData.user.username}</span>}
-                <NavLink className="main-header__link" to="/">
+                <NavLink className="main-header__link my-houses-link" to="/">
                     My Houses
                 </NavLink>
                 {userData ?

@@ -1,7 +1,10 @@
 .settings {
     margin: 2rem;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
     justify-items: center;
     color: var(--secondary-text-color);
     box-shadow: var(--box-shadow-primary);
@@ -10,12 +13,21 @@
 
 .settings-title {
     grid-row: 1;
-    grid-column: 1;
+    grid-column: 1 / -1;
     
 }
 
 .exit-button {
-    grid-row: 2;
+    grid-row: 3;
     grid-column: 2;
-    
+    transition: all .1s ease-in;
+    /* background-color: var(--danger-color); */
+    border: 1px solid var(--danger-color);
+    color: var(--danger-color);
+}
+
+.exit-button:hover {
+    background: none;
+    color: var(--light-danger-color);
+    border: 1px solid var(--light-danger-color);
 }

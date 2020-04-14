@@ -7,3 +7,12 @@
 .icon-text-label > :not(:last-child) {
     margin-right: 1rem;
 }
+
+@media screen and (max-width: 500px) {
+    .icon-text-label {
+        justify-content: center;
+    }
+    .icon-text-label__text {
+        display: none;
+    }
+}

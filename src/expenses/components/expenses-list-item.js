@@ -5,6 +5,7 @@ import Icon from '../../shared/components/ui-elements/icon';
 import { format } from 'date-fns';
 import EditableText from '../../shared/components/form-elements/editable-text';
 import ListItemSaveChanges from '../../shared/components/form-elements/list-item-save-changes';
+import { useSettings } from '../../context/settings-context';
 
 
 const ExpensesListItem = ({ expense, ...props }) => {
@@ -21,7 +22,7 @@ const ExpensesListItem = ({ expense, ...props }) => {
     const [title, setTitle] = useState(expense.title);
     const [amount, setAmount] = useState(expense.amount);
     const [valuesChanged, setValuesChanged] = useState(false);
-
+    const { locale, currency } = useSettings();
     useEffect(() => {
         if (title === expense.title && parseFloat(amount) === expense.amount) {
             setValuesChanged(false);
@@ -35,9 +36,10 @@ const ExpensesListItem = ({ expense, ...props }) => {
     };
 
     const formatAmount = (amount) => {
-        return Intl.NumberFormat('en-US', {
+
+        return Intl.NumberFormat(locale, {
             style: 'currency',
-            currency: 'USD'
+            currency
         }).format(amount);
     }
 
@@ -88,12 +90,12 @@ const ExpensesListItem = ({ expense, ...props }) => {
             title: title !== expense.title ? title : null,
             amount: amount !== expense.amount ? amount : null
         });
-        
+
     };
 
     return (
         <div className={`expenses-list-item ${valuesChanged && 'expense-list-item--edited'}`}>
-            <div className="expenses-list-item__title" onDoubleClick={() => setIsEditTitleActive(true)}>
+            <div className="expenses-list-item__title" onClick={() => setIsEditTitleActive(true)}>
                 <EditableText
                     type="text"
                     autoFocus
@@ -104,7 +106,7 @@ const ExpensesListItem = ({ expense, ...props }) => {
                     name="title"
                 />
             </div>
-            <div className="expenses-list-item__amount" onDoubleClick={() => setIsEditAmountActive(true)}>
+            <div className="expenses-list-item__amount" onClick={() => setIsEditAmountActive(true)}>
                 <EditableText
                     type="number"
                     min="0"

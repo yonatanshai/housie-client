@@ -37,17 +37,6 @@
 }
 
 
-/* .title-container > input{ 
-    padding: 1rem;
-    transition: all .2s ease-in-out;
-    transform: translateX(-1rem);
-    width: 100%;
-    margin: 0;
-    outline: none;
-    border: 1px solid var(--default-primary-color);
-    font-size: 1.6rem;
-} */
-
 .tasks-list-item__title {
     text-transform: capitalize;
 }
@@ -58,17 +47,15 @@
 
 .tasks-list-item__priority {
     text-transform: capitalize;
-    /* justify-self: stretch; */
-    /* align-self: stretch; */
+
     padding: 1rem;
     color: white !important;
     text-align-last: center;
     border: none;
     border-radius: 0 !important;
     -moz-appearance: none;
-  /* for Chrome */
-  -webkit-appearance: none;
-  cursor: pointer;
+    -webkit-appearance: none;
+    cursor: pointer;
 }
 
 
@@ -87,18 +74,22 @@
 
 .tasks-list-item__status {
     text-transform: capitalize;
-    /* justify-self: stretch; */
     padding: 1rem;
     color: white;   
+    border-radius: 0;
     transition: all .2s ease-in;
 }
 
 .tasks-list-item__status--new {
-    background-color: var(--warning-color);
+    background-color: var(--other-color);
 }
 
 .tasks-list-item__status--assigned {
     background-color: var(--natural-color);
+}
+
+.tasks-list-item__status--inProgress {
+    background-color: var(--warning-color);
 }
 
 .tasks-list-item__status--completed {
@@ -126,5 +117,12 @@
   /* for Chrome */
   -webkit-appearance: none;
   cursor: pointer;
+}
+
+@media screen and (max-width: 450px) {
+    .tasks-list-item {
+        font-size: 80%;
+        padding: 0rem;
+    }
 }
 

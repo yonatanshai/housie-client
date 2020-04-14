@@ -4,6 +4,15 @@
     padding: 1rem;
 }
 
+
+
+.date-filter__preset-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+  gap: 2px;
+}
+
 .date-filter__item {
     display: flex;
     align-items: center;
@@ -50,4 +59,18 @@
   width:100% !important
 }
 .react-datepicker__time-list { padding: 0 !important; }
+
+@media screen and (max-width: 1100px) {
+  .date-filter__item {
+    display: none;
+  }
+
+  .date-filter__preset-buttons {
+    padding: 0rem;
+  }
+
+  .date-filter {
+    padding: 0;
+  }
+}
 

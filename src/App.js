@@ -14,6 +14,8 @@ import HouseDashBoard from './house/pages/house-dashboard';
 import { Provider as AlertProvider, positions, transitions } from 'react-alert';
 // import AlertTemplate from "react-alert-template-basic";
 import AlertTemplate from './shared/components/ui-elements/alert-template';
+import { SettingsContext } from './context/settings-context';
+import cc from 'currency-codes';
 
 function App() {
   const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('userData')));
@@ -58,6 +60,8 @@ function App() {
     transition: transitions.SCALE,
   }
 
+  
+
   return (
     <div className="App">
       <AlertProvider
@@ -65,8 +69,9 @@ function App() {
         {...alertOptions}
       >
         <AuthContext.Provider value={{ userData, setUserData: updateUserData }}>
-          <BrowserRouter>
-            {/* <ErrorModal
+          <SettingsContext.Provider value={{locale: 'he-IL', currency: cc.country('israel')[0].code}}>
+            <BrowserRouter>
+              {/* <ErrorModal
               isOpen={showExpiredSessionModal}
               title="Session Expired"
               onButtonClick={handleTokenExpired}
@@ -74,18 +79,19 @@ function App() {
               errorMessage="Please login to continue"
 
             /> */}
-            <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
-              <MainHeader />
-              <div style={{ display: 'flex', width: '100%', height: '100%' }}>
-                <Switch>
-                  <PrivateRoute exact path="/" component={MyHouses} />
-                  <Route exact path="/auth" component={LoginPage} />
-                  {/* <Redirect to="/" /> */}
-                </Switch>
-                <PrivateRoute path="/dashboard/:houseId" component={HouseDashBoard} />
+              <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
+                <MainHeader />
+                <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+                  <Switch>
+                    <PrivateRoute exact path="/" component={MyHouses} />
+                    <Route exact path="/auth" component={LoginPage} />
+                    {/* <Redirect to="/" /> */}
+                  </Switch>
+                  <PrivateRoute path="/dashboard/:houseId" component={HouseDashBoard} />
+                </div>
               </div>
-            </div>
-          </BrowserRouter>
+            </BrowserRouter>
+          </SettingsContext.Provider>
         </AuthContext.Provider>
       </AlertProvider>
     </div >

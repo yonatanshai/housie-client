@@ -15,6 +15,7 @@ import DateFilter from '../../shared/components/dashboard/date-filter';
 import Dropdown from '../../shared/components/form-elements/dropdown';
 import { format, startOfDay, endOfDay, subMonths } from 'date-fns';
 import Icon from '../../shared/components/ui-elements/icon';
+import Checkbox from '../../shared/components/form-elements/checkbox';
 
 const statusRank = {
     'new': 0,
@@ -204,26 +205,20 @@ const TasksList = ({ ...props }) => {
         }
     }
 
-    const handleTaskCompleted = async (taskId) => {
-        const taskIndex = tasks.findIndex(t => t.id === taskId);
-        let id;
-        if (taskIndex !== -1) {
-            id = tasks[taskIndex].id;
-        }
-
+    const handleUpdateStatus = async (taskId, status) => {
         try {
             const res = await axios({
-                url: `${process.env.REACT_APP_API_BASE_URL}/tasks/${id}/status`,
+                url: `${process.env.REACT_APP_API_BASE_URL}/tasks/${taskId}/status`,
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json',
                     'authorization': 'Bearer ' + userData.token
                 },
                 data: {
-                    status: TaskStatus.completed
+                    status
                 }
             });
-            const newTasks = tasks.map(t => t.id === id ? res.data : t);
+            const newTasks = tasks.map(t => t.id === taskId ? res.data : t);
             setTasks(newTasks);
         } catch (error) {
             const { statusCode, message } = JSON.parse(error.request.response)
@@ -232,8 +227,15 @@ const TasksList = ({ ...props }) => {
     }
 
     const handleTaskUpdate = async ({ taskId, priority, user, title, description }) => {
-        console.log({ priority, user });
+        console.log(user)
+        const data = {
+            title,
+            priority,
+            description,
+            assignedUserId: user && user.id,
+        };
 
+        console.log(data);
         try {
             const res = await axios({
                 method: 'PATCH',
@@ -242,12 +244,7 @@ const TasksList = ({ ...props }) => {
                     'content-type': 'application/json',
                     'authorization': 'Bearer ' + userData.token
                 },
-                data: JSON.stringify({
-                    title,
-                    priority,
-                    description,
-                    assignedUserId: user && user.id
-                })
+                data
             });
             setTasks(tasks.map(task => task.id === taskId ? res.data : task));
             props.onAlertChange({
@@ -273,12 +270,13 @@ const TasksList = ({ ...props }) => {
         setFilterTitle(e.target.value);
     }
 
-    const handleFilterStatusChanged = (status) => {
-        if (status === TaskStatus.completed) {
+    const handleFilterStatusChanged = () => {
+        const newStatusFilter = filterStatus === TaskStatus.completed ? 'Active' : TaskStatus.completed;
+        if (newStatusFilter !== TaskStatus.completed) {
             const newTasks = tasks.filter(t => t.status !== TaskStatus.completed);
             setTasks(newTasks);
         }
-        setFilterStatus(status);
+        setFilterStatus(newStatusFilter);
     }
 
     const handleSortByChanged = (value) => {
@@ -335,11 +333,11 @@ const TasksList = ({ ...props }) => {
                         />
                         <div className="filters__non-date">
                             <input className="search" type="text" value={filterTitle} placeholder="Search by title" onChange={handleFilterTitleChange} />
-                            <Dropdown onSelect={handleFilterStatusChanged} value={filterStatus}>
+                            {/* <Dropdown onSelect={handleFilterStatusChanged} value={filterStatus}>
                                 <option value="1">Active</option>
-                                {/* <option value={TaskStatus.InProgress}>In Progress</option> */}
                                 <option value={TaskStatus.completed}>Completed</option>
-                            </Dropdown>
+                            </Dropdown> */}
+                            <Checkbox label="Completed" checked={filterStatus === TaskStatus.completed} onChange={handleFilterStatusChanged} />
 
                             <Dropdown label="Sort By:" onSelect={handleSortByChanged} value={sortBy}>
                                 <option value="date">Date</option>
@@ -364,7 +362,7 @@ const TasksList = ({ ...props }) => {
                                     members={props.house.members}
                                     admins={props.house.admins}
                                     onUpdate={handleTaskUpdate}
-                                    onTaskCompleted={handleTaskCompleted}
+                                    onUpdateStatus={handleUpdateStatus}
                                     deleteTask={deleteTask} />)}
                     </div>
                 </Fragment>
