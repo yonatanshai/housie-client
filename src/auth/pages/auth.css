@@ -36,3 +36,17 @@
     padding: 1rem;
     font-weight: 600;
 }
+
+.select-container {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.8rem;
+    color: var(--secondary-text-color);
+    width: min-content;
+}
+
+.select-dropdown {
+    padding: 1rem .8rem;
+    color: inherit;
+    max-width: 23rem;
+}

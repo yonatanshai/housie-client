@@ -16,6 +16,8 @@ import { Provider as AlertProvider, positions, transitions } from 'react-alert';
 import AlertTemplate from './shared/components/ui-elements/alert-template';
 import { SettingsContext } from './context/settings-context';
 import cc from 'currency-codes';
+import getUserLocal from 'get-user-locale';
+import Axios from 'axios';
 
 function App() {
   const [userData, setUserData] = useState(JSON.parse(localStorage.getItem('userData')));
@@ -54,13 +56,38 @@ function App() {
     toggleShowSessionExpiredModal();
   }
 
+  const handleUpdateUserSettings = async (settings) => {
+    const { currency } = settings;
+
+    try {
+      const res = await Axios({
+        method: 'PATCH',
+        url: `${process.env.REACT_APP_API_BASE_URL}/users`,
+        headers: {
+          'content-type': 'application/json',
+          'authorization': 'Bearer ' + userData.token
+        },
+        data: {
+          currency
+        }
+      });
+      const { user } = userData;
+      const updatedUser = {
+        ...user,
+        currency: res.data.currency
+      }
+      setUserData({...userData, user: updatedUser})
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const alertOptions = {
     position: positions.BOTTOM_CENTER,
     timeout: 3000,
     transition: transitions.SCALE,
   }
-
-  
+  console.log(userData)
 
   return (
     <div className="App">
@@ -69,23 +96,18 @@ function App() {
         {...alertOptions}
       >
         <AuthContext.Provider value={{ userData, setUserData: updateUserData }}>
-          <SettingsContext.Provider value={{locale: 'he-IL', currency: cc.country('israel')[0].code}}>
+          <SettingsContext.Provider value={{
+            locale: getUserLocal(),
+            currency: userData ? userData.user.currency : null,
+            onUpdateSettings: handleUpdateUserSettings
+          }}>
             <BrowserRouter>
-              {/* <ErrorModal
-              isOpen={showExpiredSessionModal}
-              title="Session Expired"
-              onButtonClick={handleTokenExpired}
-              buttonText="Ok"
-              errorMessage="Please login to continue"
-
-            /> */}
               <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
                 <MainHeader />
                 <div style={{ display: 'flex', width: '100%', height: '100%' }}>
                   <Switch>
                     <PrivateRoute exact path="/" component={MyHouses} />
                     <Route exact path="/auth" component={LoginPage} />
-                    {/* <Redirect to="/" /> */}
                   </Switch>
                   <PrivateRoute path="/dashboard/:houseId" component={HouseDashBoard} />
                 </div>

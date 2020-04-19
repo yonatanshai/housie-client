@@ -14,6 +14,8 @@ import { subMonths, endOfDay, format, startOfDay } from 'date-fns';
 import Dropdown from '../../shared/components/form-elements/dropdown';
 import Icon from '../../shared/components/ui-elements/icon';
 import ReactTooltip from 'react-tooltip';
+import { useSettings } from '../../context/settings-context';
+import { countries, number } from 'currency-codes';
 
 
 const sortExpenses = (expenses, sortBy, sortDir) => {
@@ -74,6 +76,7 @@ const ExpensesList = ({ house, ...props }) => {
     // const [filtersSearchText, setFiltersSearchText] = useState(undefined);
     const [error, setError] = useState(null);
     const { userData } = useAuth();
+    const {locale, currency} = useSettings();
 
     useEffect(() => {
         if (expenses) {
@@ -228,9 +231,8 @@ const ExpensesList = ({ house, ...props }) => {
     }
 
 
-
+    console.log(number(currency));
     useEffect(() => {
-        // const e = sortExpenses(expenses, sortBy, sortByDir);
         setExpenses(e => sortExpenses(e, sortBy, sortByDir));
     }, [sortBy, sortByDir]);
 
@@ -279,7 +281,12 @@ const ExpensesList = ({ house, ...props }) => {
                 </div>
                 <summary className="results-summary">
                     <h4 style={{ padding: '0 1rem', margin: '0' }}>{`Results: ${expenses.length}`}</h4>
-                    <h4 style={{ padding: '0 1rem', margin: '0' }}>{`Total: ${expenses.map(e => e.amount).reduce((acc, curr) => acc + curr, 0)}`}</h4>
+                    <h4 style={{ padding: '0 1rem', margin: '0' }}>
+                        {`Total: ${Intl.NumberFormat(locale, {
+                            style: 'currency',
+                            currency: number(currency).code
+                        }).format(expenses.map(e => e.amount).reduce((acc, curr) => acc + curr, 0))}`}
+                    </h4>
                 </summary>
 
 

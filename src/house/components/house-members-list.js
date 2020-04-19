@@ -28,8 +28,6 @@ const HouseMembersList = ({ house, members, admins, ...props }) => {
         props.onMakeMemberAdmin(id);
     }
 
-    console.log(house)
-
     return (
         <Widget className="house-members-list">
             <Modal isOpen={showAddMemberForm} onRequestClose={toggleShowAddMembersForm}>

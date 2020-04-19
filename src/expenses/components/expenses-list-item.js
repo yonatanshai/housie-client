@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import EditableText from '../../shared/components/form-elements/editable-text';
 import ListItemSaveChanges from '../../shared/components/form-elements/list-item-save-changes';
 import { useSettings } from '../../context/settings-context';
+import { number } from 'currency-codes';
 
 
 const ExpensesListItem = ({ expense, ...props }) => {
@@ -39,7 +40,7 @@ const ExpensesListItem = ({ expense, ...props }) => {
 
         return Intl.NumberFormat(locale, {
             style: 'currency',
-            currency
+            currency: number(currency).code
         }).format(amount);
     }
 

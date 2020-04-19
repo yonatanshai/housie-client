@@ -7,7 +7,6 @@ import { useAuth } from '../../context/auth-context';
 const HouseListItem = ({ house, ...props }) => {
     const { userData } = useAuth();
     const [isAdmin, setIsAdmin] = useState(house.admins.some(a => a.id === userData.user.id));
-    // const {admins} = house;
 
     const handleDelete = () => {
         props.onDelete(house.id);

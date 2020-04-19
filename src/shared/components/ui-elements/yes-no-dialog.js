@@ -4,6 +4,7 @@ import Modal from './modal';
 import propTypes from 'prop-types'
 import Button from '../form-elements/button';
 
+const typeOk = 'OK';
 const typeYesNo = "YesNo";
 const typeYesNoCancel = "YesNoCancel";
 const typesYesCancel = "YesCancel";
@@ -18,7 +19,7 @@ const Dialog = ({ show, onPositive, onNegative, onCancel, type, header, message,
                     </h3>
                     <p className="dialog-message">{message}</p>
                     <div className="dialog-buttons">
-                        <Button className="dialog-button yes-button" onClick={onPositive}>Yes</Button>
+                        <Button className="dialog-button yes-button" onClick={onPositive}>{type === typeOk ? 'OK' : 'Yes'}</Button>
                         {(type === typeYesNo || type === typeYesNoCancel) && 
                             <Button className="dialog-button no-button" onClick={onNegative}>No</Button>
                         }
@@ -32,7 +33,7 @@ const Dialog = ({ show, onPositive, onNegative, onCancel, type, header, message,
 };
 
 Dialog.propTypes = {
-    type: propTypes.oneOf([typeYesNo, typeYesNoCancel, typesYesCancel])
+    type: propTypes.oneOf([typeYesNo, typeYesNoCancel, typesYesCancel, typeOk])
 }
 
 export default Dialog;

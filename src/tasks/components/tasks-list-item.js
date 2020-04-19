@@ -95,7 +95,6 @@ const TasksListItem = ({ task, members, ...props }) => {
 
     const handleChangeStatusClicked = () => {
         if (status === TaskStatus.Assigned && assignedUser.id === userData.user.id) {
-            // setStatus(TaskStatus.InProgress);
             props.onUpdateStatus(task.id, TaskStatus.InProgress);
         } else if (status === TaskStatus.New) {
             props.onUpdate({taskId: task.id, user: {id: userData.user.id}});
@@ -137,7 +136,6 @@ const TasksListItem = ({ task, members, ...props }) => {
             </Button>
             <ReactTooltip delayShow={500} />
 
-            {/* <span data-tip="Task Priority" className={`tasks-list-item__priority tasks-list-item__priority--${task.priority}`}>{task.priority}</span> */}
             <Dropdown disabled={!isAdmin(props.admins, userData.user.id)} dataTip="Priority" onSelect={handlePriorityChanged} value={selectedPriority} className={`tasks-list-item__priority tasks-list-item__priority--${selectedPriority}`}>
                 <option value="low">Low</option>
                 <option value="normal">Normal</option>

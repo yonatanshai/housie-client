@@ -3,7 +3,7 @@ import HouseMembersList from '../components/house-members-list';
 import './house-dashboard.css';
 import TasksList from '../../tasks/components/tasks-list';
 import ExpensesList from '../../expenses/components/expenses-list';
-import { Switch, NavLink, Redirect } from 'react-router-dom';
+import { Switch, } from 'react-router-dom';
 import PrivateRoute from '../../routes/private-route';
 import { useAuth } from '../../context/auth-context';
 import axios from 'axios';
@@ -13,16 +13,17 @@ import IconTextLabel from '../../shared/components/ui-elements/icon-text-label';
 import ErrorModal from '../../shared/components/ui-elements/error-modal';
 import Shopping from '../../shopping/pages/shopping';
 import SidebarItem from '../../shared/components/navigation/sidebar-item';
-import Chat from '../../chat/pages/chat';
 import { useAlert } from 'react-alert';
 import Settings from '../../settings/pages/settings';
 import Dialog from '../../shared/components/ui-elements/yes-no-dialog';
+import { useError } from '../../hooks/error-hook';
 
 const HouseDashBoard = ({ ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [house, setHouse] = useState();
     const [isAdmin, setIsAdmin] = useState(false);
-    const [error, setError] = useState(null);
+    // const [error, setError] = useState(null);
+    const {error, handleError, setError, clearError} = useError();
     const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
     const { userData, setUserData } = useAuth();
 
@@ -43,8 +44,7 @@ const HouseDashBoard = ({ ...props }) => {
                 });
                 setHouse(res.data);
             } catch (error) {
-                const { statusCode, message } = JSON.parse(error.request.response);
-                setError({ code: statusCode, message });
+                handleError(error);
             }
         }
         fetchHouse();
@@ -59,13 +59,10 @@ const HouseDashBoard = ({ ...props }) => {
 
     const handleAddMember = async ({ values, houseId }) => {
         setIsLoading(true);
-        console.log({ values, houseId });
-        const url = `${process.env.REACT_APP_API_BASE_URL}/house/${houseId}/members`;
-        console.log(url);
         try {
             const res = await axios({
                 method: 'POST',
-                url,
+                url: `${process.env.REACT_APP_API_BASE_URL}/house/${houseId}/members`,
                 data: {
                     email: values.email
                 },
@@ -77,22 +74,11 @@ const HouseDashBoard = ({ ...props }) => {
             setHouse(res.data);
 
         } catch (error) {
-            const { statusCode, message } = JSON.parse(error.request.response);
-
-            switch (statusCode) {
-                case 400:
-                    setError({ code: statusCode, message })
-                    break;
-                case 401:
-                    setError({ code: statusCode, message: 'Access denied. Please login' });
-                    break;
-                case 404:
-                    // setError({code: statusCode, message: 'A user with this email was not found'})
-                    setShowAddMemberDialog(true);
-                    break;
-                default:
-                    setError({ code: statusCode, message });
-                    break;
+            const { statusCode } = JSON.parse(error.request.response);
+            if (statusCode === 404) {
+                setShowAddMemberDialog(true);
+            } else {
+                handleError(error);
             }
         } finally {
             setIsLoading(false)
@@ -102,9 +88,8 @@ const HouseDashBoard = ({ ...props }) => {
     const handleRemoveMember = async (id) => {
         setIsLoading(true);
         try {
-            const url = `${process.env.REACT_APP_API_BASE_URL}/house/${house.id}/members/${id}`;
             const res = await axios({
-                url,
+                url : `${process.env.REACT_APP_API_BASE_URL}/house/${house.id}/members/${id}`,
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -114,15 +99,13 @@ const HouseDashBoard = ({ ...props }) => {
             setHouse(res.data);
         } catch (error) {
             if (error && error.request && error.request.response) {
-                const { statusCode, message } = JSON.parse(error.request.response);
-
+                const { statusCode } = JSON.parse(error.request.response);
                 switch (statusCode) {
                     case 400:
                         setError({ code: statusCode, message: 'To remove yourself please go to settings ;&rarr exit group' });
                         break;
-
                     default:
-                        setError({ code: statusCode, message });
+                        handleError(error);
                         break;
                 }
             }
@@ -132,6 +115,7 @@ const HouseDashBoard = ({ ...props }) => {
     }
 
     const handleLeaveHouse = async (houseId) => {
+        setIsLoading(true);
         try {
             const res = await axios({
                 method: 'DELETE',
@@ -144,12 +128,14 @@ const HouseDashBoard = ({ ...props }) => {
             setHouse(res.data);
             props.history.push('/');
         } catch (error) {
-            const e = JSON.parse(error.request.response);
-            setError({ code: e.code, message: e.message });
+            handleError(error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
     const handleMakeMemberAdmin = async (id) => {
+        setIsLoading(true);
         try {
             const res = await axios({
                 method: 'POST',
@@ -161,8 +147,9 @@ const HouseDashBoard = ({ ...props }) => {
             });
             setHouse(res.data);
         } catch (error) {
-            const e = JSON.parse(error.request.response);
-            setError({ code: e.code, message: e.message });
+            handleError(error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -177,18 +164,19 @@ const HouseDashBoard = ({ ...props }) => {
         if (code === 401 || code === 403) {
             setUserData(null);
         }
-        setError(null);
+        clearError();
     }
 
 
     if (error) {
         return (
-            <ErrorModal
-                isOpen={error}
-                buttonText="OK"
-                errorMessage={error.message}
-                onButtonClick={clearErrors}
-                title={"Error"}
+            <Dialog 
+                header="Error"
+                type="OK"
+                message={error.message}
+                onPositive={clearErrors}
+                show={!!error}
+
             />
         )
     }

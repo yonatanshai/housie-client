@@ -2,19 +2,18 @@ import React, { useState, useEffect } from 'react';
 import HouseList from '../components/house-list';
 import axios from 'axios';
 import { useAuth } from '../../context/auth-context';
-import Loader from '../../shared/components/ui-elements/loader';
-import { Redirect } from 'react-router-dom';
 import Button from '../../shared/components/form-elements/button';
 import Modal from '../../shared/components/ui-elements/modal';
 import AddHouseForm from '../components/add-house-form';
 import './my-houses.css';
 import { useAlert } from 'react-alert';
-import AlertTemplate from '../../shared/components/ui-elements/alert-template';
 import ErrorModal from '../../shared/components/ui-elements/error-modal';
+import { useError } from '../../hooks/error-hook';
 
 const MyHouses = props => {
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    // const [error, setError] = useState(null);
+    const {error, clearError, handleError} = useError();
     const [houses, setHouses] = useState([]);
     const [showAddHouseForm, setShowAddHouseForm] = useState(false);
     const { userData, setUserData } = useAuth();
@@ -26,7 +25,7 @@ const MyHouses = props => {
             try {
                 const res = await axios({
                     method: 'GET',
-                    url: process.env.REACT_APP_API_BASE_URL + process.env.REACT_APP_HOUSES_URL,
+                    url: `${process.env.REACT_APP_API_BASE_URL}/house`,
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${userData.token}`
@@ -34,14 +33,9 @@ const MyHouses = props => {
                 });
                 setIsLoading(false);
                 setHouses(res.data);
-            } catch (error) {
-                console.log(error.request.status)
-                if (error.request) {
-                    const e = (JSON.parse(error.request.response));
-                    setError({ code: e.statusCode, message: e.message });
-                } else {
-                    setError(error.message);
-                }
+            } catch (e) {
+                setIsLoading(false);
+                handleError(e);
             }
         }
         getHouses();
@@ -49,6 +43,7 @@ const MyHouses = props => {
 
     const handleAddHouse = async ({ name }) => {
         setShowAddHouseForm(false);
+        setIsLoading(true);
         try {
             const res = await axios({
                 url: `${process.env.REACT_APP_API_BASE_URL}/house`,
@@ -64,14 +59,14 @@ const MyHouses = props => {
             setHouses([...houses, res.data]);
             alert.show('House Created!', { type: 'success' });
         } catch (error) {
-            if (error.request) {
-                const e = JSON.parse(error.request.response);
-                setError({ message: e.message, code: e.statusCode });
-            }
+            handleError(error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
     const handleHouseDelete = async (houseId) => {
+        setIsLoading(true);
         try {
             await axios({
                 method: 'DELETE',
@@ -83,10 +78,9 @@ const MyHouses = props => {
             });
             setHouses(houses.filter(house => house.id !== houseId));
         } catch (error) {
-            if (error.request) {
-                const e = JSON.parse(error.request.response);
-                setError({ code: e.code, message: e.message });
-            }
+            handleError(error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -98,7 +92,7 @@ const MyHouses = props => {
         if (error.code === 401 || error.code === 403) {
             setUserData(null);
         }
-        setError(null);
+        clearError();
     }
 
     if (error) {

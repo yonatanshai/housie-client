@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios'
 import TextInput from '../../shared/components/form-elements/text-input';
@@ -9,6 +9,8 @@ import './auth.css';
 import { useAuth } from '../../context/auth-context';
 import { Redirect } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
+import { useCurrency } from '../../hooks/currency-hook';
+import { country, code, number } from 'currency-codes';
 
 
 const LoginPage = (props) => {
@@ -17,20 +19,18 @@ const LoginPage = (props) => {
 
     const { userData, setUserData } = useAuth();
     const [isAuthenticated, setIsAuthenticated] = useState(userData);
+    const { generateCurrencyCodes } = useCurrency();
 
     const switchAuthMode = () => {
         setIsLogin(prevMode => !prevMode);
     }
 
-    console.log(props)
-
-
-    const handleSubmit = async (values, {errors, resetForm}) => {
-        const baseUrl = process.env.REACT_APP_API_BASE_URL;
-        const url = isLogin ? baseUrl + process.env.REACT_APP_LOGIN_URL : baseUrl + process.env.REACT_APP_SIGNUP_URL;
+    const handleSubmit = async (values, { errors, resetForm }) => {
+        const url = isLogin ? `${process.env.REACT_APP_API_BASE_URL}/auth/signin` : `${process.env.REACT_APP_API_BASE_URL}/auth/signin`;
         let data = {
             email: values.email,
-            password: values.password
+            password: values.password,
+            currency: values.currency
         }
 
         resetForm();
@@ -52,17 +52,13 @@ const LoginPage = (props) => {
             setUserData(res.data);
             setIsAuthenticated(true);
         } catch (error) {
-            try {
-                const e = JSON.parse(error.request.response);
-                if (e.statusCode === 401) {
-                    setError('Wrong username or password');
-                }
+            const e = JSON.parse(error.request.response);
+            if (e.statusCode === 401) {
+                setError('Wrong username or password');
+            }
 
-                if (e.statusCode === 409) {
-                    setError('There is already a user with this email')
-                }
-            } catch (error) {
-                console.log(error);
+            if (e.statusCode === 409) {
+                setError('There is already a user with this email')
             }
         }
     }
@@ -83,14 +79,17 @@ const LoginPage = (props) => {
             initialValues={{
                 email: '',
                 username: '',
-                password: ''
+                confirmPassword: '',
+                password: '',
+                currency: 840
             }}
             validationSchema={yup.object({
                 username: isLogin ? null : yup.string().max(14).min(2).required('Required'),
                 email: yup.string().email('Invalid email address').required('Required'),
                 password: yup.string().min(8, 'Password must be at least 8 characters').required('Required'),
+                currency: yup.number().required('Required'),
                 confirmPassword: !isLogin && yup.string().when('password', {
-                    is: val => val && val.length > 0  ? true : false,
+                    is: val => val && val.length > 0 ? true : false,
                     then: yup.string().oneOf(
                         [yup.ref('password')],
                         'passwords need to match'
@@ -107,12 +106,21 @@ const LoginPage = (props) => {
                             !isLogin &&
                             <div>
                                 <TextInput dataTip="This will be visible to other members of your house" value={values.username} label="Username" name="username" type="text" placeholder="username" />
-                                <ReactTooltip type="info" delayShow={500}/>
+                                <ReactTooltip type="info" delayShow={500} />
                             </div>
                         }
                         <TextInput value={values.email} label="Email" name="email" type="email" placeholder="email" />
                         <TextInput value={values.password} label="Password" name="password" type="password" placeholder="password" />
                         {!isLogin && <TextInput value={values.confirmPassword} label="Confirm password" name="confirmPassword" type="password" placeholder="confirm password" />}
+                        {!isLogin &&
+                            <div className="select-container">
+                                <label className="select-label" htmlFor="currency">Currency</label>
+                                <Field className="select-dropdown" label="currency" as="select" value={values.currency} name="currency">
+                                    {generateCurrencyCodes().map(c => <option key={c.number} value={c.number}>
+                                        {c.currency} - {c.formattedCurrency.value}
+                                    </option>)}
+                                </Field>
+                            </div>}
                         {error && <p className="error-message">{error}</p>}
                         <div className="buttons-container">
                             <Button type="submit" disabled={isSubmitting || errors.username || errors.password || errors.email || errors.confirmPassword} className="button--common">
