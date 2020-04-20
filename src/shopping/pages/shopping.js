@@ -12,6 +12,7 @@ import ShoppingListsList from '../components/shopping-lists-list';
 import ShoppingList from '../components/shopping-list';
 import Checkbox from '../../shared/components/form-elements/checkbox';
 import ErrorModal from '../../shared/components/ui-elements/error-modal';
+import Loader from '../../shared/components/ui-elements/loader';
 
 const Shopping = ({ house, ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -114,8 +115,8 @@ const Shopping = ({ house, ...props }) => {
     }
 
     const updateItem = async ({ listId, itemId, ...values }) => {
+        setIsLoading(true);
         const url = `${process.env.REACT_APP_API_BASE_URL}/shopping-lists/${listId}/items/${itemId}`;
-
         try {
             const res = await Axios({
                 method: 'PATCH',
@@ -138,14 +139,17 @@ const Shopping = ({ house, ...props }) => {
                 }
                 return li;
             }));
+            setIsLoading(false);
             
         } catch (error) {
             const { statusCode, message } = JSON.parse(error.request.response)
             setError({ code: statusCode, message });
+            setIsLoading(false);
         }
     }
 
     const handleDeleteItem = async ({ listId, itemId }) => {
+        
         try {
             const res = await Axios({
                 method: 'DELETE',
@@ -180,7 +184,7 @@ const Shopping = ({ house, ...props }) => {
     }
 
     const handleUpdateList = async ({ listId, isActive, name, updateExpenses, amount }) => {
-
+        setIsLoading(true);
         try {
             const res = await Axios({
                 method: 'PATCH',
@@ -213,9 +217,11 @@ const Shopping = ({ house, ...props }) => {
                     type: 'success'
                 })
             }
+            setIsLoading(false);
         } catch (error) {
             const { statusCode, message } = JSON.parse(error.request.response)
             setError({ code: statusCode, message });
+            setIsLoading(false);
         }
     }
 
@@ -257,10 +263,6 @@ const Shopping = ({ house, ...props }) => {
         )
     }
 
-    if (isLoading) {
-        return <h1>Loading...</h1>
-    }
-
     return (
         <div className="shopping">
             <div className="shopping__title">
@@ -291,7 +293,7 @@ const Shopping = ({ house, ...props }) => {
                 />
             </div>
 
-            {activeList &&
+            {isLoading ? <Loader /> : activeList &&
                 <ul className="shopping__lists">
                     {shoppingLists.map((list) => <ShoppingListsList
                         onDelete={handleDeleteList}
@@ -303,7 +305,7 @@ const Shopping = ({ house, ...props }) => {
                 </ul>
             }
             <div className="shopping__active-list">
-                {activeList && <ShoppingList
+                {isLoading ? <Loader /> : activeList && <ShoppingList
                     list={activeList}
                     admins={house.admins}
                     onAddItem={handleAddItem}

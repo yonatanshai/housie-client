@@ -16,6 +16,7 @@ import Icon from '../../shared/components/ui-elements/icon';
 import ReactTooltip from 'react-tooltip';
 import { useSettings } from '../../context/settings-context';
 import { countries, number } from 'currency-codes';
+import Loader from '../../shared/components/ui-elements/loader';
 
 
 const sortExpenses = (expenses, sortBy, sortDir) => {
@@ -76,7 +77,7 @@ const ExpensesList = ({ house, ...props }) => {
     // const [filtersSearchText, setFiltersSearchText] = useState(undefined);
     const [error, setError] = useState(null);
     const { userData } = useAuth();
-    const {locale, currency} = useSettings();
+    const { locale, currency } = useSettings();
 
     useEffect(() => {
         if (expenses) {
@@ -277,7 +278,7 @@ const ExpensesList = ({ house, ...props }) => {
                     <Button className="button--inverse-modify" onClick={handleFilter}>Filter</Button>
                     <Button className="button--inverse-gray" onClick={resetFilters}>Reset</Button>
                 </div>
-                <summary className="results-summary">
+                <div className="results-summary">
                     <h4 style={{ padding: '0 1rem', margin: '0' }}>{`Results: ${expenses.length}`}</h4>
                     <h4 style={{ padding: '0 1rem', margin: '0' }}>
                         {`Total: ${Intl.NumberFormat(locale, {
@@ -285,18 +286,19 @@ const ExpensesList = ({ house, ...props }) => {
                             currency: number(currency).code
                         }).format(expenses.map(e => e.amount).reduce((acc, curr) => acc + curr, 0))}`}
                     </h4>
-                </summary>
+                </div>
 
 
             </div>
-            <div className="expense-list__data">
-                {expenses.length === 0 ? <p>No Expenses</p> :
-                    expenses.map(ex => <ExpensesListItem
-                        key={ex.id}
-                        expense={ex}
-                        onUpdate={handleUpdateExpense}
-                        onDelete={handleDeleteExpense} />)}
-            </div>
+            {isLoading ? <Loader /> :
+                <div className="expense-list__data">
+                    {expenses.length === 0 ? <p>No Expenses</p> :
+                        expenses.map(ex => <ExpensesListItem
+                            key={ex.id}
+                            expense={ex}
+                            onUpdate={handleUpdateExpense}
+                            onDelete={handleDeleteExpense} />)}
+                </div>}
         </Widget >
     )
 };

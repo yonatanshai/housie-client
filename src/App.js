@@ -87,7 +87,7 @@ function App() {
     timeout: 3000,
     transition: transitions.SCALE,
   }
-  console.log(userData)
+  
 
   return (
     <div className="App">

@@ -36,18 +36,9 @@ html {
 }
 
 :root {
-  /* --default-primary-color: #ab47bc;
-  --dark-primary-color:  #790e8b;
-  --light-primary-color:  #df78ef; */
   --default-primary-color: #4caf50;
   --light-primary-color: #80e27e;
   --dark-primary-color: #087f23;
-  /* --dark-primary-color:  #8c9900;
-  --default-primary-color: #c0ca33;
-  --light-primary-color:  #f5fd67; */
-  /* --dark-secondary-color:  #2286c3;
-  --default-secondary-color: #64b5f6;
-  --light-secondary-color:  #9be7ff; */
   --text-primary-color:  #FFFFFF;
   --accent-color:  #FFC107;
   --primary-text-color :  #212121;
