@@ -233,7 +233,7 @@ const TasksList = ({ ...props }) => {
                     'content-type': 'application/json',
                     'authorization': 'Bearer ' + userData.token
                 },
-                data: data = {
+                data: {
                     title,
                     priority,
                     description,
