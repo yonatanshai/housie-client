@@ -17,7 +17,6 @@ const Filter = ({ withDateFilter, ...props }) => {
 
     const onFilter = (values) => {
         // props.onFilter()
-        console.log(values);
     }
 
     return (

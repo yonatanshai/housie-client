@@ -14,7 +14,6 @@ const HouseMembersListItem = ({ member, isAdmin, ...props }) => {
         props.onMakeAdmin(member.id);
     }
 
-    console.log({id: member.id, userId: userData.user.id});
     return (
         <div className="house-members-list-item">
             <IconTextLabel textFirst icon={`${isAdmin && 'user-tie'}`} text={member.username} />

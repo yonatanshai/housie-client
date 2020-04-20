@@ -191,7 +191,7 @@ const HouseDashBoard = ({ ...props }) => {
                     message="No user with this email was found. Would you like to send an invitation by email?"
                     show={showAddMemberDialog}
                     onNegative={() => setShowAddMemberDialog(false)}
-                    onPositive={() => console.log('adding user')}
+                    onPositive={() => alert('not available yet :(')}
                     type="YesNo"
                 />
                 <Sidebar title={house.name}>

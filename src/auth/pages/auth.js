@@ -11,6 +11,7 @@ import { Redirect } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import { useCurrency } from '../../hooks/currency-hook';
 import { country, code, number } from 'currency-codes';
+import Loader from '../../shared/components/ui-elements/loader';
 
 
 const LoginPage = (props) => {
@@ -26,7 +27,7 @@ const LoginPage = (props) => {
     }
 
     const handleSubmit = async (values, { errors, resetForm }) => {
-        const url = isLogin ? `${process.env.REACT_APP_API_BASE_URL}/auth/signin` : `${process.env.REACT_APP_API_BASE_URL}/auth/signin`;
+        const url = isLogin ? `${process.env.REACT_APP_API_BASE_URL}/auth/signin` : `${process.env.REACT_APP_API_BASE_URL}/auth/signup`;
         let data = {
             email: values.email,
             password: values.password,
@@ -100,7 +101,7 @@ const LoginPage = (props) => {
         >
             {({ errors, isSubmitting, values }) => (
                 <div className="container">
-                    <Form className="auth-form" onClick={() => console.log(errors)}>
+                    <Form className="auth-form">
                         <h2 className="auth-form__header">{isLogin ? 'Login' : 'Signup'}</h2>
                         {
                             !isLogin &&
@@ -123,6 +124,7 @@ const LoginPage = (props) => {
                             </div>}
                         {error && <p className="error-message">{error}</p>}
                         <div className="buttons-container">
+                            {isSubmitting && <Loader />}
                             <Button type="submit" disabled={isSubmitting || errors.username || errors.password || errors.email || errors.confirmPassword} className="button--common">
                                 {isLogin ? 'Login' : 'Create Account'}
                             </Button>

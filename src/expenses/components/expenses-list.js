@@ -230,8 +230,6 @@ const ExpensesList = ({ house, ...props }) => {
         setSortBy(val);
     }
 
-
-    console.log(number(currency));
     useEffect(() => {
         setExpenses(e => sortExpenses(e, sortBy, sortByDir));
     }, [sortBy, sortByDir]);

@@ -30,8 +30,6 @@ const priorityRank = {
     'high': 2
 }
 
-console.log(statusRank['a'])
-
 const sortTasks = (tasks, sortBy, sortDir) => {
     let sortedTasks = [...tasks];
     switch (sortBy) {
@@ -227,15 +225,6 @@ const TasksList = ({ ...props }) => {
     }
 
     const handleTaskUpdate = async ({ taskId, priority, user, title, description }) => {
-        console.log(user)
-        const data = {
-            title,
-            priority,
-            description,
-            assignedUserId: user && user.id,
-        };
-
-        console.log(data);
         try {
             const res = await axios({
                 method: 'PATCH',
@@ -244,7 +233,12 @@ const TasksList = ({ ...props }) => {
                     'content-type': 'application/json',
                     'authorization': 'Bearer ' + userData.token
                 },
-                data
+                data: data = {
+                    title,
+                    priority,
+                    description,
+                    assignedUserId: user && user.id,
+                }
             });
             setTasks(tasks.map(task => task.id === taskId ? res.data : task));
             props.onAlertChange({

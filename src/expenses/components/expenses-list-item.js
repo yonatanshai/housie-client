@@ -60,7 +60,6 @@ const ExpensesListItem = ({ expense, ...props }) => {
 
 
     const handleEditBlur = (name) => {
-        console.log(name)
         switch (name) {
             case 'title':
                 if (title.trim().length === 0) {
