@@ -3,7 +3,6 @@ import HouseListItem from './house-list-item';
 import './house-list.css';
 
 const HouseList = props => {
-    console.log(props);
     return (
         <ul className="house-list">
             {props.houses.map(house => <HouseListItem

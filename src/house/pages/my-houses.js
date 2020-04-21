@@ -12,7 +12,6 @@ import { useError } from '../../hooks/error-hook';
 
 const MyHouses = props => {
     const [isLoading, setIsLoading] = useState(true);
-    // const [error, setError] = useState(null);
     const {error, clearError, handleError} = useError();
     const [houses, setHouses] = useState([]);
     const [showAddHouseForm, setShowAddHouseForm] = useState(false);

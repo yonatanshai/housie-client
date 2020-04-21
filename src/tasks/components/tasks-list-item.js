@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './tasks-list-item.css';
 import Checkbox from '../../shared/components/form-elements/checkbox';
-import { TaskStatus } from '../../shared/enums/task-status';
+import { TaskStatus, TaskStatusDisplayMap } from '../../shared/enums/task-status';
 import Button from '../../shared/components/form-elements/button';
 import Icon from '../../shared/components/ui-elements/icon';
 import ReactTooltip from 'react-tooltip';
@@ -10,6 +10,7 @@ import Dropdown from '../../shared/components/form-elements/dropdown';
 import { useAuth } from '../../context/auth-context';
 import EditableText from '../../shared/components/form-elements/editable-text';
 import ListItemSaveChanges from '../../shared/components/form-elements/list-item-save-changes';
+import HoverTextButton from '../../shared/components/ui-elements/HoverTextButton';
 
 const getUser = (userId, members) => {
     if (!userId) return null;
@@ -97,13 +98,13 @@ const TasksListItem = ({ task, members, ...props }) => {
         if (status === TaskStatus.Assigned && assignedUser.id === userData.user.id) {
             props.onUpdateStatus(task.id, TaskStatus.InProgress);
         } else if (status === TaskStatus.New) {
-            props.onUpdate({taskId: task.id, user: {id: userData.user.id}});
+            props.onUpdate({ taskId: task.id, user: { id: userData.user.id } });
         }
     }
 
 
     const getStatusDataTip = () => {
-        
+
         if (status === TaskStatus.Assigned && assignedUser && assignedUser.id === userData.user.id) {
             return 'Change to in progress'
         }
@@ -111,6 +112,8 @@ const TasksListItem = ({ task, members, ...props }) => {
         if (status === TaskStatus.New) {
             return 'Signup'
         }
+
+        return null;
     }
 
     return (
@@ -128,12 +131,13 @@ const TasksListItem = ({ task, members, ...props }) => {
 
             <span className="tasks-list-item__create-date">{format(new Date(task.createdAt), 'dd/MM/yyyy')}</span>
 
-            <Button
+            <HoverTextButton
                 className={`tasks-list-item__status tasks-list-item__status--${status}`}
-                dataTip={getStatusDataTip()}
-                onClick={handleChangeStatusClicked} >
-                {status}
-            </Button>
+                dataTip="Status"
+                onClick={handleChangeStatusClicked}
+                defaultText={TaskStatusDisplayMap.get(status)}
+                hoverText={getStatusDataTip() ? getStatusDataTip() : TaskStatusDisplayMap.get(status) }
+            />
             <ReactTooltip delayShow={500} />
 
             <Dropdown disabled={!isAdmin(props.admins, userData.user.id)} dataTip="Priority" onSelect={handlePriorityChanged} value={selectedPriority} className={`tasks-list-item__priority tasks-list-item__priority--${selectedPriority}`}>

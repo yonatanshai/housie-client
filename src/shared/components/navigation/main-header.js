@@ -20,7 +20,7 @@ const MainHeader = props => {
             </NavLink>
 
             <div className="main-header__navigation">
-                {userData && <span className="main-header__username">Hello {userData.user.username}</span>}
+                {userData && <span className="main-header__username">Hello {userData.user && userData.user.username}</span>}
                 <NavLink className="main-header__link my-houses-link" to="/">
                     My Houses
                 </NavLink>

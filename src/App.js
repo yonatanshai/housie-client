@@ -98,7 +98,7 @@ function App() {
         <AuthContext.Provider value={{ userData, setUserData: updateUserData }}>
           <SettingsContext.Provider value={{
             locale: getUserLocal(),
-            currency: userData ? userData.user.currency : null,
+            currency: userData && userData.user ? userData.user.currency : null,
             onUpdateSettings: handleUpdateUserSettings
           }}>
             <BrowserRouter>
