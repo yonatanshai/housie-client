@@ -1,3 +1,3 @@
 ## Housie Client
-Housie client is React client for the housie api app
-The live version runs in https://housie-application.herokuapp.com
+Housie client is React client for the [Housie API App](https://github.com/yonatanshai/housie-api)
+The live version runs [here](https://housie-application.herokuapp.com)
