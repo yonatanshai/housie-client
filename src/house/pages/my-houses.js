@@ -25,7 +25,7 @@ const MyHouses = props => {
             try {
                 const res = await axios({
                     method: 'GET',
-                    url: `${process.env.REACT_APP_API_BASE_URL}/house`,
+                    url: `${process.env.REACT_APP_API_BASE_URL}/house/`,
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${userData.token}`
@@ -94,6 +94,7 @@ const MyHouses = props => {
         }
         clearError();
     }
+
 
     if (error) {
         return (
