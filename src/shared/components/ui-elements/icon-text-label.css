@@ -15,4 +15,8 @@
     .icon-text-label__text {
         display: none;
     }
+
+    .icon-text-label__text--show-always {
+        display: block;
+    }
 }

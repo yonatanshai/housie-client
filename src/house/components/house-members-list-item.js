@@ -16,7 +16,7 @@ const HouseMembersListItem = ({ member, isAdmin, ...props }) => {
 
     return (
         <div className="house-members-list-item">
-            <IconTextLabel textFirst icon={`${isAdmin && 'user-tie'}`} text={member.username} />
+            <IconTextLabel showOnSmallScreen textFirst icon={`${isAdmin && 'user-tie'}`} text={member.username} />
             {props.admins.some(a => a.id === userData.user.id) && member.id !== userData.user.id &&
                 <div className="member-actions">
                     <Button className={`member-actions__action button--inverse-modify`} disabled={isAdmin} onClick={handleMakeAdmin}>
